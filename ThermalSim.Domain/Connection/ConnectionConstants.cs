@@ -1,4 +1,4 @@
-﻿namespace ThermalSim.Domain
+﻿namespace ThermalSim.Domain.Connection
 {
     public static class ConnectionConstants
     {

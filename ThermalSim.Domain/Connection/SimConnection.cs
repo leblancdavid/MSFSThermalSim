@@ -1,12 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.FlightSimulator.SimConnect;
 using System.Reflection;
+using ThermalSim.Domain.Position;
 
-namespace ThermalSim.Domain
+namespace ThermalSim.Domain.Connection
 {
     public class SimConnection : ISimConnection, IDisposable
     {
-        private IntPtr handle;
+        private nint handle;
         private readonly ILogger<SimConnection> logger;
 
         public bool IsConnected => Connection != null;
@@ -23,7 +24,7 @@ namespace ThermalSim.Domain
 
         public void Connect()
         {
-            if(Connection != null)
+            if (Connection != null)
             {
                 Disconnect();
             }
@@ -42,7 +43,7 @@ namespace ThermalSim.Domain
             Connection.AddToDataDefinition(SimDataEventTypes.AircraftPositionInitial, "Initial Position", null, SIMCONNECT_DATATYPE.INITPOSITION, 0.0f, SimConnect.SIMCONNECT_UNUSED);
         }
 
-        
+
         public void Disconnect()
         {
             try
@@ -80,7 +81,7 @@ namespace ThermalSim.Domain
 
         private void Connection_OnRecvSimobjectData(SimConnect sender, SIMCONNECT_RECV_SIMOBJECT_DATA data)
         {
-            if(data.dwRequestID == (uint)SimDataEventTypes.AircraftPosition)
+            if (data.dwRequestID == (uint)SimDataEventTypes.AircraftPosition)
             {
                 var position = data.dwData[0] as AircraftPositionState;
                 if (position != null)
@@ -93,7 +94,7 @@ namespace ThermalSim.Domain
         private void RequestDataOnConnected()
         {
             Connection?.RequestDataOnSimObject(
-                SimDataEventTypes.AircraftPosition, 
+                SimDataEventTypes.AircraftPosition,
                 SimDataEventTypes.AircraftPosition, 0,
                 SIMCONNECT_PERIOD.SIM_FRAME,
                 SIMCONNECT_DATA_REQUEST_FLAG.DEFAULT,
@@ -184,7 +185,7 @@ namespace ThermalSim.Domain
             );
         }
 
-        private void RegisterDataDefinition<T>(SimDataEventTypes definition, 
+        private void RegisterDataDefinition<T>(SimDataEventTypes definition,
             params (string datumName, string? unitsName, SIMCONNECT_DATATYPE datumType)[] data)
         {
             foreach (var (datumName, unitsName, datumType) in data)

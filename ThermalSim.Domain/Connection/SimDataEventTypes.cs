@@ -1,4 +1,4 @@
-﻿namespace ThermalSim.Domain
+﻿namespace ThermalSim.Domain.Connection
 {
     public enum SimDataEventTypes
     {

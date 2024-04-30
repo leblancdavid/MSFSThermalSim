@@ -1,6 +1,6 @@
 ﻿using Microsoft.FlightSimulator.SimConnect;
 
-namespace ThermalSim.Domain
+namespace ThermalSim.Domain.Connection
 {
     public interface ISimConnection
     {

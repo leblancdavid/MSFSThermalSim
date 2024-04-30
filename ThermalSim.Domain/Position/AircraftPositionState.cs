@@ -1,7 +1,8 @@
 ﻿using Microsoft.FlightSimulator.SimConnect;
+using ThermalSim.Domain.Connection;
 
 //Credit: FlightRecorder
-namespace ThermalSim.Domain
+namespace ThermalSim.Domain.Position
 {
     public class AircraftPositionState
     {
