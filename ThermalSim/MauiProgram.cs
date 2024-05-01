@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using ThermalSim.Domain.Connection;
+using ThermalSim.Domain.Thermals;
 
 namespace ThermalSim
 {
@@ -14,6 +16,12 @@ namespace ThermalSim
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
+            builder.Services.AddSingleton<ISimConnection, SimConnection>();
+            builder.Services.AddSingleton<IThermalSimulator, ThermalSimulator>();
+            builder.Services.AddTransient<IThermalGenerator, FixedPositionThermalGenerator>();
+
+            builder.Services.AddSingleton<MainPageViewModel>();
 
 #if DEBUG
     		builder.Logging.AddDebug();
