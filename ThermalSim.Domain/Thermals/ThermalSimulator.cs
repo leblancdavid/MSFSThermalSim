@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.FlightSimulator.SimConnect;
 using ThermalSim.Domain.Connection;
 using ThermalSim.Domain.Position;
 
@@ -45,6 +46,7 @@ namespace ThermalSim.Domain.Thermals
                     UpdateThermalModels(e.Position);
                 }
 
+                ApplyThermalEffect(e.Position);
 
             }
             catch (Exception ex)
@@ -97,7 +99,8 @@ namespace ThermalSim.Domain.Thermals
 
             var velocityChange = nearestThermal.GetThermalVelocity(position);
 
-
+            connection.Connection?.SetDataOnSimObject(SimDataEventTypes.ThermalVelocityUpdate,
+                1u, SIMCONNECT_DATA_SET_FLAG.DEFAULT, velocityChange);
         }
 
         public void Stop()
