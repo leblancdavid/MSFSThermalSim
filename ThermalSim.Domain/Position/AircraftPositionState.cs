@@ -120,7 +120,7 @@ namespace ThermalSim.Domain.Position
         public double AltitudeAboveGround;
         [SimConnectVariable(Name = "SIM ON GROUND", Unit = "Bool", Type = SIMCONNECT_DATATYPE.INT32, SetType = SetType.None)]
         public uint IsOnGround;
-        [SimConnectVariable(Name = "AMBIENT WIND VELOCITY", Unit = "Knots", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
+        [SimConnectVariable(Name = "AMBIENT WIND VELOCITY", Unit = "Feet per second", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
         public double WindVelocity;
         [SimConnectVariable(Name = "AMBIENT WIND DIRECTION", Unit = "Degrees", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
         public double WindDirection;

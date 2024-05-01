@@ -37,5 +37,19 @@ namespace ThermalSim.Api.Controllers
         {
             return simConnection.IsConnected;
         }
+
+        [HttpDelete]
+        public IActionResult Disconnect()
+        {
+            try
+            {
+                simConnection.Disconnect();
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

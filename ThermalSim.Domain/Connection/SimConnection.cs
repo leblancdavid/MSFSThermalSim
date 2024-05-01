@@ -162,7 +162,7 @@ namespace ThermalSim.Domain.Connection
             Connection?.RequestDataOnSimObject(
                 SimDataRequests.AIRCRAFT_POSITION,
                 SimDataEventTypes.AircraftPosition, 0,
-                SIMCONNECT_PERIOD.SECOND,
+                SIMCONNECT_PERIOD.SIM_FRAME,
                 SIMCONNECT_DATA_REQUEST_FLAG.DEFAULT,
                 0, 0, 0);
         }
