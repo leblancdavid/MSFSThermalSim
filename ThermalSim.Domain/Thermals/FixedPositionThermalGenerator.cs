@@ -11,11 +11,11 @@ namespace ThermalSim.Domain.Thermals
             
         }
 
-        public Thermal GenerateThermalAroundAircraft(AircraftPositionState position)
+        public IThermalModel GenerateThermalAroundAircraft(AircraftPositionState position)
         {
             lastId++;
 
-            return new Thermal
+            return new CylindricalThermal
             {
                 ObjectId = lastId,
                 StartTime = DateTime.Now,

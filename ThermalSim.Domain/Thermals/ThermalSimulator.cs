@@ -13,7 +13,7 @@ namespace ThermalSim.Domain.Thermals
         private DateTime nextSampleTime = DateTime.Now;
         private ThermalSimulationConfiguration configuration = new ThermalSimulationConfiguration();
 
-        private List<Thermal> thermals = new List<Thermal>();
+        private List<IThermalModel> thermals = new List<IThermalModel>();
 
         public ThermalSimulator(ISimConnection connection,
             IThermalGenerator thermalGenerator,
@@ -81,25 +81,12 @@ namespace ThermalSim.Domain.Thermals
             while(thermals.Count < configuration.MinNumberOfThermals)
             {
                 var t = thermalGenerator.GenerateThermalAroundAircraft(position);
-                connection.Connection?.WeatherCreateThermal(SimDataEventTypes.NewThermal,
-                    t.Latitude,
-                    t.Longitude,
-                    t.Altitude,
-                    t.Radius,
-                    t.Height,
-                    t.CoreRate,
-                    t.CoreTurbulence,
-                    t.SinkRate,
-                    t.SinkTurbulence,
-                    t.CoreSize,
-                    t.CoreTransitionSize,
-                    t.SinkLayerSize,
-                    t.SinkTransitionSize);
+                
                 thermals.Add(t);
             }
         }
 
-        private void RemoveThermal(Thermal t)
+        private void RemoveThermal(CylindricalThermal t)
         {
 
             thermals.Remove(t);

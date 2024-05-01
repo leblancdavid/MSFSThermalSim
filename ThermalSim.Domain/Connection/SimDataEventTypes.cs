@@ -5,15 +5,9 @@
         AIRCRAFT_POSITION
     }
 
-    public enum SimEvents
-    {
-        FRAME
-    }
-
     public enum SimDataEventTypes
     {
-        Frame,
         AircraftPosition,
-        NewThermal,
+        ThermalVelocityUpdate,
     }
 }

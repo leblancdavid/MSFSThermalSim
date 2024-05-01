@@ -21,7 +21,6 @@ namespace ThermalSim.Domain.Connection
 
         public SimConnect? Connection { get; private set; }
         public event EventHandler<AircraftPositionUpdatedEventArgs>? AircraftPositionUpdated;
-        public event EventHandler<SimObjectEventArgs>? NewThermalAdded;
 
 
         public SimConnection(ILogger<SimConnection> logger)
@@ -155,10 +154,6 @@ namespace ThermalSim.Domain.Connection
                     AircraftPositionUpdated?.Invoke(this, new AircraftPositionUpdatedEventArgs(position.Value));
                 }
             }
-            else if(data.dwRequestID == (uint)SimDataEventTypes.NewThermal)
-            {
-                NewThermalAdded?.Invoke(this, new SimObjectEventArgs(new SimObject() { ObjectId = data.dwObjectID }));
-            }
         }
 
         private void RequestDataOnConnected()
@@ -169,11 +164,6 @@ namespace ThermalSim.Domain.Connection
                 SIMCONNECT_PERIOD.SECOND,
                 SIMCONNECT_DATA_REQUEST_FLAG.DEFAULT,
                 0, 0, 0);
-        }
-
-        private void RegisterNewThermalDefinition()
-        {
-            RegisterDataDefinition<SimObject>(SimDataEventTypes.AircraftPosition);
         }
 
         private void RegisterAircraftPositionDefinition()

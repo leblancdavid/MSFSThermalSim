@@ -9,7 +9,7 @@ namespace ThermalSim.Domain.Thermals
             
         }
 
-        public Thermal GenerateThermalAroundAircraft(AircraftPositionState position)
+        public IThermalModel GenerateThermalAroundAircraft(AircraftPositionState position)
         {
             throw new NotImplementedException();
         }
