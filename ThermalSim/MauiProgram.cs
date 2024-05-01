@@ -22,9 +22,10 @@ namespace ThermalSim
             builder.Services.AddTransient<IThermalGenerator, FixedPositionThermalGenerator>();
 
             builder.Services.AddSingleton<MainPageViewModel>();
+            builder.Services.AddSingleton<MainPage>();
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

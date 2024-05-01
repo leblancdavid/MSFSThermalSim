@@ -4,6 +4,8 @@ namespace ThermalSim
 {
     public class MainPageViewModel
     {
+        private MainPageViewModel() { }
+
         private readonly IThermalSimulator thermalSimulator;
 
         public MainPageViewModel(IThermalSimulator thermalSimulator)
