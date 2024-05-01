@@ -1,12 +1,14 @@
 ﻿using Microsoft.FlightSimulator.SimConnect;
+using ThermalSim.Domain.Position;
 
-namespace ThermalSim.Domain
+namespace ThermalSim.Domain.Connection
 {
     public interface ISimConnection
     {
         bool IsConnected { get; }
         SimConnect? Connection { get; }
-        void Connect();
+        event EventHandler<AircraftPositionUpdatedEventArgs>? AircraftPositionUpdated;
+        bool Connect();
         void Disconnect();
     }
 }

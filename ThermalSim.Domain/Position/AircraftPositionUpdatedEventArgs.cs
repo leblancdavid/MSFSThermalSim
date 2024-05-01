@@ -1,4 +1,4 @@
-﻿namespace ThermalSim.Domain
+﻿namespace ThermalSim.Domain.Position
 {
     public class AircraftPositionUpdatedEventArgs : EventArgs
     {

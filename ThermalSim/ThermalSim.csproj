@@ -35,6 +35,7 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+		<Platforms>x86;x64</Platforms>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -63,6 +64,13 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\ThermalSim.Domain\ThermalSim.Domain.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="Microsoft.FlightSimulator.SimConnect">
+	    <HintPath>..\..\..\..\..\..\..\MSFS SDK\SimConnect SDK\lib\managed\Microsoft.FlightSimulator.SimConnect.dll</HintPath>
+	    <Private>True</Private>
+	  </Reference>
 	</ItemGroup>
 
 </Project>

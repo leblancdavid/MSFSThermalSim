@@ -1,7 +1,7 @@
 ﻿using Microsoft.FlightSimulator.SimConnect;
 
 //Credit: FlightRecorder
-namespace ThermalSim.Domain
+namespace ThermalSim.Domain.Connection
 {
     [AttributeUsage(AttributeTargets.Field, Inherited = false, AllowMultiple = false)]
     public class SimConnectVariableAttribute : Attribute

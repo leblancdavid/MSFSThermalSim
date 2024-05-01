@@ -1,9 +1,12 @@
 ﻿using Microsoft.FlightSimulator.SimConnect;
+using System.Runtime.InteropServices;
+using ThermalSim.Domain.Connection;
 
 //Credit: FlightRecorder
-namespace ThermalSim.Domain
+namespace ThermalSim.Domain.Position
 {
-    public class AircraftPositionState
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct AircraftPositionState
     {
         [SimConnectVariable(Name = "PLANE LATITUDE", Unit = "Degrees", Type = SIMCONNECT_DATATYPE.FLOAT64)]
         public double Latitude;
@@ -117,7 +120,7 @@ namespace ThermalSim.Domain
         public double AltitudeAboveGround;
         [SimConnectVariable(Name = "SIM ON GROUND", Unit = "Bool", Type = SIMCONNECT_DATATYPE.INT32, SetType = SetType.None)]
         public uint IsOnGround;
-        [SimConnectVariable(Name = "AMBIENT WIND VELOCITY", Unit = "Knots", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
+        [SimConnectVariable(Name = "AMBIENT WIND VELOCITY", Unit = "Feet per second", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
         public double WindVelocity;
         [SimConnectVariable(Name = "AMBIENT WIND DIRECTION", Unit = "Degrees", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
         public double WindDirection;
@@ -176,5 +179,11 @@ namespace ThermalSim.Domain
         public double AccelerationBodyY;
         [SimConnectVariable(Name = "ACCELERATION BODY Z", Unit = "Feet per second squared", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
         public double AccelerationBodyZ;
+        [SimConnectVariable(Name = "ROTATION ACCELERATION BODY X", Unit = "Feet per second squared", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
+        public double RotationAccelerationBodyX;
+        [SimConnectVariable(Name = "ROTATION ACCELERATION BODY Y", Unit = "Feet per second squared", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
+        public double RotationAccelerationBodyY;
+        [SimConnectVariable(Name = "ROTATION ACCELERATION BODY Z", Unit = "Feet per second squared", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
+        public double RotationAccelerationBodyZ;
     }
 }

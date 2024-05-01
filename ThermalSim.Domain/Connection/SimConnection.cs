@@ -1,14 +1,23 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.FlightSimulator.SimConnect;
-using System.Reflection;
+using System.Net;
+using System.Windows.Forms;
+using ThermalSim.Domain.Position;
+using ThermalSim.Domain.Thermals;
+using ThermalSim.Helpers;
 
-namespace ThermalSim.Domain
+namespace ThermalSim.Domain.Connection
 {
     public class SimConnection : ISimConnection, IDisposable
     {
-        private IntPtr handle;
         private readonly ILogger<SimConnection> logger;
-
+        private MessageHandler messageHandler = new MessageHandler();
+        private static CancellationTokenSource? source = null;
+        private static CancellationToken token = CancellationToken.None;
+        private static Task? messagePump;
+        private static AutoResetEvent messagePumpRunning = new AutoResetEvent(false);
+        // User-defined win32 event
+        const int WM_USER_SIMCONNECT = 0x0402;
         public bool IsConnected => Connection != null;
 
         public SimConnect? Connection { get; private set; }
@@ -21,14 +30,39 @@ namespace ThermalSim.Domain
             this.logger = logger;
         }
 
-        public void Connect()
+        public bool Connect()
         {
-            if(Connection != null)
+            try
             {
-                Disconnect();
-            }
+                if (Connection != null)
+                {
+                    Disconnect();
+                };
 
-            Connection = new SimConnect("", handle, ConnectionConstants.WM_USER_SIMCONNECT, null, 0);
+                source = new CancellationTokenSource();
+                token = source.Token;
+                token.ThrowIfCancellationRequested();
+                messagePump = new Task(ConnectThread, token);
+                messagePump.Start();
+                messagePumpRunning = new AutoResetEvent(false);
+                messagePumpRunning.WaitOne();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logger.LogWarning(ex, $"Unable to connect to SimConnect! Error: {ex.Message}");
+                return false;
+            }
+        }
+
+        private void ConnectThread()
+        {
+            messageHandler = new MessageHandler();
+            messageHandler.MessageReceived += MessageHandler_MessageReceived;
+            messageHandler.CreateHandle();
+
+            Connection = new SimConnect("ThermalSim", messageHandler.Handle, ConnectionConstants.WM_USER_SIMCONNECT, null, 0);
 
             Connection.OnRecvOpen += new SimConnect.RecvOpenEventHandler(Connection_OnRecvOpen);
             Connection.OnRecvQuit += new SimConnect.RecvQuitEventHandler(Connection_OnRecvQuit);
@@ -37,16 +71,49 @@ namespace ThermalSim.Domain
             Connection.OnRecvEvent += Connection_OnRecvEvent;
             Connection.OnRecvSimobjectData += Connection_OnRecvSimobjectData;
 
-            RegisterAircraftPositionDefinition();
+            RegisterAircraftPositionDefinition(); 
+            RegisterThermalVelocityDefinition();
 
-            Connection.AddToDataDefinition(SimDataEventTypes.AircraftPositionInitial, "Initial Position", null, SIMCONNECT_DATATYPE.INITPOSITION, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            messagePumpRunning.Set();
+            Application.Run();
         }
 
-        
+        private void MessageHandler_MessageReceived(object? sender, System.Windows.Forms.Message e)
+        {
+            if (e.Msg == WM_USER_SIMCONNECT && Connection != null)
+            {
+                try
+                {
+                    Connection.ReceiveMessage();
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, $"Error occurred while handling message: {ex.Message}");
+
+                }
+
+            }
+        }
+
         public void Disconnect()
         {
             try
             {
+                if (source != null && token.CanBeCanceled)
+                {
+                    source.Cancel();
+                }
+                if (messagePump != null)
+                {
+                    messageHandler.MessageReceived -= MessageHandler_MessageReceived;
+                    messageHandler.DestroyHandle();
+                    messageHandler = null;
+
+                    messagePumpRunning.Close();
+                    messagePumpRunning.Dispose();
+                }
+                messagePump = null;
+
                 Connection?.Dispose();
                 Connection = null;
             }
@@ -80,12 +147,12 @@ namespace ThermalSim.Domain
 
         private void Connection_OnRecvSimobjectData(SimConnect sender, SIMCONNECT_RECV_SIMOBJECT_DATA data)
         {
-            if(data.dwRequestID == (uint)SimDataEventTypes.AircraftPosition)
+            if (data.dwRequestID == (uint)SimDataRequests.AIRCRAFT_POSITION)
             {
-                var position = data.dwData[0] as AircraftPositionState;
+                var position = data.dwData[0] as AircraftPositionState?;
                 if (position != null)
                 {
-                    AircraftPositionUpdated?.Invoke(this, new AircraftPositionUpdatedEventArgs(position));
+                    AircraftPositionUpdated?.Invoke(this, new AircraftPositionUpdatedEventArgs(position.Value));
                 }
             }
         }
@@ -93,11 +160,21 @@ namespace ThermalSim.Domain
         private void RequestDataOnConnected()
         {
             Connection?.RequestDataOnSimObject(
-                SimDataEventTypes.AircraftPosition, 
+                SimDataRequests.AIRCRAFT_POSITION,
                 SimDataEventTypes.AircraftPosition, 0,
                 SIMCONNECT_PERIOD.SIM_FRAME,
                 SIMCONNECT_DATA_REQUEST_FLAG.DEFAULT,
                 0, 0, 0);
+        }
+
+        private void RegisterThermalVelocityDefinition()
+        {
+            RegisterDataDefinition<ThermalVelocity>(SimDataEventTypes.ThermalVelocityUpdate,
+                ("VERTICAL SPEED", "Feet per second", (SIMCONNECT_DATATYPE)4),
+                ("VELOCITY BODY X", "Feet per second", (SIMCONNECT_DATATYPE)4),
+                ("VELOCITY BODY Y", "Feet per second", (SIMCONNECT_DATATYPE)4),
+                ("ROTATION ACCELERATION BODY X", "Feet per second", (SIMCONNECT_DATATYPE)4)
+            );
         }
 
         private void RegisterAircraftPositionDefinition()
@@ -180,11 +257,14 @@ namespace ThermalSim.Domain
                 ("ROTATION VELOCITY BODY Z", "Radians per second", (SIMCONNECT_DATATYPE)4),
                 ("ACCELERATION BODY X", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
                 ("ACCELERATION BODY Y", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
-                ("ACCELERATION BODY Z", "Feet per second squared", (SIMCONNECT_DATATYPE)4)
+                ("ACCELERATION BODY Z", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
+                ("ROTATION ACCELERATION BODY X", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
+                ("ROTATION ACCELERATION BODY Y", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
+                ("ROTATION ACCELERATION BODY Z", "Feet per second squared", (SIMCONNECT_DATATYPE)4)
             );
         }
 
-        private void RegisterDataDefinition<T>(SimDataEventTypes definition, 
+        private void RegisterDataDefinition<T>(SimDataEventTypes definition,
             params (string datumName, string? unitsName, SIMCONNECT_DATATYPE datumType)[] data)
         {
             foreach (var (datumName, unitsName, datumType) in data)
@@ -193,7 +273,7 @@ namespace ThermalSim.Domain
             }
             Connection?.RegisterDataDefineStruct<T>(definition);
         }
-
+       
         public void Dispose()
         {
             Disconnect();
