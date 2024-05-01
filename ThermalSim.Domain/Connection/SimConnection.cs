@@ -3,6 +3,7 @@ using Microsoft.FlightSimulator.SimConnect;
 using System.Net;
 using System.Windows.Forms;
 using ThermalSim.Domain.Position;
+using ThermalSim.Domain.Thermals;
 using ThermalSim.Helpers;
 
 namespace ThermalSim.Domain.Connection
@@ -70,8 +71,8 @@ namespace ThermalSim.Domain.Connection
             Connection.OnRecvEvent += Connection_OnRecvEvent;
             Connection.OnRecvSimobjectData += Connection_OnRecvSimobjectData;
 
-            RegisterAircraftPositionDefinition();
-            //RegisterNewThermalDefinition();
+            RegisterAircraftPositionDefinition(); 
+            RegisterThermalVelocityDefinition();
 
             messagePumpRunning.Set();
             Application.Run();
@@ -164,6 +165,15 @@ namespace ThermalSim.Domain.Connection
                 SIMCONNECT_PERIOD.SECOND,
                 SIMCONNECT_DATA_REQUEST_FLAG.DEFAULT,
                 0, 0, 0);
+        }
+
+        private void RegisterThermalVelocityDefinition()
+        {
+            RegisterDataDefinition<ThermalVelocity>(SimDataEventTypes.ThermalVelocityUpdate,
+                ("VELOCITY BODY X", "Feet per second", (SIMCONNECT_DATATYPE)4),
+                ("VELOCITY BODY Y", "Feet per second", (SIMCONNECT_DATATYPE)4),
+                ("ROTATION ACCELERATION BODY X", "Feet per second", (SIMCONNECT_DATATYPE)4)
+            );
         }
 
         private void RegisterAircraftPositionDefinition()

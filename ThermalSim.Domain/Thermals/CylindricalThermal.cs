@@ -27,7 +27,16 @@ namespace ThermalSim.Domain.Thermals
 
         public ThermalVelocity? GetThermalVelocity(AircraftPositionState position)
         {
-            return null;
+            if(!IsInThermal(position))
+                return null;
+
+            //TODO actually do the work but for now
+            var velocity = new ThermalVelocity()
+            {
+                VelocityBodyZ = CoreRate
+            };
+
+            return velocity;
         }
 
         public bool IsInThermal(AircraftPositionState position)

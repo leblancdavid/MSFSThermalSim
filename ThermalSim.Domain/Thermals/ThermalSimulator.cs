@@ -42,8 +42,10 @@ namespace ThermalSim.Domain.Thermals
                 if (DateTime.Now > nextSampleTime)
                 {
                     nextSampleTime = DateTime.Now + configuration.SamplingSpeed;
-                    ProcessThermals(e.Position);
+                    UpdateThermalModels(e.Position);
                 }
+
+
             }
             catch (Exception ex)
             {
@@ -51,45 +53,51 @@ namespace ThermalSim.Domain.Thermals
             }
         }
 
-        private void ProcessThermals(AircraftPositionState position)
+        private void UpdateThermalModels(AircraftPositionState position)
         {
-            RemoveExpiredThermals();
-            GenerateNewThermals(position);
-        }
-
-        private void RemoveExpiredThermals()
-        {
+            //Remove any thermals that have expired
             var currentTime = DateTime.Now;
-            var expiredThermals = thermals.Where(x => x.EndTime < currentTime);
-            
-            foreach(var t in expiredThermals)
-            {
-                connection.Connection?.WeatherRemoveThermal(t.ObjectId);
-            }
-
             thermals.RemoveAll(x => x.EndTime > currentTime);
-        }
 
-        private void GenerateNewThermals(AircraftPositionState position)
-        {
-            if (thermals.Count >= configuration.MaxNumberOfThermals ||
+            //If we have reached the max number of thermals, ignore
+            if(thermals.Count >= configuration.MaxNumberOfThermals ||
                 !connection.IsConnected)
             {
                 return;
             }
 
-            while(thermals.Count < configuration.MinNumberOfThermals)
+            do
             {
+                //Generate a new thermal
                 var t = thermalGenerator.GenerateThermalAroundAircraft(position);
-                
                 thermals.Add(t);
-            }
+            } //Repeat if we have less than the minimum number
+            while (thermals.Count < configuration.MinNumberOfThermals);
         }
 
-        private void RemoveThermal(CylindricalThermal t)
+        private void ApplyThermalEffect(AircraftPositionState position)
         {
+            float minDistance = float.MaxValue;
+            IThermalModel? nearestThermal = null;
+            foreach(var t in thermals)
+            {
+                var d = t.GetDistanceToThermal(position);
+                if(d < minDistance && t.IsInThermal(position))
+                {
+                    minDistance = d;
+                    nearestThermal = t;
+                }
+            }
 
-            thermals.Remove(t);
+            //If we are not in a thermal, don't do anything
+            if(nearestThermal == null)
+            {
+                return;
+            }
+
+            var velocityChange = nearestThermal.GetThermalVelocity(position);
+
+
         }
 
         public void Stop()
