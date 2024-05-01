@@ -30,15 +30,52 @@ namespace ThermalSim.Domain.Thermals
             if(!IsInThermal(position))
                 return null;
 
-            //TODO actually do the work but for now
+            var liftAmount = 100.0;
+            var frameFactor = 0.01;
+                
+            double xFactor = (-1.0 * position.Bank) / 90.0;
+            double yFactor = ((1.0 - Math.Abs(position.Bank) / 90.0) + (1.0 - Math.Abs(position.Pitch) / 90.0)) / 2.0;
+            double zFactor = (position.Pitch) / 90.0;
 
-            var liftAmount = CoreRate;
+            double xSpeed = position.VelocityBodyX * xFactor;
+            double ySpeed = position.VelocityBodyY * yFactor;
+            double zSpeed = position.VelocityBodyZ * zFactor;
+
+            if(Math.Abs(xSpeed) < liftAmount)
+            {
+                if (xSpeed < 0.0)
+                    xSpeed -= liftAmount * xFactor * frameFactor;
+                else
+                    xSpeed += liftAmount * xFactor * frameFactor;
+            }
+            else
+            {
+                xSpeed = position.VelocityBodyX;
+            }
+
+            if (ySpeed < liftAmount)
+            {
+                ySpeed += liftAmount * yFactor * frameFactor;
+            }
+            else
+            {
+                ySpeed = position.VelocityBodyY;
+            }
+
+            if(zSpeed < liftAmount)
+            {
+                zSpeed += liftAmount * zFactor * frameFactor;
+            }
+            else
+            {
+                zSpeed = position.VelocityBodyZ;
+            }
 
             var velocity = new ThermalVelocity()
             {
-                VelocityBodyY = 0.0, //position.VelocityBodyY, //(position.VelocityBodyY + liftAmount) / 2.0,
-                VelocityBodyZ = liftAmount, //(position.VelocityBodyZ + liftAmount) / 2.0,
-                RotationAccelerationBodyX = 0.0// position.RotationAccelerationBodyX,
+                VelocityBodyX = xSpeed,
+                VelocityBodyY = ySpeed, 
+                VelocityBodyZ = zSpeed
             };
 
             return velocity;
