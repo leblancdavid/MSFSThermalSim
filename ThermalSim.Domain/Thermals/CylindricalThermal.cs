@@ -31,9 +31,14 @@ namespace ThermalSim.Domain.Thermals
                 return null;
 
             //TODO actually do the work but for now
+
+            var liftAmount = CoreRate;
+
             var velocity = new ThermalVelocity()
             {
-                VelocityBodyZ = CoreRate
+                VelocityBodyY = 0.0, // (position.VelocityBodyY + liftAmount) / 2.0,
+                VelocityBodyZ = (position.VelocityBodyZ + liftAmount / 2.0) / 2.0,
+                RotationAccelerationBodyX = 0.0 //position.RotationAccelerationBodyX + liftAmount * Math.Max(0, Math.Min(0.34, 0.17 - (position.Pitch + position.RotationVelocityBodyX))),
             };
 
             return velocity;

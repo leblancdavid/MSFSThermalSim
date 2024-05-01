@@ -25,7 +25,7 @@ namespace ThermalSim.Domain.Thermals
                 Altitude = (float)position.Altitude - 500.0f,
                 Radius = 1000.0f,
                 Height = 2000.0f,
-                CoreRate = 20.0f,
+                CoreRate = 10.0f,
                 CoreTurbulence = 1.0f,
                 SinkRate = -10.0f,
                 SinkTurbulence = 0.0f,

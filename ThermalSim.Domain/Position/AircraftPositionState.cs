@@ -179,5 +179,11 @@ namespace ThermalSim.Domain.Position
         public double AccelerationBodyY;
         [SimConnectVariable(Name = "ACCELERATION BODY Z", Unit = "Feet per second squared", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
         public double AccelerationBodyZ;
+        [SimConnectVariable(Name = "ROTATION ACCELERATION BODY X", Unit = "Feet per second squared", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
+        public double RotationAccelerationBodyX;
+        [SimConnectVariable(Name = "ROTATION ACCELERATION BODY Y", Unit = "Feet per second squared", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
+        public double RotationAccelerationBodyY;
+        [SimConnectVariable(Name = "ROTATION ACCELERATION BODY Z", Unit = "Feet per second squared", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
+        public double RotationAccelerationBodyZ;
     }
 }
