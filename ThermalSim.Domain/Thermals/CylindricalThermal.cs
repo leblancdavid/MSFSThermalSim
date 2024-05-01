@@ -36,9 +36,9 @@ namespace ThermalSim.Domain.Thermals
 
             var velocity = new ThermalVelocity()
             {
-                VelocityBodyY = 0.0, // (position.VelocityBodyY + liftAmount) / 2.0,
-                VelocityBodyZ = (position.VelocityBodyZ + liftAmount / 2.0) / 2.0,
-                RotationAccelerationBodyX = 0.0 //position.RotationAccelerationBodyX + liftAmount * Math.Max(0, Math.Min(0.34, 0.17 - (position.Pitch + position.RotationVelocityBodyX))),
+                VelocityBodyY = 0.0, //position.VelocityBodyY, //(position.VelocityBodyY + liftAmount) / 2.0,
+                VelocityBodyZ = liftAmount, //(position.VelocityBodyZ + liftAmount) / 2.0,
+                RotationAccelerationBodyX = 0.0// position.RotationAccelerationBodyX,
             };
 
             return velocity;
