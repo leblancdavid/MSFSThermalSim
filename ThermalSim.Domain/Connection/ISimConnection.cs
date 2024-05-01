@@ -8,7 +8,7 @@ namespace ThermalSim.Domain.Connection
         bool IsConnected { get; }
         SimConnect? Connection { get; }
         event EventHandler<AircraftPositionUpdatedEventArgs>? AircraftPositionUpdated;
-        void Connect();
+        bool Connect();
         void Disconnect();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.FlightSimulator.SimConnect;
+using System.Diagnostics;
 using System.Reflection;
 using ThermalSim.Domain.Position;
 
@@ -23,26 +24,38 @@ namespace ThermalSim.Domain.Connection
             this.logger = logger;
         }
 
-        public void Connect()
+        public bool Connect()
         {
-            if (Connection != null)
+            try
             {
-                Disconnect();
+                if (Connection != null)
+                {
+                    Disconnect();
+                }
+
+                handle = Process.GetCurrentProcess().Handle;
+
+                Connection = new SimConnect("ThermalSim", handle, ConnectionConstants.WM_USER_SIMCONNECT, null, 0);
+
+                Connection.OnRecvOpen += new SimConnect.RecvOpenEventHandler(Connection_OnRecvOpen);
+                Connection.OnRecvQuit += new SimConnect.RecvQuitEventHandler(Connection_OnRecvQuit);
+
+                Connection.OnRecvException += Connection_OnRecvException;
+                Connection.OnRecvEvent += Connection_OnRecvEvent;
+                Connection.OnRecvSimobjectData += Connection_OnRecvSimobjectData;
+
+                RegisterAircraftPositionDefinition();
+                RegisterNewThermalDefinition();
+
+                Connection.SubscribeToSystemEvent(SimEvents.FRAME, "Frame");
+
+                return true;
             }
-
-            Connection = new SimConnect("ThermalSim", handle, ConnectionConstants.WM_USER_SIMCONNECT, null, 0);
-
-            Connection.OnRecvOpen += new SimConnect.RecvOpenEventHandler(Connection_OnRecvOpen);
-            Connection.OnRecvQuit += new SimConnect.RecvQuitEventHandler(Connection_OnRecvQuit);
-
-            Connection.OnRecvException += Connection_OnRecvException;
-            Connection.OnRecvEvent += Connection_OnRecvEvent;
-            Connection.OnRecvSimobjectData += Connection_OnRecvSimobjectData;
-
-            RegisterAircraftPositionDefinition();
-            RegisterNewThermalDefinition();
-
-            Connection.AddToDataDefinition(SimDataEventTypes.AircraftPositionInitial, "Initial Position", null, SIMCONNECT_DATATYPE.INITPOSITION, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+            catch (Exception ex)
+            {
+                logger.LogWarning(ex, $"Unable to connect to SimConnect! Error: {ex.Message}");
+                return false;
+            }
         }
 
 
@@ -100,7 +113,7 @@ namespace ThermalSim.Domain.Connection
         private void RequestDataOnConnected()
         {
             Connection?.RequestDataOnSimObject(
-                SimDataEventTypes.AircraftPosition,
+                SimDataRequests.AIRCRAFT_POSITION,
                 SimDataEventTypes.AircraftPosition, 0,
                 SIMCONNECT_PERIOD.SIM_FRAME,
                 SIMCONNECT_DATA_REQUEST_FLAG.DEFAULT,
