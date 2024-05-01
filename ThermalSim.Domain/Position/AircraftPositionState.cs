@@ -1,10 +1,12 @@
 ﻿using Microsoft.FlightSimulator.SimConnect;
+using System.Runtime.InteropServices;
 using ThermalSim.Domain.Connection;
 
 //Credit: FlightRecorder
 namespace ThermalSim.Domain.Position
 {
-    public class AircraftPositionState
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct AircraftPositionState
     {
         [SimConnectVariable(Name = "PLANE LATITUDE", Unit = "Degrees", Type = SIMCONNECT_DATATYPE.FLOAT64)]
         public double Latitude;

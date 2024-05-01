@@ -95,6 +95,7 @@ namespace ThermalSim.Domain.Thermals
                     t.CoreTransitionSize,
                     t.SinkLayerSize,
                     t.SinkTransitionSize);
+                thermals.Add(t);
             }
         }
 
