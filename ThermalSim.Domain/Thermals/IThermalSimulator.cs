@@ -1,6 +1,6 @@
 ﻿namespace ThermalSim.Domain.Thermals
 {
-    public interface IThermalSimulation
+    public interface IThermalSimulator
     {
         void Start();
         void Stop();
