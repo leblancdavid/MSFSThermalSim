@@ -37,10 +37,17 @@ namespace ThermalSim.Domain.Thermals
 
         private void OnAircraftPositionUpdate(object? sender, AircraftPositionUpdatedEventArgs e)
         {
-            if(DateTime.Now > nextSampleTime)
+            try
             {
-                nextSampleTime = DateTime.Now + configuration.SamplingSpeed;
-                ProcessThermals(e.Position);
+                if (DateTime.Now > nextSampleTime)
+                {
+                    nextSampleTime = DateTime.Now + configuration.SamplingSpeed;
+                    ProcessThermals(e.Position);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Error occurred while processing thermals: {ex.Message}");
             }
         }
 
@@ -73,8 +80,21 @@ namespace ThermalSim.Domain.Thermals
 
             while(thermals.Count < configuration.MinNumberOfThermals)
             {
-                var newThermal = thermalGenerator.GenerateThermalAroundAircraft(position);
-                connection.Connection?.WeatherCreateThermal(newThermal.ObjectId);
+                var t = thermalGenerator.GenerateThermalAroundAircraft(position);
+                connection.Connection?.WeatherCreateThermal(SimDataEventTypes.NewThermal,
+                    t.Latitude,
+                    t.Longitude,
+                    t.Altitude,
+                    t.Radius,
+                    t.Height,
+                    t.CoreRate,
+                    t.CoreTurbulence,
+                    t.SinkRate,
+                    t.SinkTurbulence,
+                    t.CoreSize,
+                    t.CoreTransitionSize,
+                    t.SinkLayerSize,
+                    t.SinkTransitionSize);
             }
         }
 

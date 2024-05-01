@@ -3,7 +3,7 @@
     public class Thermal
     {
         public uint ObjectId { get; set; }
-        public DateTime StartTime { get; set; }
+        public DateTime StartTime { get; set; } = DateTime.Now;
         public DateTime EndTime { get; set; }
 
         public float Latitude { get; set; }

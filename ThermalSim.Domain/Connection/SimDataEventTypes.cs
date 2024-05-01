@@ -4,5 +4,6 @@
     {
         AircraftPosition,
         AircraftPositionInitial,
+        NewThermal,
     }
 }
