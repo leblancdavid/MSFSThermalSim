@@ -30,7 +30,7 @@ namespace ThermalSim.Domain.Connection
                 Disconnect();
             }
 
-            Connection = new SimConnect("", handle, ConnectionConstants.WM_USER_SIMCONNECT, null, 0);
+            Connection = new SimConnect("ThermalSim", handle, ConnectionConstants.WM_USER_SIMCONNECT, null, 0);
 
             Connection.OnRecvOpen += new SimConnect.RecvOpenEventHandler(Connection_OnRecvOpen);
             Connection.OnRecvQuit += new SimConnect.RecvQuitEventHandler(Connection_OnRecvQuit);
