@@ -4,7 +4,7 @@ using ThermalSim.Domain.Connection;
 
 namespace ThermalSim.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/sim-connection")]
     [ApiController]
     public class SimConnectionController : ControllerBase
     {
@@ -30,6 +30,12 @@ namespace ThermalSim.Api.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpGet("api/sim-connection/connected")]
+        public bool IsConnected()
+        {
+            return simConnection.IsConnected;
         }
     }
 }

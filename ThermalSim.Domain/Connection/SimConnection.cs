@@ -1,16 +1,16 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.FlightSimulator.SimConnect;
-using System.Diagnostics;
-using System.Reflection;
 using ThermalSim.Domain.Position;
+using ThermalSim.Helpers;
 
 namespace ThermalSim.Domain.Connection
 {
     public class SimConnection : ISimConnection, IDisposable
     {
-        private nint handle;
         private readonly ILogger<SimConnection> logger;
-
+        private MessageHandler messageHandler = new MessageHandler();
+        // User-defined win32 event
+        const int WM_USER_SIMCONNECT = 0x0402;
         public bool IsConnected => Connection != null;
 
         public SimConnect? Connection { get; private set; }
@@ -31,11 +31,12 @@ namespace ThermalSim.Domain.Connection
                 if (Connection != null)
                 {
                     Disconnect();
-                }
+                };
 
-                handle = Process.GetCurrentProcess().Handle;
+                messageHandler.MessageReceived += MessageHandler_MessageReceived;
+                messageHandler.CreateHandle();
 
-                Connection = new SimConnect("ThermalSim", handle, ConnectionConstants.WM_USER_SIMCONNECT, null, 0);
+                Connection = new SimConnect("ThermalSim", messageHandler.Handle, ConnectionConstants.WM_USER_SIMCONNECT, null, 0);
 
                 Connection.OnRecvOpen += new SimConnect.RecvOpenEventHandler(Connection_OnRecvOpen);
                 Connection.OnRecvQuit += new SimConnect.RecvQuitEventHandler(Connection_OnRecvQuit);
@@ -58,11 +59,29 @@ namespace ThermalSim.Domain.Connection
             }
         }
 
+        private void MessageHandler_MessageReceived(object? sender, System.Windows.Forms.Message e)
+        {
+            if (e.Msg == WM_USER_SIMCONNECT && Connection != null)
+            {
+                try
+                {
+                    Connection.ReceiveMessage();
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, $"Error occurred while handling message: {ex.Message}");
+
+                }
+
+            }
+        }
 
         public void Disconnect()
         {
             try
             {
+                messageHandler.MessageReceived -= MessageHandler_MessageReceived;
+                messageHandler.DestroyHandle();
                 Connection?.Dispose();
                 Connection = null;
             }
@@ -122,12 +141,12 @@ namespace ThermalSim.Domain.Connection
 
         private void RegisterNewThermalDefinition()
         {
-            RegisterDataDefinition<SimObject>(SimDataEventTypes.AircraftPosition);
+            RegisterDataDefinition<SimObject>(SimDataRequests.AIRCRAFT_POSITION);
         }
 
         private void RegisterAircraftPositionDefinition()
         {
-            RegisterDataDefinition<AircraftPositionState>(SimDataEventTypes.AircraftPosition,
+            RegisterDataDefinition<AircraftPositionState>(SimDataRequests.AIRCRAFT_POSITION,
                 ("PLANE LATITUDE", "Degrees", (SIMCONNECT_DATATYPE)4),
                 ("PLANE LONGITUDE", "Degrees", (SIMCONNECT_DATATYPE)4),
                 ("PLANE ALTITUDE", "Feet", (SIMCONNECT_DATATYPE)4),
@@ -209,7 +228,7 @@ namespace ThermalSim.Domain.Connection
             );
         }
 
-        private void RegisterDataDefinition<T>(SimDataEventTypes definition,
+        private void RegisterDataDefinition<T>(SimDataRequests definition,
             params (string datumName, string? unitsName, SIMCONNECT_DATATYPE datumType)[] data)
         {
             foreach (var (datumName, unitsName, datumType) in data)
@@ -218,6 +237,37 @@ namespace ThermalSim.Domain.Connection
             }
             Connection?.RegisterDataDefineStruct<T>(definition);
         }
+       
+        public bool HandleWindowsEvent(int message)
+        {
+            switch (message)
+            {
+                case WM_USER_SIMCONNECT:
+                    {
+                        if (Connection != null)
+                        {
+                            try
+                            {
+                                this.Connection.ReceiveMessage();
+                            }
+                            catch (Exception ex)
+                            {
+                                logger.LogError(ex, "Cannot receive SimConnect message!");
+                                Disconnect();
+                            }
+
+                            return true;
+                        }
+                    }
+                    break;
+
+                default:
+                    logger.LogTrace("Unknown message type: {message}", message);
+                    break;
+            }
+            return false;
+        }
+
 
         public void Dispose()
         {

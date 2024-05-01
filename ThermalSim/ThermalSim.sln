@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThermalSim", "ThermalSim.cs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThermalSim.Domain", "..\ThermalSim.Domain\ThermalSim.Domain.csproj", "{78E3A847-053F-422C-8C73-22B90A44F9A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThermalSim.Api", "..\ThermalSim.Api\ThermalSim.Api.csproj", "{D65DCCA1-D381-4AC1-BF52-02C85EAA05E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThermalSim.Api", "..\ThermalSim.Api\ThermalSim.Api.csproj", "{D65DCCA1-D381-4AC1-BF52-02C85EAA05E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThermalSim.Helpers", "..\ThermalSim.Helpers\ThermalSim.Helpers.csproj", "{D7DF17F0-3DD7-4A3D-B796-6800BC9AFE5A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,18 @@ Global
 		{D65DCCA1-D381-4AC1-BF52-02C85EAA05E4}.Release|x64.Build.0 = Release|Any CPU
 		{D65DCCA1-D381-4AC1-BF52-02C85EAA05E4}.Release|x86.ActiveCfg = Release|Any CPU
 		{D65DCCA1-D381-4AC1-BF52-02C85EAA05E4}.Release|x86.Build.0 = Release|Any CPU
+		{D7DF17F0-3DD7-4A3D-B796-6800BC9AFE5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7DF17F0-3DD7-4A3D-B796-6800BC9AFE5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7DF17F0-3DD7-4A3D-B796-6800BC9AFE5A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D7DF17F0-3DD7-4A3D-B796-6800BC9AFE5A}.Debug|x64.Build.0 = Debug|Any CPU
+		{D7DF17F0-3DD7-4A3D-B796-6800BC9AFE5A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D7DF17F0-3DD7-4A3D-B796-6800BC9AFE5A}.Debug|x86.Build.0 = Debug|Any CPU
+		{D7DF17F0-3DD7-4A3D-B796-6800BC9AFE5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7DF17F0-3DD7-4A3D-B796-6800BC9AFE5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7DF17F0-3DD7-4A3D-B796-6800BC9AFE5A}.Release|x64.ActiveCfg = Release|Any CPU
+		{D7DF17F0-3DD7-4A3D-B796-6800BC9AFE5A}.Release|x64.Build.0 = Release|Any CPU
+		{D7DF17F0-3DD7-4A3D-B796-6800BC9AFE5A}.Release|x86.ActiveCfg = Release|Any CPU
+		{D7DF17F0-3DD7-4A3D-B796-6800BC9AFE5A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
