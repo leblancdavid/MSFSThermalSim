@@ -5,5 +5,7 @@
         bool IsRunning { get; }
         bool Start();
         void Stop();
+
+        bool InsertThermal();
     }
 }

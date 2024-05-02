@@ -52,6 +52,20 @@ namespace ThermalSim.Api.Controllers
             }
         }
 
+        [HttpPost("/add-thermal")]
+        public IActionResult AddNewThermal()
+        {
+            try
+            {
+                simConnection.Disconnect();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
     }
 }

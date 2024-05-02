@@ -136,5 +136,17 @@ namespace ThermalSim.Domain.Thermals
             connection.AircraftPositionUpdated -= OnAircraftPositionUpdate;
             connection.Disconnect();
         }
+
+        public bool InsertThermal()
+        {
+            if(!IsRunning || stateTracker.LastState == null)
+            {
+                return false;
+            }    
+            var t = thermalGenerator.GenerateThermalAroundAircraft(stateTracker.LastState.Value);
+            thermals.Add(t);
+
+            return true;
+        }
     }
 }
