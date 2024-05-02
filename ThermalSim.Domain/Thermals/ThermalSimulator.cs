@@ -99,7 +99,7 @@ namespace ThermalSim.Domain.Thermals
                     return;
                 }
 
-                var velocityChange = nearestThermal.GetThermalVelocity(position);
+                var velocityChange = nearestThermal.GetThermalAltitudeChange(position);
 
                 connection.Connection?.SetDataOnSimObject(SimDataEventTypes.ThermalVelocityUpdate,
                     1u, SIMCONNECT_DATA_SET_FLAG.DEFAULT, velocityChange);

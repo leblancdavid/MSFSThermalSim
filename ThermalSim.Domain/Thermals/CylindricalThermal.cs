@@ -25,64 +25,19 @@ namespace ThermalSim.Domain.Thermals
         public float WindSpeed { get; set; }
         public float WindDirection { get; set; }
 
-        public ThermalVelocity? GetThermalVelocity(AircraftPositionState position)
+        public ThermalAltitudeChange? GetThermalAltitudeChange(AircraftPositionState position)
         {
             if(!IsInThermal(position))
                 return null;
 
-            var liftAmount = 100.0;
-            var frameFactor = 0.01;
-                
-            double xFactor = (-1.0 * position.Bank) / 90.0;
-            double yFactor = ((1.0 - Math.Abs(position.Bank) / 90.0) + (1.0 - Math.Abs(position.Pitch) / 90.0)) / 2.0;
-            double zFactor = (position.Pitch) / 90.0;
+            var lift = 200.0f;
 
-            double xSpeed = position.VelocityBodyX * xFactor;
-            double ySpeed = position.VelocityBodyY * yFactor;
-            double zSpeed = position.VelocityBodyZ * zFactor;
-
-            double xAcc = position.AccelerationBodyX;
-            double yAcc = position.AccelerationBodyY;
-            double zAcc = position.AccelerationBodyZ;
-
-            if (Math.Abs(xSpeed) < liftAmount)
+            var change = new ThermalAltitudeChange()
             {
-                if (xSpeed < 0.0)
-                    xAcc -= liftAmount * xFactor;
-                else
-                    xAcc += liftAmount * xFactor;
-            }
-            else
-            {
-                xAcc = position.AccelerationBodyX;
-            }
-
-            if (ySpeed < liftAmount)
-            {
-                yAcc += liftAmount * yFactor;
-            }
-            else
-            {
-                yAcc = position.AccelerationBodyY;
-            }
-
-            if(zSpeed < liftAmount)
-            {
-                zAcc += liftAmount * zFactor;
-            }
-            else
-            {
-                zAcc = position.AccelerationBodyZ;
-            }
-
-            var velocity = new ThermalVelocity()
-            {
-                AccelerationBodyX = xAcc,
-                AccelerationBodyY = yAcc,
-                AccelerationBodyZ = zAcc
+                Altitude = position.Altitude + lift * 0.01,
             };
 
-            return velocity;
+            return change;
         }
 
         public bool IsInThermal(AircraftPositionState position)

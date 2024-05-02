@@ -169,10 +169,8 @@ namespace ThermalSim.Domain.Connection
 
         private void RegisterThermalVelocityDefinition()
         {
-            RegisterDataDefinition<ThermalVelocity>(SimDataEventTypes.ThermalVelocityUpdate,
-                ("ACCELERATION BODY X", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
-                ("ACCELERATION BODY Y", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
-                ("ACCELERATION BODY Z", "Feet per second squared", (SIMCONNECT_DATATYPE)4)
+            RegisterDataDefinition<ThermalAltitudeChange>(SimDataEventTypes.ThermalVelocityUpdate,
+                ("PLANE ALTITUDE", "Feet", (SIMCONNECT_DATATYPE)4)
             );
         }
 
@@ -190,6 +188,7 @@ namespace ThermalSim.Domain.Connection
                 ("VELOCITY BODY X", "Feet per second", (SIMCONNECT_DATATYPE)4),
                 ("VELOCITY BODY Y", "Feet per second", (SIMCONNECT_DATATYPE)4),
                 ("VELOCITY BODY Z", "Feet per second", (SIMCONNECT_DATATYPE)4),
+                ("VERTICAL SPEED", "Feet per second", (SIMCONNECT_DATATYPE)4),
                 ("AILERON POSITION", "Position", (SIMCONNECT_DATATYPE)4),
                 ("ELEVATOR POSITION", "Position", (SIMCONNECT_DATATYPE)4),
                 ("RUDDER POSITION", "Position", (SIMCONNECT_DATATYPE)4),
