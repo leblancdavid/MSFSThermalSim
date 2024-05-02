@@ -21,7 +21,7 @@
 
         public override double GetRandomValue(Random random)
         {
-            var diff = Min - Max;
+            var diff = Max-Min;
             return random.NextDouble() * diff + Min;
         }
     }
@@ -34,7 +34,7 @@
 
         public override int GetRandomValue(Random random)
         {
-            var diff = Min - Max;
+            var diff = Max - Min;
             return (int)(random.NextDouble() * (double)diff) + Min;
         }
     }

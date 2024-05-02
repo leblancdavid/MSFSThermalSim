@@ -103,12 +103,15 @@ namespace ThermalSim.Domain.Thermals
                 foreach (var t in thermals)
                 {
                     var d = t.GetDistanceToThermal(position);
-                    if (d < minDistance && t.IsInThermal(position))
+                    if (d < minDistance)
                     {
                         minDistance = d;
-                        nearestThermal = t;
+                        if(t.IsInThermal(position))
+                            nearestThermal = t;
                     }
                 }
+
+                DebugTrace(position, minDistance, nearestThermal != null);
 
                 //If we are not in a thermal, don't do anything
                 if (nearestThermal == null)
@@ -146,6 +149,12 @@ namespace ThermalSim.Domain.Thermals
             thermals.Add(t);
 
             return true;
+        }
+
+        private void DebugTrace(AircraftPositionState position, double distanceToNearest, bool inThermal)
+        {
+            string thermalMsg = inThermal ? "(IN THERMAL)" : "";
+            Console.WriteLine($"Aircraft: ({position.Latitude},{position.Longitude}) at {position.Altitude}ft. Nearest Thermal: {distanceToNearest}ft {thermalMsg}");
         }
     }
 }

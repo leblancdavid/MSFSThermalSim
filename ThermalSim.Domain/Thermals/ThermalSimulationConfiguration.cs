@@ -5,16 +5,16 @@ namespace ThermalSim.Domain.Thermals
 {
     public class ThermalSimulationConfiguration
     {
-        public ValueRangeInt NumberOfThermals { get; set; } = new ValueRangeInt(1, 20);
-        public ValueRangeInt SamplingSpeedSeconds { get; set; } = new ValueRangeInt(60, 120);
+        public ValueRangeInt NumberOfThermals { get; set; } = new ValueRangeInt(5, 30);
+        public ValueRangeInt SamplingSpeedSeconds { get; set; } = new ValueRangeInt(30, 60);
         public ValueRangeInt DurationMinutes { get; set; } = new ValueRangeInt(5, 30);
         public ValueRangeDouble AltitudeFromGround { get; set; } = new ValueRangeDouble(50.0, 200.0);
-        public ValueRangeDouble SpawnDistance { get; set; } = new ValueRangeDouble(-0.02, 0.2);
-        public ValueRangeDouble RelativeSpawnAltitude { get; set; } = new ValueRangeDouble(-1000.0, 1000.0);
-        public ValueRangeDouble Radius { get; set; } = new ValueRangeDouble(-1000.0, 1000.0);
-        public ValueRangeDouble Height { get; set; } = new ValueRangeDouble(500.0, 5000.0);
+        public ValueRangeDouble SpawnDistance { get; set; } = new ValueRangeDouble(0.01, 0.02); //This is in gps degrees
+        public ValueRangeDouble RelativeSpawnAltitude { get; set; } = new ValueRangeDouble(-1000.0, 0.0);
+        public ValueRangeDouble Radius { get; set; } = new ValueRangeDouble(200.0, 800.0);
+        public ValueRangeDouble Height { get; set; } = new ValueRangeDouble(1000.0, 5000.0);
         public ValueRangeDouble CoreLiftRate { get; set; } = new ValueRangeDouble(5.0, 50.0);
-        public ValueRangeDouble CoreRadiusPercent { get; set; } = new ValueRangeDouble(0.6, 0.9);
+        public ValueRangeDouble CoreRadiusPercent { get; set; } = new ValueRangeDouble(0.7, 0.9);
         public ValueRangeDouble CoreTurbulencePercent { get; set; } = new ValueRangeDouble(0.0, 2.0);
         public ValueRangeDouble SinkRate { get; set; } = new ValueRangeDouble(-50.0, - 5.0);
         public ValueRangeDouble SinkTurbulencePercent { get; set; } = new ValueRangeDouble(0.0, 2.0);
@@ -31,8 +31,8 @@ namespace ThermalSim.Domain.Thermals
             {
                 StartTime = DateTime.Now,
                 EndTime = DateTime.Now + new TimeSpan(0, DurationMinutes.GetRandomValue(random), 0),
-                Latitude = position.Latitude + SpawnDistance.GetRandomValue(random),
-                Longitude = position.Longitude + SpawnDistance.GetRandomValue(random),
+                Latitude = position.Latitude + RandomInvert(random) * SpawnDistance.GetRandomValue(random),
+                Longitude = position.Longitude + RandomInvert(random) * SpawnDistance.GetRandomValue(random),
                 Altitude = position.Altitude + RelativeSpawnAltitude.GetRandomValue(random),
                 MinAltitudeFromGround = AltitudeFromGround.GetRandomValue(random),
                 Height = Height.GetRandomValue(random),
@@ -53,6 +53,11 @@ namespace ThermalSim.Domain.Thermals
         public DateTime GetNextSampleTime(Random random)
         {
             return DateTime.Now + new TimeSpan(0, 0, SamplingSpeedSeconds.GetRandomValue(random));
+        }
+
+        private double RandomInvert(Random random)
+        {
+            return random.NextDouble() > 0.5 ? 1.0 : -1.0;
         }
 
 
