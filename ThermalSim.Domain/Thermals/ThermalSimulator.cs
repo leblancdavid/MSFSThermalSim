@@ -99,7 +99,7 @@ namespace ThermalSim.Domain.Thermals
         {
             try
             {
-                float minDistance = float.MaxValue;
+                double minDistance = double.MaxValue;
                 IThermalModel? nearestThermal = null;
                 foreach (var t in thermals)
                 {
