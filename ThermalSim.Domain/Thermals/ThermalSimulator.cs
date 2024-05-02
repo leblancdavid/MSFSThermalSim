@@ -13,7 +13,6 @@ namespace ThermalSim.Domain.Thermals
         private AircraftStateTracker stateTracker = new AircraftStateTracker();
 
         private DateTime nextSampleTime = DateTime.Now;
-        private ThermalSimulationConfiguration configuration = new ThermalSimulationConfiguration();
 
         private List<IThermalModel> thermals = new List<IThermalModel>();
 
@@ -60,7 +59,7 @@ namespace ThermalSim.Domain.Thermals
 
                 if (DateTime.Now > nextSampleTime)
                 {
-                    nextSampleTime = DateTime.Now + configuration.SamplingSpeed;
+                    nextSampleTime = thermalGenerator.GetNextSampleTime();
                     UpdateThermalModels(e.Position);
                 }
 
@@ -77,10 +76,10 @@ namespace ThermalSim.Domain.Thermals
         {
             //Remove any thermals that have expired
             var currentTime = DateTime.Now;
-            thermals.RemoveAll(x => x.EndTime > currentTime);
+            thermals.RemoveAll(x => x.Properties.EndTime > currentTime);
 
             //If we have reached the max number of thermals, ignore
-            if(thermals.Count >= configuration.MaxNumberOfThermals ||
+            if(thermals.Count >= thermalGenerator.Configuration.NumberOfThermals.Max ||
                 !connection.IsConnected)
             {
                 return;
@@ -92,7 +91,7 @@ namespace ThermalSim.Domain.Thermals
                 var t = thermalGenerator.GenerateThermalAroundAircraft(position);
                 thermals.Add(t);
             } //Repeat if we have less than the minimum number
-            while (thermals.Count < configuration.MinNumberOfThermals);
+            while (thermals.Count < thermalGenerator.Configuration.NumberOfThermals.Min);
         }
 
         private void ApplyThermalEffect(AircraftPositionState position)
