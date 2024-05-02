@@ -52,10 +52,12 @@ namespace ThermalSim.Domain.Thermals
 
             DebugTrace(position, distance, lift);
 
+            var verticalSpeedIndicator = (position.VerticalSpeed * (1.0 - SmoothingFactor) + verticalSpeed * SmoothingFactor);
             var change = new ThermalAltitudeChange()
             {
                 Altitude = position.Altitude + (lift) * TimeFactor,
-                VerticalSpeed = (position.VerticalSpeed * (1.0 - SmoothingFactor) + verticalSpeed * SmoothingFactor)
+                VerticalSpeed = verticalSpeedIndicator,
+                PanelVerticalSpeed = verticalSpeedIndicator
             };
 
             return change;
