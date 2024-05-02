@@ -1,30 +1,31 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ThermalSim.Domain.Connection;
+using ThermalSim.Domain.Thermals;
 
 namespace ThermalSim.Api.Controllers
 {
-    [Route("api/sim-connection")]
+    [Route("api/thermals")]
     [ApiController]
-    public class SimConnectionController : ControllerBase
+    public class ThermalsController : ControllerBase
     {
-        private readonly ISimConnection simConnection;
+        private readonly IThermalSimulator thermalSimulator;
 
-        public SimConnectionController(ISimConnection simConnection)
+        public ThermalsController(IThermalSimulator thermalSimulator)
         {
-            this.simConnection = simConnection;
+            this.thermalSimulator = thermalSimulator;
         }
 
         [HttpPut]
-        public IActionResult Connect()
+        public IActionResult Start()
         {
             try
             {
-                var result = simConnection.Connect();
-                if(result)
+                var result = thermalSimulator.Start();
+                if (result)
                     return Ok();
 
-                return BadRequest("Unable to connect to simulator");
+                return BadRequest("Unable to start the thermal simulation");
             }
             catch(Exception ex)
             {
@@ -32,18 +33,18 @@ namespace ThermalSim.Api.Controllers
             }
         }
 
-        [HttpGet("/connected")]
+        [HttpGet("/running")]
         public bool IsConnected()
         {
-            return simConnection.IsConnected;
+            return thermalSimulator.IsRunning;
         }
 
         [HttpDelete]
-        public IActionResult Disconnect()
+        public IActionResult Stop()
         {
             try
             {
-                simConnection.Disconnect();
+                thermalSimulator.Stop();
                 return Ok();
             }
             catch(Exception ex)
@@ -51,7 +52,5 @@ namespace ThermalSim.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-
     }
 }

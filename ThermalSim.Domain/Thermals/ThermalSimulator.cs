@@ -26,15 +26,30 @@ namespace ThermalSim.Domain.Thermals
             this.logger = logger;
         }
 
+        public bool IsRunning { get; private set; }
+
         public void Dispose()
         {
             Stop();
         }
 
-        public void Start()
+        public bool Start()
         {
-            connection.Connect();
-            connection.AircraftPositionUpdated += OnAircraftPositionUpdate;
+            if(connection.IsConnected)
+            {
+                IsRunning = true;
+            }
+            else
+            {
+                var result = connection.Connect();
+                if (result)
+                {
+                    connection.AircraftPositionUpdated += OnAircraftPositionUpdate;
+                    IsRunning = true;
+                }
+            }
+            
+            return IsRunning;
         }
 
         private void OnAircraftPositionUpdate(object? sender, AircraftPositionUpdatedEventArgs e)
