@@ -11,7 +11,7 @@ namespace ThermalSim.Domain.Thermals
 
         public double SmoothingFactor { get; set; } = 0.05f;
         public double TimeFactor { get; set; } = 0.02;
-        public double LiftModificationFactor { get; set; } = 1.1;
+        public double LiftModificationFactor { get; set; } = 1.5;
         public double LiftModifier { get; set; } = 0.0;
 
         public ThermalAltitudeChange? GetThermalAltitudeChange(AircraftPositionState position, AircraftStateChangeInfo? stateChange)

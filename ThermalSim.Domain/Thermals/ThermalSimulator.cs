@@ -76,7 +76,7 @@ namespace ThermalSim.Domain.Thermals
         {
             //Remove any thermals that have expired
             var currentTime = DateTime.Now;
-            thermals.RemoveAll(x => x.Properties.EndTime > currentTime);
+            thermals.RemoveAll(x => x.Properties.EndTime < currentTime);
 
             //If we have reached the max number of thermals, ignore
             if(thermals.Count >= thermalGenerator.Configuration.NumberOfThermals.Max ||
