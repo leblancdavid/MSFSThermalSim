@@ -1,9 +1,12 @@
-﻿using ThermalSim.Domain.Position;
+﻿using System.Diagnostics.CodeAnalysis;
+using ThermalSim.Domain.Position;
 
 namespace ThermalSim.Domain.Thermals
 {
     public class CylindricalThermal : IThermalModel
     {
+        private Random rng = new Random();
+
         public uint ObjectId { get; set; }
         public DateTime StartTime { get; set; } = DateTime.Now;
         public DateTime EndTime { get; set; }
@@ -16,9 +19,9 @@ namespace ThermalSim.Domain.Thermals
         public double TotalRadius { get; set; }
         public double Height { get; set; }
         public double CoreLiftRate { get; set; }
-        public double CoreTurbulence { get; set; }
+        public double CoreTurbulencePercent { get; set; }
         public double SinkRate { get; set; }
-        public double SinkTurbulence { get; set; }
+        public double SinkTurbulencePercent { get; set; }
         public double CoreRadiusPercent { get; set; }
         public double SinkTransitionRadiusPercent { get; set; }
         public double WindSpeed { get; set; }
@@ -27,10 +30,13 @@ namespace ThermalSim.Domain.Thermals
         public double SmoothingFactor { get; set; } = 0.05f;
         public double TimeFactor { get; set; } = 0.0167;
         public double LiftModificationFactor { get; set; } = 1.1;
+        public double LiftModifier { get; set; } = 0.0;
 
         public ThermalAltitudeChange? GetThermalAltitudeChange(AircraftPositionState position, AircraftStateChangeInfo? stateChange)
         {
-            if(!IsInThermal(position))
+            double distance = GetDistanceToThermal(position);
+
+            if(!IsInThermal(position, distance))
                 return null;
 
             if(position.AltitudeAboveGround < MinAltitudeFromGround)
@@ -39,7 +45,7 @@ namespace ThermalSim.Domain.Thermals
             if (stateChange?.AverageVelocity < 50.0) //TODO this number should be based on the plane's stall speed
                 return null;
 
-            var lift = CalcBaseLiftValue(position);
+            var lift = CalcBaseLiftValue(position, distance) + UpdateLiftModifier(distance);
             var verticalSpeed = stateChange == null ? position.VerticalSpeed : stateChange.AverageVerticalVelocity;
             if (verticalSpeed > lift)
                 return null;
@@ -55,10 +61,15 @@ namespace ThermalSim.Domain.Thermals
 
         public bool IsInThermal(AircraftPositionState position)
         {
-            return position.Altitude >= Altitude && 
-                position.Altitude <= TopAltitude && 
-                position.AltitudeAboveGround > MinAltitudeFromGround && 
-                GetDistanceToThermal(position) < TotalRadius;
+            return IsInThermal(position, GetDistanceToThermal(position));
+        }
+
+        private bool IsInThermal(AircraftPositionState position, double calculatedDistance)
+        {
+            return position.Altitude >= Altitude &&
+                position.Altitude <= TopAltitude &&
+                position.AltitudeAboveGround > MinAltitudeFromGround &&
+                calculatedDistance < TotalRadius;
         }
 
         public double GetDistanceToThermal(AircraftPositionState position)
@@ -67,9 +78,8 @@ namespace ThermalSim.Domain.Thermals
                 Math.Pow(position.Longitude - Longitude, 2.0));
         }
 
-        private double CalcBaseLiftValue(AircraftPositionState position)
+        private double CalcBaseLiftValue(AircraftPositionState position, double distance)
         {
-            var distance = GetDistanceToThermal(position);
             var atRadius = distance / TotalRadius;
             if (atRadius > 1.0)
                 return 0.0;
@@ -95,6 +105,23 @@ namespace ThermalSim.Domain.Thermals
 
             //basic y = mx + b linear equation
             return sinkChange * atRadius + liftAtSinkTransition;
+        }
+
+        private double UpdateLiftModifier(double distance)
+        {
+            var m = (2.0 * rng.NextDouble() - 1.0);
+            var atRadius = distance / TotalRadius;
+            if (atRadius > SinkTransitionRadiusPercent)
+            {
+                m *= SinkTurbulencePercent * SinkRate;
+            }
+            else
+            {
+                m *= CoreTurbulencePercent * CoreLiftRate;
+            }
+
+            LiftModifier = LiftModifier * (1.0 - SmoothingFactor) + m * SmoothingFactor;
+            return LiftModifier;
         }
     }
 }

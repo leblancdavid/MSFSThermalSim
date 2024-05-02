@@ -15,9 +15,9 @@ namespace ThermalSim.Domain.Thermals
         public double TotalRadius { get; set; }
         public double Height { get; set; }
         public double CoreLiftRate { get; set; }
-        public double CoreTurbulence { get; set; }
+        public double CoreTurbulencePercent { get; set; }
         public double SinkRate { get; set; }
-        public double SinkTurbulence { get; set; }
+        public double SinkTurbulencePercent { get; set; }
         public double CoreRadiusPercent { get; set; }
         public double SinkTransitionRadiusPercent { get; set; }
         public double WindSpeed { get; set; }
