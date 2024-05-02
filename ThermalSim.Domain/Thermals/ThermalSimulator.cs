@@ -111,7 +111,7 @@ namespace ThermalSim.Domain.Thermals
                     }
                 }
 
-                DebugTrace(position, minDistance, nearestThermal != null);
+                //DebugTrace(position, minDistance, nearestThermal != null);
 
                 //If we are not in a thermal, don't do anything
                 if (nearestThermal == null)

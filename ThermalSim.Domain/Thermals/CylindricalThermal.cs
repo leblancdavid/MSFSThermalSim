@@ -32,7 +32,7 @@ namespace ThermalSim.Domain.Thermals
             if (Math.Abs(verticalSpeed) > Math.Abs(lift))
                 return null;
 
-            DebugTrace(position, distance, lift);
+            //DebugTrace(position, distance, lift);
 
             var verticalSpeedIndicator = (position.VerticalSpeed * (1.0 - SmoothingFactor) + verticalSpeed * SmoothingFactor);
             var change = new ThermalAltitudeChange()
