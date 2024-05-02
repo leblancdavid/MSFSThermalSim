@@ -74,8 +74,10 @@ namespace ThermalSim.Domain.Thermals
 
         public double GetDistanceToThermal(AircraftPositionState position)
         {
-            return Math.Sqrt(Math.Pow(position.Latitude - Latitude, 2.0) +
-                Math.Pow(position.Longitude - Longitude, 2.0));
+            return 131332796.6 * (Math.Acos(
+                Math.Cos(position.Latitude) * Math.Cos(position.Longitude) * Math.Cos(Latitude) * Math.Cos(Longitude) +
+                Math.Cos(position.Latitude) * Math.Sin(position.Longitude) * Math.Cos(Latitude) * Math.Sin(Longitude) +
+                Math.Sin(position.Latitude) * Math.Sin(Latitude)) / 360.0);
         }
 
         private double CalcBaseLiftValue(AircraftPositionState position, double distance)
