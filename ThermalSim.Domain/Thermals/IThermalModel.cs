@@ -25,7 +25,7 @@ namespace ThermalSim.Domain.Thermals
         public float WindSpeed { get; set; }
         public float WindDirection { get; set; }
 
-        ThermalVelocity? GetThermalVelocity(AircraftPositionState position);
+        ThermalAltitudeChange? GetThermalAltitudeChange(AircraftPositionState position, AircraftStateChangeInfo? stateChange);
         bool IsInThermal(AircraftPositionState position);
         float GetDistanceToThermal(AircraftPositionState position);
     }

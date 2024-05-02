@@ -10,6 +10,7 @@ namespace ThermalSim.Domain.Thermals
         private readonly ISimConnection connection;
         private readonly IThermalGenerator thermalGenerator;
         private readonly ILogger<ThermalSimulator> logger;
+        private AircraftStateTracker stateTracker = new AircraftStateTracker();
 
         private DateTime nextSampleTime = DateTime.Now;
         private ThermalSimulationConfiguration configuration = new ThermalSimulationConfiguration();
@@ -40,6 +41,8 @@ namespace ThermalSim.Domain.Thermals
         {
             try
             {
+                stateTracker.UpdatePosition(e.Position);
+
                 if (DateTime.Now > nextSampleTime)
                 {
                     nextSampleTime = DateTime.Now + configuration.SamplingSpeed;
@@ -79,28 +82,38 @@ namespace ThermalSim.Domain.Thermals
 
         private void ApplyThermalEffect(AircraftPositionState position)
         {
-            float minDistance = float.MaxValue;
-            IThermalModel? nearestThermal = null;
-            foreach(var t in thermals)
+            try
             {
-                var d = t.GetDistanceToThermal(position);
-                if(d < minDistance && t.IsInThermal(position))
+                float minDistance = float.MaxValue;
+                IThermalModel? nearestThermal = null;
+                foreach (var t in thermals)
                 {
-                    minDistance = d;
-                    nearestThermal = t;
+                    var d = t.GetDistanceToThermal(position);
+                    if (d < minDistance && t.IsInThermal(position))
+                    {
+                        minDistance = d;
+                        nearestThermal = t;
+                    }
+                }
+
+                //If we are not in a thermal, don't do anything
+                if (nearestThermal == null)
+                {
+                    return;
+                }
+
+                var velocityChange = nearestThermal.GetThermalAltitudeChange(position, stateTracker.AircraftStateChangeInfo);
+
+                if(velocityChange != null)
+                {
+                    connection.Connection?.SetDataOnSimObject(SimDataEventTypes.ThermalVelocityUpdate,
+                        1u, SIMCONNECT_DATA_SET_FLAG.DEFAULT, velocityChange);
                 }
             }
-
-            //If we are not in a thermal, don't do anything
-            if(nearestThermal == null)
+            catch(Exception ex)
             {
-                return;
+                logger.LogError(ex, $"Unable to apply thermal effect {ex.Message}");
             }
-
-            var velocityChange = nearestThermal.GetThermalVelocity(position);
-
-            connection.Connection?.SetDataOnSimObject(SimDataEventTypes.ThermalVelocityUpdate,
-                1u, SIMCONNECT_DATA_SET_FLAG.DEFAULT, velocityChange);
         }
 
         public void Stop()

@@ -32,6 +32,8 @@ namespace ThermalSim.Domain.Position
         public double VelocityBodyY;
         [SimConnectVariable(Name = "VELOCITY BODY Z", Unit = "Feet per second", Type = SIMCONNECT_DATATYPE.FLOAT64)]
         public double VelocityBodyZ;
+        [SimConnectVariable(Name = "VERTICAL SPEED", Unit = "Feet per second", Type = SIMCONNECT_DATATYPE.FLOAT64)]
+        public double VerticalSpeed;
 
         [SimConnectVariable(Name = "AILERON POSITION", Unit = "Position", Type = SIMCONNECT_DATATYPE.FLOAT64)]
         public double AileronPosition;

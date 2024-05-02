@@ -11,6 +11,7 @@ namespace ThermalSim.Domain.Thermals
         public float Latitude { get; set; }
         public float Longitude { get; set; }
         public float Altitude { get; set; }
+        public float MinAltitudeFromGround { get; set; }
         public float TopAltitude => Altitude + Height;
         public float Radius { get; set; }
         public float Height { get; set; }
@@ -25,23 +26,29 @@ namespace ThermalSim.Domain.Thermals
         public float WindSpeed { get; set; }
         public float WindDirection { get; set; }
 
-        public ThermalVelocity? GetThermalVelocity(AircraftPositionState position)
+        public ThermalAltitudeChange? GetThermalAltitudeChange(AircraftPositionState position, AircraftStateChangeInfo? stateChange)
         {
             if(!IsInThermal(position))
                 return null;
 
-            //TODO actually do the work but for now
+            var lift = 100.0f;
+            var verticalSpeed = stateChange == null ? position.VerticalSpeed : stateChange.AverageVerticalVelocity;
+            if(verticalSpeed > lift)
+                return null;
 
-            var liftAmount = CoreRate;
+            if(position.AltitudeAboveGround < MinAltitudeFromGround)
+                return null;
 
-            var velocity = new ThermalVelocity()
+            if (stateChange?.AverageVelocity < 50.0)
+                return null;
+
+            var change = new ThermalAltitudeChange()
             {
-                VelocityBodyY = 0.0, //position.VelocityBodyY, //(position.VelocityBodyY + liftAmount) / 2.0,
-                VelocityBodyZ = liftAmount, //(position.VelocityBodyZ + liftAmount) / 2.0,
-                RotationAccelerationBodyX = 0.0// position.RotationAccelerationBodyX,
+                Altitude = position.Altitude + (lift) * 0.02,
+                VerticalSpeed = (position.VerticalSpeed * 0.95 + verticalSpeed * 0.05)
             };
 
-            return velocity;
+            return change;
         }
 
         public bool IsInThermal(AircraftPositionState position)
