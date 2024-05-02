@@ -10,6 +10,7 @@ namespace ThermalSim.Domain.Thermals
         private readonly ISimConnection connection;
         private readonly IThermalGenerator thermalGenerator;
         private readonly ILogger<ThermalSimulator> logger;
+        private AircraftStateTracker stateTracker = new AircraftStateTracker();
 
         private DateTime nextSampleTime = DateTime.Now;
         private ThermalSimulationConfiguration configuration = new ThermalSimulationConfiguration();
@@ -40,6 +41,8 @@ namespace ThermalSim.Domain.Thermals
         {
             try
             {
+                stateTracker.UpdatePosition(e.Position);
+
                 if (DateTime.Now > nextSampleTime)
                 {
                     nextSampleTime = DateTime.Now + configuration.SamplingSpeed;
@@ -99,10 +102,13 @@ namespace ThermalSim.Domain.Thermals
                     return;
                 }
 
-                var velocityChange = nearestThermal.GetThermalAltitudeChange(position);
+                var velocityChange = nearestThermal.GetThermalAltitudeChange(position, stateTracker.AircraftStateChangeInfo);
 
-                connection.Connection?.SetDataOnSimObject(SimDataEventTypes.ThermalVelocityUpdate,
-                    1u, SIMCONNECT_DATA_SET_FLAG.DEFAULT, velocityChange);
+                if(velocityChange != null)
+                {
+                    connection.Connection?.SetDataOnSimObject(SimDataEventTypes.ThermalVelocityUpdate,
+                        1u, SIMCONNECT_DATA_SET_FLAG.DEFAULT, velocityChange);
+                }
             }
             catch(Exception ex)
             {

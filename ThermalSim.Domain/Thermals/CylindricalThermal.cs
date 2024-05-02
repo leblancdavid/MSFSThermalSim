@@ -25,16 +25,20 @@ namespace ThermalSim.Domain.Thermals
         public float WindSpeed { get; set; }
         public float WindDirection { get; set; }
 
-        public ThermalAltitudeChange? GetThermalAltitudeChange(AircraftPositionState position)
+        public ThermalAltitudeChange? GetThermalAltitudeChange(AircraftPositionState position, AircraftStateChangeInfo? stateChange)
         {
             if(!IsInThermal(position))
                 return null;
 
-            var lift = 200.0f;
+            var lift = 20.0f;
+            var verticalSpeed = stateChange == null ? position.VerticalSpeed : stateChange.AverageVerticalVelocity;
+            if(verticalSpeed > lift)
+                return null;
 
             var change = new ThermalAltitudeChange()
             {
-                Altitude = position.Altitude + lift * 0.01,
+                Altitude = position.Altitude + (lift + verticalSpeed) * 0.01,
+                VerticalSpeed = (position.VerticalSpeed * 0.95 + verticalSpeed * 0.05)
             };
 
             return change;

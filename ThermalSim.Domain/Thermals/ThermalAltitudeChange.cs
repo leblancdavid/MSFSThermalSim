@@ -8,6 +8,8 @@ namespace ThermalSim.Domain.Thermals
     public struct ThermalAltitudeChange
     {
         [SimConnectVariable(Name = "PLANE ALTITUDE", Unit = "Feet", Type = SIMCONNECT_DATATYPE.FLOAT64)]
-        public double Altitude;
+        public double Altitude; 
+        [SimConnectVariable(Name = "VERTICAL SPEED", Unit = "Feet per second", Type = SIMCONNECT_DATATYPE.FLOAT64)]
+        public double VerticalSpeed;
     }
 }
