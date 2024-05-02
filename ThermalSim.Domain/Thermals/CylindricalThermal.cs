@@ -8,30 +8,32 @@ namespace ThermalSim.Domain.Thermals
         public DateTime StartTime { get; set; } = DateTime.Now;
         public DateTime EndTime { get; set; }
 
-        public float Latitude { get; set; }
-        public float Longitude { get; set; }
-        public float Altitude { get; set; }
-        public float MinAltitudeFromGround { get; set; }
-        public float TopAltitude => Altitude + Height;
-        public float Radius { get; set; }
-        public float Height { get; set; }
-        public float CoreRate { get; set; }
-        public float CoreTurbulence { get; set; }
-        public float SinkRate { get; set; }
-        public float SinkTurbulence { get; set; }
-        public float CoreSize { get; set; }
-        public float CoreTransitionSize { get; set; }
-        public float SinkLayerSize { get; set; }
-        public float SinkTransitionSize { get; set; }
-        public float WindSpeed { get; set; }
-        public float WindDirection { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public double Altitude { get; set; }
+        public double MinAltitudeFromGround { get; set; } = 100.0f;
+        public double TopAltitude => Altitude + Height;
+        public double TotalRadius { get; set; }
+        public double Height { get; set; }
+        public double CoreRate { get; set; }
+        public double CoreTurbulence { get; set; }
+        public double SinkRate { get; set; }
+        public double SinkTurbulence { get; set; }
+        public double CoreRadius { get; set; }
+        public double CoreTransitionRadius { get; set; }
+        public double SinkTransitionRadius { get; set; }
+        public double WindSpeed { get; set; }
+        public double WindDirection { get; set; }
+
+        public double SmoothingFactor { get; set; } = 0.05f;
+        public double TimeFactor { get; set; } = 0.0167;
 
         public ThermalAltitudeChange? GetThermalAltitudeChange(AircraftPositionState position, AircraftStateChangeInfo? stateChange)
         {
             if(!IsInThermal(position))
                 return null;
 
-            var lift = 100.0f;
+            var lift = CoreRate;
             var verticalSpeed = stateChange == null ? position.VerticalSpeed : stateChange.AverageVerticalVelocity;
             if(verticalSpeed > lift)
                 return null;
@@ -44,8 +46,8 @@ namespace ThermalSim.Domain.Thermals
 
             var change = new ThermalAltitudeChange()
             {
-                Altitude = position.Altitude + (lift) * 0.02,
-                VerticalSpeed = (position.VerticalSpeed * 0.95 + verticalSpeed * 0.05)
+                Altitude = position.Altitude + (lift) * TimeFactor,
+                VerticalSpeed = (position.VerticalSpeed * (1.0 - SmoothingFactor) + verticalSpeed * SmoothingFactor)
             };
 
             return change;
@@ -53,15 +55,16 @@ namespace ThermalSim.Domain.Thermals
 
         public bool IsInThermal(AircraftPositionState position)
         {
-            return GetDistanceToThermal(position) < Radius && 
-                position.Altitude >= Altitude && 
-                position.Altitude <= TopAltitude;
+            return position.Altitude >= Altitude && 
+                position.Altitude <= TopAltitude && 
+                position.AltitudeAboveGround > MinAltitudeFromGround && 
+                GetDistanceToThermal(position) < TotalRadius;
         }
 
-        public float GetDistanceToThermal(AircraftPositionState position)
+        public double GetDistanceToThermal(AircraftPositionState position)
         {
-            return 0.0f;
-            //For now, we'll assume a straight up cylindrical model
+            return Math.Sqrt(Math.Pow(position.Latitude - Latitude, 2.0) +
+                Math.Pow(position.Longitude - Longitude, 2.0));
         }
     }
 }

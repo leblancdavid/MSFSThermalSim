@@ -8,25 +8,24 @@ namespace ThermalSim.Domain.Thermals
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 
-        public float Latitude { get; set; }
-        public float Longitude { get; set; }
-        public float Altitude { get; set; }
-        public float TopAltitude => Altitude + Height;
-        public float Radius { get; set; }
-        public float Height { get; set; }
-        public float CoreRate { get; set; }
-        public float CoreTurbulence { get; set; }
-        public float SinkRate { get; set; }
-        public float SinkTurbulence { get; set; }
-        public float CoreSize { get; set; }
-        public float CoreTransitionSize { get; set; }
-        public float SinkLayerSize { get; set; }
-        public float SinkTransitionSize { get; set; }
-        public float WindSpeed { get; set; }
-        public float WindDirection { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public double Altitude { get; set; }
+        public double TopAltitude => Altitude + Height;
+        public double TotalRadius { get; set; }
+        public double Height { get; set; }
+        public double CoreRate { get; set; }
+        public double CoreTurbulence { get; set; }
+        public double SinkRate { get; set; }
+        public double SinkTurbulence { get; set; }
+        public double CoreRadius { get; set; }
+        public double CoreTransitionRadius { get; set; }
+        public double SinkTransitionRadius { get; set; }
+        public double WindSpeed { get; set; }
+        public double WindDirection { get; set; }
 
         ThermalAltitudeChange? GetThermalAltitudeChange(AircraftPositionState position, AircraftStateChangeInfo? stateChange);
         bool IsInThermal(AircraftPositionState position);
-        float GetDistanceToThermal(AircraftPositionState position);
+        double GetDistanceToThermal(AircraftPositionState position);
     }
 }

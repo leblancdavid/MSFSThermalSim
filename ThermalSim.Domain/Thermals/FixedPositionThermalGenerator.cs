@@ -36,5 +36,31 @@ namespace ThermalSim.Domain.Thermals
                 SinkTransitionSize = 10.0f,
             };
         }
+
+        public IThermalModel GenerateThermalAtAircraft(AircraftPositionState position)
+        {
+            lastId++;
+
+            return new CylindricalThermal
+            {
+                ObjectId = lastId,
+                StartTime = DateTime.Now,
+                EndTime = DateTime.Now + new TimeSpan(0, 20, 0),
+                Latitude = (float)position.Latitude,
+                Longitude = (float)position.Longitude,
+                Altitude = (float)position.Altitude - 500.0f,
+                MinAltitudeFromGround = 100.0f,
+                Radius = 20000.0f,
+                Height = 20000.0f,
+                CoreRate = 10.0f,
+                CoreTurbulence = 1.0f,
+                SinkRate = -10.0f,
+                SinkTurbulence = 0.0f,
+                CoreSize = 500.0f,
+                CoreTransitionSize = 100.0f,
+                SinkLayerSize = 100.0f,
+                SinkTransitionSize = 10.0f,
+            };
+        }
     }
 }
