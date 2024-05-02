@@ -79,28 +79,35 @@ namespace ThermalSim.Domain.Thermals
 
         private void ApplyThermalEffect(AircraftPositionState position)
         {
-            float minDistance = float.MaxValue;
-            IThermalModel? nearestThermal = null;
-            foreach(var t in thermals)
+            try
             {
-                var d = t.GetDistanceToThermal(position);
-                if(d < minDistance && t.IsInThermal(position))
+                float minDistance = float.MaxValue;
+                IThermalModel? nearestThermal = null;
+                foreach (var t in thermals)
                 {
-                    minDistance = d;
-                    nearestThermal = t;
+                    var d = t.GetDistanceToThermal(position);
+                    if (d < minDistance && t.IsInThermal(position))
+                    {
+                        minDistance = d;
+                        nearestThermal = t;
+                    }
                 }
-            }
 
-            //If we are not in a thermal, don't do anything
-            if(nearestThermal == null)
+                //If we are not in a thermal, don't do anything
+                if (nearestThermal == null)
+                {
+                    return;
+                }
+
+                var velocityChange = nearestThermal.GetThermalVelocity(position);
+
+                connection.Connection?.SetDataOnSimObject(SimDataEventTypes.ThermalVelocityUpdate,
+                    1u, SIMCONNECT_DATA_SET_FLAG.DEFAULT, velocityChange);
+            }
+            catch(Exception ex)
             {
-                return;
+                logger.LogError(ex, $"Unable to apply thermal effect {ex.Message}");
             }
-
-            var velocityChange = nearestThermal.GetThermalVelocity(position);
-
-            connection.Connection?.SetDataOnSimObject(SimDataEventTypes.ThermalVelocityUpdate,
-                1u, SIMCONNECT_DATA_SET_FLAG.DEFAULT, velocityChange);
         }
 
         public void Stop()

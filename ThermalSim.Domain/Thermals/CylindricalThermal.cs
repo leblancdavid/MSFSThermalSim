@@ -41,41 +41,45 @@ namespace ThermalSim.Domain.Thermals
             double ySpeed = position.VelocityBodyY * yFactor;
             double zSpeed = position.VelocityBodyZ * zFactor;
 
-            if(Math.Abs(xSpeed) < liftAmount)
+            double xAcc = position.AccelerationBodyX;
+            double yAcc = position.AccelerationBodyY;
+            double zAcc = position.AccelerationBodyZ;
+
+            if (Math.Abs(xSpeed) < liftAmount)
             {
                 if (xSpeed < 0.0)
-                    xSpeed -= liftAmount * xFactor * frameFactor;
+                    xAcc -= liftAmount * xFactor;
                 else
-                    xSpeed += liftAmount * xFactor * frameFactor;
+                    xAcc += liftAmount * xFactor;
             }
             else
             {
-                xSpeed = position.VelocityBodyX;
+                xAcc = position.AccelerationBodyX;
             }
 
             if (ySpeed < liftAmount)
             {
-                ySpeed += liftAmount * yFactor * frameFactor;
+                yAcc += liftAmount * yFactor;
             }
             else
             {
-                ySpeed = position.VelocityBodyY;
+                yAcc = position.AccelerationBodyY;
             }
 
             if(zSpeed < liftAmount)
             {
-                zSpeed += liftAmount * zFactor * frameFactor;
+                zAcc += liftAmount * zFactor;
             }
             else
             {
-                zSpeed = position.VelocityBodyZ;
+                zAcc = position.AccelerationBodyZ;
             }
 
             var velocity = new ThermalVelocity()
             {
-                VelocityBodyX = xSpeed,
-                VelocityBodyY = ySpeed, 
-                VelocityBodyZ = zSpeed
+                AccelerationBodyX = xAcc,
+                AccelerationBodyY = yAcc,
+                AccelerationBodyZ = zAcc
             };
 
             return velocity;
