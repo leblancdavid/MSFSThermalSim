@@ -28,7 +28,7 @@ namespace ThermalSim.Domain.Thermals
         public double WindDirection { get; set; }
 
         public double SmoothingFactor { get; set; } = 0.05f;
-        public double TimeFactor { get; set; } = 0.0167;
+        public double TimeFactor { get; set; } = 0.03;
         public double LiftModificationFactor { get; set; } = 1.1;
         public double LiftModifier { get; set; } = 0.0;
 

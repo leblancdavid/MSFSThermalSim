@@ -23,14 +23,14 @@ namespace ThermalSim.Domain.Thermals
                 Longitude = position.Longitude,
                 Altitude = position.Altitude - 500.0,
                 MinAltitudeFromGround = 100.0,
-                TotalRadius = 1000.0,
+                TotalRadius = 500.0,
                 Height = 2000.0,
                 CoreLiftRate = 50.0,
                 CoreTurbulencePercent = 0.5,
                 SinkRate = -30.0,
                 SinkTurbulencePercent = 0.5,
                 CoreRadiusPercent = 0.8,
-                SinkTransitionRadiusPercent = 0.1,
+                SinkTransitionRadiusPercent = 0.9,
             };
         }
 
