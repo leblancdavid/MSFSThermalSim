@@ -32,7 +32,7 @@ namespace ThermalSim.Api.Controllers
             }
         }
 
-        [HttpGet("api/sim-connection/connected")]
+        [HttpGet("/connected")]
         public bool IsConnected()
         {
             return simConnection.IsConnected;
@@ -51,5 +51,21 @@ namespace ThermalSim.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("/add-thermal")]
+        public IActionResult AddNewThermal()
+        {
+            try
+            {
+                simConnection.Disconnect();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }

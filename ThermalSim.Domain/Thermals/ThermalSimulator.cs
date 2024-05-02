@@ -26,15 +26,30 @@ namespace ThermalSim.Domain.Thermals
             this.logger = logger;
         }
 
+        public bool IsRunning { get; private set; }
+
         public void Dispose()
         {
             Stop();
         }
 
-        public void Start()
+        public bool Start()
         {
-            connection.Connect();
-            connection.AircraftPositionUpdated += OnAircraftPositionUpdate;
+            if(connection.IsConnected)
+            {
+                IsRunning = true;
+            }
+            else
+            {
+                var result = connection.Connect();
+                if (result)
+                {
+                    connection.AircraftPositionUpdated += OnAircraftPositionUpdate;
+                    IsRunning = true;
+                }
+            }
+            
+            return IsRunning;
         }
 
         private void OnAircraftPositionUpdate(object? sender, AircraftPositionUpdatedEventArgs e)
@@ -84,7 +99,7 @@ namespace ThermalSim.Domain.Thermals
         {
             try
             {
-                float minDistance = float.MaxValue;
+                double minDistance = double.MaxValue;
                 IThermalModel? nearestThermal = null;
                 foreach (var t in thermals)
                 {
@@ -120,6 +135,18 @@ namespace ThermalSim.Domain.Thermals
         {
             connection.AircraftPositionUpdated -= OnAircraftPositionUpdate;
             connection.Disconnect();
+        }
+
+        public bool InsertThermal()
+        {
+            if(!IsRunning || stateTracker.LastState == null)
+            {
+                return false;
+            }    
+            var t = thermalGenerator.GenerateThermalAroundAircraft(stateTracker.LastState.Value);
+            thermals.Add(t);
+
+            return true;
         }
     }
 }
