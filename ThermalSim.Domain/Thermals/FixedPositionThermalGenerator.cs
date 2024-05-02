@@ -29,8 +29,8 @@ namespace ThermalSim.Domain.Thermals
                 CoreTurbulencePercent = 0.5,
                 SinkRate = -30.0,
                 SinkTurbulencePercent = 0.5,
-                CoreRadiusPercent = 0.9,
-                SinkTransitionRadiusPercent = 0.05,
+                CoreRadiusPercent = 0.8,
+                SinkTransitionRadiusPercent = 0.1,
             };
         }
 

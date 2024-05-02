@@ -47,8 +47,10 @@ namespace ThermalSim.Domain.Thermals
 
             var lift = CalcBaseLiftValue(position, distance) + UpdateLiftModifier(distance);
             var verticalSpeed = stateChange == null ? position.VerticalSpeed : stateChange.AverageVerticalVelocity;
-            if (verticalSpeed > lift)
+            if (Math.Abs(verticalSpeed) > Math.Abs(lift))
                 return null;
+
+            DebugTrace(position, distance, lift);
 
             var change = new ThermalAltitudeChange()
             {
@@ -74,7 +76,7 @@ namespace ThermalSim.Domain.Thermals
 
         public double GetDistanceToThermal(AircraftPositionState position)
         {
-            return 131332796.6 * (Math.Acos(
+            return 20930000 * (Math.Acos(
                 Math.Cos(position.Latitude) * Math.Cos(position.Longitude) * Math.Cos(Latitude) * Math.Cos(Longitude) +
                 Math.Cos(position.Latitude) * Math.Sin(position.Longitude) * Math.Cos(Latitude) * Math.Sin(Longitude) +
                 Math.Sin(position.Latitude) * Math.Sin(Latitude)) / 360.0);
@@ -98,15 +100,15 @@ namespace ThermalSim.Domain.Thermals
                 double liftAtTransition = CoreLiftRate;
                 double transitionChange = (SinkRate - liftAtTransition) / (SinkTransitionRadiusPercent - CoreRadiusPercent);
                 //basic y = mx + b linear equation
-                return transitionChange * atRadius + liftAtTransition;
+                return transitionChange * (atRadius - CoreRadiusPercent) + liftAtTransition;
             }
 
 
             double liftAtSinkTransition = SinkRate;
-            double sinkChange = ((SinkRate / LiftModificationFactor) - liftAtSinkTransition) / (1.0 - SinkTransitionRadiusPercent);
+            double sinkChange = ((SinkRate / LiftModificationFactor) - liftAtSinkTransition) / ((1.0 - SinkTransitionRadiusPercent));
 
             //basic y = mx + b linear equation
-            return sinkChange * atRadius + liftAtSinkTransition;
+            return sinkChange * (atRadius - SinkTransitionRadiusPercent) + liftAtSinkTransition;
         }
 
         private double UpdateLiftModifier(double distance)
@@ -124,6 +126,28 @@ namespace ThermalSim.Domain.Thermals
 
             LiftModifier = LiftModifier * (1.0 - SmoothingFactor) + m * SmoothingFactor;
             return LiftModifier;
+        }
+
+        private void DebugTrace(AircraftPositionState position, double distance, double moddedLift)
+        {
+            string location = "Core";
+
+            var atRadius = distance / TotalRadius;
+            if (atRadius < CoreRadiusPercent)
+            {
+                location = "Core";
+            }
+            else if (atRadius < SinkTransitionRadiusPercent)
+            {
+                location = "Transition";
+            }
+            else
+            {
+                location = "Sink";
+            }
+
+
+            Console.WriteLine($"{location}: {distance}ft with {moddedLift}ft/s");
         }
     }
 }
