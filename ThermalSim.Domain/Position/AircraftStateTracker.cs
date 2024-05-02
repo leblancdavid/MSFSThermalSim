@@ -27,6 +27,7 @@
                         AltitudeChange = 0.0,
                         AverageAltitude = LastState.Value.Altitude,
                         AverageVerticalVelocity = LastState.Value.VerticalSpeed,
+                        AverageVelocity = GetVelocity(LastState.Value)
                     };
                 }
 
@@ -37,6 +38,7 @@
                         AltitudeChange = LastState.Value.Altitude - FirstState.Value.Altitude,
                         AverageAltitude = stateQueue.Average(x => x.Altitude),
                         AverageVerticalVelocity = (LastState.Value.Altitude - FirstState.Value.Altitude) / (LastState.Value.AbsoluteTime - FirstState.Value.AbsoluteTime),
+                        AverageVelocity = stateQueue.Average(x => GetVelocity(x))
                     };
                 }
 
@@ -53,6 +55,11 @@
             }
 
             stateQueue.Enqueue(state);
+        }
+
+        private double GetVelocity(AircraftPositionState state)
+        {
+            return Math.Sqrt(state.VelocityBodyX * state.VelocityBodyX + state.VelocityBodyY * state.VelocityBodyY + state.VelocityBodyZ * state.VelocityBodyZ);
         }
     }
 }

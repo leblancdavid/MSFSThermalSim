@@ -11,6 +11,7 @@ namespace ThermalSim.Domain.Thermals
         public float Latitude { get; set; }
         public float Longitude { get; set; }
         public float Altitude { get; set; }
+        public float MinAltitudeFromGround { get; set; }
         public float TopAltitude => Altitude + Height;
         public float Radius { get; set; }
         public float Height { get; set; }
@@ -30,14 +31,20 @@ namespace ThermalSim.Domain.Thermals
             if(!IsInThermal(position))
                 return null;
 
-            var lift = 20.0f;
+            var lift = 100.0f;
             var verticalSpeed = stateChange == null ? position.VerticalSpeed : stateChange.AverageVerticalVelocity;
             if(verticalSpeed > lift)
                 return null;
 
+            if(position.AltitudeAboveGround < MinAltitudeFromGround)
+                return null;
+
+            if (stateChange?.AverageVelocity < 50.0)
+                return null;
+
             var change = new ThermalAltitudeChange()
             {
-                Altitude = position.Altitude + (lift + verticalSpeed) * 0.01,
+                Altitude = position.Altitude + (lift) * 0.02,
                 VerticalSpeed = (position.VerticalSpeed * 0.95 + verticalSpeed * 0.05)
             };
 
