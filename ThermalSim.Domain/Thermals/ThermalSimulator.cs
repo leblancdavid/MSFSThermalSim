@@ -144,7 +144,8 @@ namespace ThermalSim.Domain.Thermals
             if(!IsRunning || stateTracker.LastState == null)
             {
                 return false;
-            }    
+            }
+
             var t = thermalGenerator.GenerateThermalAroundAircraft(stateTracker.LastState.Value);
             thermals.Add(t);
 

@@ -33,7 +33,7 @@ namespace ThermalSim.Api.Controllers
             }
         }
 
-        [HttpGet("/running")]
+        [HttpGet("running")]
         public bool IsConnected()
         {
             return thermalSimulator.IsRunning;
@@ -48,6 +48,20 @@ namespace ThermalSim.Api.Controllers
                 return Ok();
             }
             catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("insert-thermal")]
+        public IActionResult AddThermal()
+        {
+            try
+            {
+                thermalSimulator.InsertThermal();
+                return Ok();
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

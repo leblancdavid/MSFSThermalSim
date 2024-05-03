@@ -187,5 +187,12 @@ namespace ThermalSim.Domain.Position
         public double RotationAccelerationBodyY;
         [SimConnectVariable(Name = "ROTATION ACCELERATION BODY Z", Unit = "Feet per second squared", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
         public double RotationAccelerationBodyZ;
+
+        [SimConnectVariable(Name = "EMPTY WEIGHT", Unit = "Pounds", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
+        public double EmptyWeight;
+        [SimConnectVariable(Name = "TOTAL WEIGHT", Unit = "Pounds", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
+        public double TotalWeight;
+        [SimConnectVariable(Name = "MAX GROSS WEIGHT", Unit = "Pounds", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
+        public double MaxGrossWeight;
     }
 }
