@@ -1,4 +1,6 @@
-﻿using ThermalSim.Domain.Position;
+﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using ThermalSim.Domain.Position;
 
 namespace ThermalSim.Domain.Thermals
 {
@@ -28,11 +30,14 @@ namespace ThermalSim.Domain.Thermals
                 return null;
 
             var lift = CalcBaseLiftValue(position, distance) + UpdateLiftModifier(distance);
+
             var verticalSpeed = stateChange == null ? position.VerticalSpeed : stateChange.AverageVerticalVelocity;
             if (Math.Abs(verticalSpeed) > Math.Abs(lift))
                 return null;
 
-            //DebugTrace(position, distance, lift);
+            lift.ApplyStallModifier(position);
+            lift.ApplySpoilerModifier(position);
+            lift.ApplyWeightModifier(position);
 
             var verticalSpeedIndicator = (position.VerticalSpeed * (1.0 - SmoothingFactor) + verticalSpeed * SmoothingFactor);
             var change = new ThermalAltitudeChange()
@@ -112,6 +117,7 @@ namespace ThermalSim.Domain.Thermals
             return LiftModifier;
         }
 
+        
         private void DebugTrace(AircraftPositionState position, double distance, double moddedLift)
         {
             string location = "Core";
