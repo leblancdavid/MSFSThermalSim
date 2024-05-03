@@ -260,7 +260,10 @@ namespace ThermalSim.Domain.Connection
                 ("ACCELERATION BODY Z", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
                 ("ROTATION ACCELERATION BODY X", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
                 ("ROTATION ACCELERATION BODY Y", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
-                ("ROTATION ACCELERATION BODY Z", "Feet per second squared", (SIMCONNECT_DATATYPE)4)
+                ("ROTATION ACCELERATION BODY Z", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
+                ("EMPTY WEIGHT", "Pounds", (SIMCONNECT_DATATYPE)4),
+                ("TOTAL WEIGHT", "Pounds", (SIMCONNECT_DATATYPE)4),
+                ("MAX GROSS WEIGHT", "Pounds", (SIMCONNECT_DATATYPE)4)
             );
         }
 
