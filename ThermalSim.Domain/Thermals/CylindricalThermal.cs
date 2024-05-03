@@ -115,7 +115,7 @@ namespace ThermalSim.Domain.Thermals
         }
 
         
-        private void DebugTrace(AircraftPositionState position, double distance, double moddedLift)
+        private void DebugTrace(AircraftPositionState position, double distance, double modifiedLift)
         {
             string location = "Core";
 
@@ -134,7 +134,7 @@ namespace ThermalSim.Domain.Thermals
             }
 
 
-            Console.WriteLine($"{location}: {distance}ft with {moddedLift}ft/s");
+            Console.WriteLine($"{location}: {distance}ft with {modifiedLift}ft/s");
         }
     }
 }

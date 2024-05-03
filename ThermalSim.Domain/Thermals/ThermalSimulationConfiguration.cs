@@ -13,10 +13,10 @@ namespace ThermalSim.Domain.Thermals
         public ValueRangeDouble RelativeSpawnAltitude { get; set; } = new ValueRangeDouble(-1000.0, 0.0);
         public ValueRangeDouble Radius { get; set; } = new ValueRangeDouble(500.0, 2000.0);
         public ValueRangeDouble Height { get; set; } = new ValueRangeDouble(1000.0, 5000.0);
-        public ValueRangeDouble CoreLiftRate { get; set; } = new ValueRangeDouble(1.0, 20.0);
+        public ValueRangeDouble CoreLiftRate { get; set; } = new ValueRangeDouble(5.0, 30.0);
         public ValueRangeDouble CoreRadiusPercent { get; set; } = new ValueRangeDouble(0.7, 0.9);
         public ValueRangeDouble CoreTurbulencePercent { get; set; } = new ValueRangeDouble(0.0, 2.0);
-        public ValueRangeDouble SinkRate { get; set; } = new ValueRangeDouble(-10.0, - 1.0);
+        public ValueRangeDouble SinkRate { get; set; } = new ValueRangeDouble(-20.0, - 5.0);
         public ValueRangeDouble SinkTurbulencePercent { get; set; } = new ValueRangeDouble(0.0, 2.0);
         public ValueRangeDouble SinkTransitionRadiusPercent { get; set; } = new ValueRangeDouble(0.0, 0.1);
         public ValueRangeDouble LiftShapeFactor { get; set; } = new ValueRangeDouble(0.0, 1.0);
