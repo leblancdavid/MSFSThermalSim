@@ -171,7 +171,8 @@ namespace ThermalSim.Domain.Connection
         {
             RegisterDataDefinition<ThermalAltitudeChange>(SimDataEventTypes.ThermalVelocityUpdate,
                 ("PLANE ALTITUDE", "Feet", (SIMCONNECT_DATATYPE)4),
-                ("VERTICAL SPEED", "Feet per second", (SIMCONNECT_DATATYPE)4)
+                ("VERTICAL SPEED", "Feet per second", (SIMCONNECT_DATATYPE)4),
+                ("PARTIAL PANEL VERTICAL VELOCITY", "Feet per second", (SIMCONNECT_DATATYPE)4)
             );
         }
 

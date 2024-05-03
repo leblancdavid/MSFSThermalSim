@@ -5,10 +5,14 @@ namespace ThermalSim.Domain.Thermals
     public class FixedPositionThermalGenerator : IThermalGenerator
     {
         private uint lastId = 0;
+        private Random random = new Random();
+        private ThermalSimulationConfiguration configuration = new ThermalSimulationConfiguration();
         public FixedPositionThermalGenerator()
         {
             
         }
+
+        public ThermalSimulationConfiguration Configuration => configuration;
 
         public IThermalModel GenerateThermalAroundAircraft(AircraftPositionState position)
         {
@@ -17,20 +21,7 @@ namespace ThermalSim.Domain.Thermals
             return new CylindricalThermal
             {
                 ObjectId = lastId,
-                StartTime = DateTime.Now,
-                EndTime = DateTime.Now + new TimeSpan(0, 20, 0),
-                Latitude = position.Latitude,
-                Longitude = position.Longitude,
-                Altitude = position.Altitude - 500.0,
-                MinAltitudeFromGround = 100.0,
-                TotalRadius = 500.0,
-                Height = 2000.0,
-                CoreLiftRate = 50.0,
-                CoreTurbulencePercent = 0.5,
-                SinkRate = -30.0,
-                SinkTurbulencePercent = 0.5,
-                CoreRadiusPercent = 0.8,
-                SinkTransitionRadiusPercent = 0.9,
+                Properties = configuration.GenerateRandomThermalProperties(random, position)
             };
         }
 
@@ -38,24 +29,22 @@ namespace ThermalSim.Domain.Thermals
         {
             lastId++;
 
-            return new CylindricalThermal
+            var thermal = new CylindricalThermal
             {
                 ObjectId = lastId,
-                StartTime = DateTime.Now,
-                EndTime = DateTime.Now + new TimeSpan(0, 20, 0),
-                Latitude = position.Latitude,
-                Longitude = position.Longitude,
-                Altitude = position.Altitude - 500.0,
-                MinAltitudeFromGround = 100.0,
-                TotalRadius = 10000.0,
-                Height = 20000.0,
-                CoreLiftRate = 50.0,
-                CoreTurbulencePercent = 0.5,
-                SinkRate = -30.0,
-                SinkTurbulencePercent = 0.5,
-                CoreRadiusPercent = 0.9,
-                SinkTransitionRadiusPercent = 0.05,
+                Properties = configuration.GenerateRandomThermalProperties(random, position)
             };
+
+            thermal.Properties.Longitude = position.Longitude;
+            thermal.Properties.Latitude = position.Latitude;
+            thermal.Properties.Altitude = position.Altitude;
+
+            return thermal;
+        }
+
+        public DateTime GetNextSampleTime()
+        {
+            return Configuration.GetNextSampleTime(random);
         }
     }
 }

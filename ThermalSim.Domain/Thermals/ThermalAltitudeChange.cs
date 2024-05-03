@@ -11,5 +11,7 @@ namespace ThermalSim.Domain.Thermals
         public double Altitude; 
         [SimConnectVariable(Name = "VERTICAL SPEED", Unit = "Feet per second", Type = SIMCONNECT_DATATYPE.FLOAT64)]
         public double VerticalSpeed;
+        [SimConnectVariable(Name = "PARTIAL PANEL VERTICAL VELOCITY", Unit = "Feet per second", Type = SIMCONNECT_DATATYPE.FLOAT64)]
+        public double PanelVerticalSpeed;
     }
 }

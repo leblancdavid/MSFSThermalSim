@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using ThermalSim.Domain.Position;
+﻿using ThermalSim.Domain.Position;
 
 namespace ThermalSim.Domain.Thermals
 {
@@ -8,28 +7,11 @@ namespace ThermalSim.Domain.Thermals
         private Random rng = new Random();
 
         public uint ObjectId { get; set; }
-        public DateTime StartTime { get; set; } = DateTime.Now;
-        public DateTime EndTime { get; set; }
-
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-        public double Altitude { get; set; }
-        public double MinAltitudeFromGround { get; set; } = 100.0f;
-        public double TopAltitude => Altitude + Height;
-        public double TotalRadius { get; set; }
-        public double Height { get; set; }
-        public double CoreLiftRate { get; set; }
-        public double CoreTurbulencePercent { get; set; }
-        public double SinkRate { get; set; }
-        public double SinkTurbulencePercent { get; set; }
-        public double CoreRadiusPercent { get; set; }
-        public double SinkTransitionRadiusPercent { get; set; }
-        public double WindSpeed { get; set; }
-        public double WindDirection { get; set; }
+        public ThermalProperties Properties { get; set; }
 
         public double SmoothingFactor { get; set; } = 0.05f;
-        public double TimeFactor { get; set; } = 0.03;
-        public double LiftModificationFactor { get; set; } = 1.1;
+        public double TimeFactor { get; set; } = 0.02;
+        public double LiftModificationFactor { get; set; } = 1.5;
         public double LiftModifier { get; set; } = 0.0;
 
         public ThermalAltitudeChange? GetThermalAltitudeChange(AircraftPositionState position, AircraftStateChangeInfo? stateChange)
@@ -39,7 +21,7 @@ namespace ThermalSim.Domain.Thermals
             if(!IsInThermal(position, distance))
                 return null;
 
-            if(position.AltitudeAboveGround < MinAltitudeFromGround)
+            if(position.AltitudeAboveGround < Properties.MinAltitudeFromGround)
                 return null;
 
             if (stateChange?.AverageVelocity < 50.0) //TODO this number should be based on the plane's stall speed
@@ -50,12 +32,14 @@ namespace ThermalSim.Domain.Thermals
             if (Math.Abs(verticalSpeed) > Math.Abs(lift))
                 return null;
 
-            DebugTrace(position, distance, lift);
+            //DebugTrace(position, distance, lift);
 
+            var verticalSpeedIndicator = (position.VerticalSpeed * (1.0 - SmoothingFactor) + verticalSpeed * SmoothingFactor);
             var change = new ThermalAltitudeChange()
             {
                 Altitude = position.Altitude + (lift) * TimeFactor,
-                VerticalSpeed = (position.VerticalSpeed * (1.0 - SmoothingFactor) + verticalSpeed * SmoothingFactor)
+                VerticalSpeed = verticalSpeedIndicator,
+                PanelVerticalSpeed = verticalSpeedIndicator
             };
 
             return change;
@@ -68,60 +52,60 @@ namespace ThermalSim.Domain.Thermals
 
         private bool IsInThermal(AircraftPositionState position, double calculatedDistance)
         {
-            return position.Altitude >= Altitude &&
-                position.Altitude <= TopAltitude &&
-                position.AltitudeAboveGround > MinAltitudeFromGround &&
-                calculatedDistance < TotalRadius;
+            return position.Altitude >= Properties.Altitude &&
+                position.Altitude <= Properties.TopAltitude &&
+                position.AltitudeAboveGround > Properties.MinAltitudeFromGround &&
+                calculatedDistance < Properties.TotalRadius;
         }
 
         public double GetDistanceToThermal(AircraftPositionState position)
         {
             return 20930000 * (Math.Acos(
-                Math.Cos(position.Latitude) * Math.Cos(position.Longitude) * Math.Cos(Latitude) * Math.Cos(Longitude) +
-                Math.Cos(position.Latitude) * Math.Sin(position.Longitude) * Math.Cos(Latitude) * Math.Sin(Longitude) +
-                Math.Sin(position.Latitude) * Math.Sin(Latitude)) / 360.0);
+                Math.Cos(position.Latitude) * Math.Cos(position.Longitude) * Math.Cos(Properties.Latitude) * Math.Cos(Properties.Longitude) +
+                Math.Cos(position.Latitude) * Math.Sin(position.Longitude) * Math.Cos(Properties.Latitude) * Math.Sin(Properties.Longitude) +
+                Math.Sin(position.Latitude) * Math.Sin(Properties.Latitude)) / 360.0);
         }
 
         private double CalcBaseLiftValue(AircraftPositionState position, double distance)
         {
-            var atRadius = distance / TotalRadius;
+            var atRadius = distance / Properties.TotalRadius;
             if (atRadius > 1.0)
                 return 0.0;
 
-            if(atRadius < CoreRadiusPercent)
+            if(atRadius < Properties.CoreRadiusPercent)
             {
-                double liftAtCenter = LiftModificationFactor * CoreLiftRate;
-                double liftChange = (CoreLiftRate - liftAtCenter) / CoreRadiusPercent;
+                double liftAtCenter = LiftModificationFactor * Properties.CoreLiftRate;
+                double liftChange = (Properties.CoreLiftRate - liftAtCenter) / Properties.CoreRadiusPercent;
                 //basic y = mx + b linear equation
                 return liftChange * atRadius + liftAtCenter; 
             }
-            else if(atRadius < SinkTransitionRadiusPercent) 
+            else if(atRadius < Properties.SinkTransitionRadiusPercent) 
             {
-                double liftAtTransition = CoreLiftRate;
-                double transitionChange = (SinkRate - liftAtTransition) / (SinkTransitionRadiusPercent - CoreRadiusPercent);
+                double liftAtTransition = Properties.CoreLiftRate;
+                double transitionChange = (Properties.SinkRate - liftAtTransition) / (Properties.SinkTransitionRadiusPercent - Properties.CoreRadiusPercent);
                 //basic y = mx + b linear equation
-                return transitionChange * (atRadius - CoreRadiusPercent) + liftAtTransition;
+                return transitionChange * (atRadius - Properties.CoreRadiusPercent) + liftAtTransition;
             }
 
 
-            double liftAtSinkTransition = SinkRate;
-            double sinkChange = ((SinkRate / LiftModificationFactor) - liftAtSinkTransition) / ((1.0 - SinkTransitionRadiusPercent));
+            double liftAtSinkTransition = Properties.SinkRate;
+            double sinkChange = ((Properties.SinkRate / LiftModificationFactor) - liftAtSinkTransition) / ((1.0 - Properties.SinkTransitionRadiusPercent));
 
             //basic y = mx + b linear equation
-            return sinkChange * (atRadius - SinkTransitionRadiusPercent) + liftAtSinkTransition;
+            return sinkChange * (atRadius - Properties.SinkTransitionRadiusPercent) + liftAtSinkTransition;
         }
 
         private double UpdateLiftModifier(double distance)
         {
             var m = (2.0 * rng.NextDouble() - 1.0);
-            var atRadius = distance / TotalRadius;
-            if (atRadius > SinkTransitionRadiusPercent)
+            var atRadius = distance / Properties.TotalRadius;
+            if (atRadius > Properties.SinkTransitionRadiusPercent)
             {
-                m *= SinkTurbulencePercent * SinkRate;
+                m *= Properties.SinkTurbulencePercent * Properties.SinkRate;
             }
             else
             {
-                m *= CoreTurbulencePercent * CoreLiftRate;
+                m *= Properties.CoreTurbulencePercent * Properties.CoreLiftRate;
             }
 
             LiftModifier = LiftModifier * (1.0 - SmoothingFactor) + m * SmoothingFactor;
@@ -132,12 +116,12 @@ namespace ThermalSim.Domain.Thermals
         {
             string location = "Core";
 
-            var atRadius = distance / TotalRadius;
-            if (atRadius < CoreRadiusPercent)
+            var atRadius = distance / Properties.TotalRadius;
+            if (atRadius < Properties.CoreRadiusPercent)
             {
                 location = "Core";
             }
-            else if (atRadius < SinkTransitionRadiusPercent)
+            else if (atRadius < Properties.SinkTransitionRadiusPercent)
             {
                 location = "Transition";
             }
