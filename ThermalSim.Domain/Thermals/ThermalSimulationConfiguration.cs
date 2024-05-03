@@ -19,6 +19,7 @@ namespace ThermalSim.Domain.Thermals
         public ValueRangeDouble SinkRate { get; set; } = new ValueRangeDouble(-10.0, - 1.0);
         public ValueRangeDouble SinkTurbulencePercent { get; set; } = new ValueRangeDouble(0.0, 2.0);
         public ValueRangeDouble SinkTransitionRadiusPercent { get; set; } = new ValueRangeDouble(0.0, 0.1);
+        public ValueRangeDouble LiftShapeFactor { get; set; } = new ValueRangeDouble(0.0, 1.0);
         public ValueRangeDouble WindSpeed { get; set; } = new ValueRangeDouble(0.0, 50.0);
         public ValueRangeDouble WindDirection { get; set; } = new ValueRangeDouble(0.0, 360.0);
 
@@ -45,6 +46,7 @@ namespace ThermalSim.Domain.Thermals
                 SinkTransitionRadiusPercent = coreRadius + transitionRadius,
                 WindSpeed = WindSpeed.GetRandomValue(random),
                 WindDirection = WindDirection.GetRandomValue(random),
+                LiftShapeFactor = LiftShapeFactor.GetRandomValue(random)
             };
 
             return properties;

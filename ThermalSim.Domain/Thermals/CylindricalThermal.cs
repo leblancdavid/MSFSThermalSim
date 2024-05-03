@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using ThermalSim.Domain.Position;
+﻿using ThermalSim.Domain.Position;
 
 namespace ThermalSim.Domain.Thermals
 {
@@ -9,11 +7,10 @@ namespace ThermalSim.Domain.Thermals
         private Random rng = new Random();
 
         public uint ObjectId { get; set; }
-        public ThermalProperties Properties { get; set; }
+        public ThermalProperties Properties { get; set; } = new ThermalProperties();
 
         public double SmoothingFactor { get; set; } = 0.05f;
         public double TimeFactor { get; set; } = 0.02;
-        public double LiftModificationFactor { get; set; } = 1.5;
         public double LiftModifier { get; set; } = 0.0;
 
         public ThermalAltitudeChange? GetThermalAltitudeChange(AircraftPositionState position, AircraftStateChangeInfo? stateChange)
@@ -79,7 +76,7 @@ namespace ThermalSim.Domain.Thermals
 
             if(atRadius < Properties.CoreRadiusPercent)
             {
-                double liftAtCenter = LiftModificationFactor * Properties.CoreLiftRate;
+                double liftAtCenter = (Properties.LiftShapeFactor * 0.5 + 1.0) * Properties.CoreLiftRate;
                 double liftChange = (Properties.CoreLiftRate - liftAtCenter) / Properties.CoreRadiusPercent;
                 //basic y = mx + b linear equation
                 return liftChange * atRadius + liftAtCenter; 
@@ -94,7 +91,7 @@ namespace ThermalSim.Domain.Thermals
 
 
             double liftAtSinkTransition = Properties.SinkRate;
-            double sinkChange = ((Properties.SinkRate / LiftModificationFactor) - liftAtSinkTransition) / ((1.0 - Properties.SinkTransitionRadiusPercent));
+            double sinkChange = ((Properties.SinkRate / (Properties.LiftShapeFactor * 0.5 + 1.0)) - liftAtSinkTransition) / ((1.0 - Properties.SinkTransitionRadiusPercent));
 
             //basic y = mx + b linear equation
             return sinkChange * (atRadius - Properties.SinkTransitionRadiusPercent) + liftAtSinkTransition;
