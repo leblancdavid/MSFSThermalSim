@@ -15,7 +15,7 @@ namespace ThermalSim.Domain.Thermals
         public double SmoothingFactor { get; set; } = 0.05f;
         public double TimeFactor { get; set; } = 0.02;
         public double LiftModifier { get; set; } = 0.0;
-        public ITurbulenceModel TurbulenceModel { get; set; } = new CounterBasedTurbulenceModel(10, 20, 32.0);
+        public ITurbulenceModel TurbulenceModel { get; set; } = new CounterBasedTurbulenceModel(100, 500, 100.0, 240);
 
         public ThermalAltitudeChange? GetThermalAltitudeChange(AircraftPositionState position, AircraftStateChangeInfo? stateChange)
         {
