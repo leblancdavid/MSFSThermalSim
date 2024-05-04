@@ -78,7 +78,8 @@ namespace ThermalSim.Domain.Thermals
             //Removed all thermals that have expired
             RemoveExpiredThermals();
 
-
+            //Replace thermals that are out of range
+            ReplaceFarAwayThermals(position);
 
             //Create new thermals
             CreateNewThermals(position);
@@ -87,7 +88,7 @@ namespace ThermalSim.Domain.Thermals
         private void RemoveExpiredThermals()
         {
             var currentTime = DateTime.Now;
-
+             
             //var expiredThermals = thermals.Where(x => x.Properties.EndTime < currentTime);
             //foreach (var thermal in expiredThermals)
             //{
@@ -99,7 +100,15 @@ namespace ThermalSim.Domain.Thermals
 
         private void ReplaceFarAwayThermals(AircraftPositionState position)
         {
-            var distantThermals = thermals.Where(x => x.CalcDistance(position) > thermalGenerator.Configuration.);
+            var distantThermals = thermals.Where(x => x.CalcDistance(position) > thermalGenerator.Configuration.ReplaceDistance).ToList();
+            foreach(var t in distantThermals)
+            {
+                //Console.WriteLine($"Thermal removed {t.CalcDistance(position)}ft away: ({t.Properties.Latitude},{t.Properties.Longitude}) at {t.Properties.Altitude}ft.");
+
+                thermals.Remove(t);
+                CreateNewThermals(position);
+            }
+
         }
 
         private void CreateNewThermals(AircraftPositionState position)
@@ -132,8 +141,9 @@ namespace ThermalSim.Domain.Thermals
 
                 if (newThermalModel != null)
                 {
-                    double distanceToAircraft = newThermalModel.CalcDistance(position);
-                    Console.WriteLine($"Thermal created {distanceToAircraft}ft away: ({newThermalModel.Properties.Latitude},{newThermalModel.Properties.Longitude}) at {newThermalModel.Properties.Altitude}ft.");
+                    //double distanceToAircraft = newThermalModel.CalcDistance(position);
+                    //Console.WriteLine($"Thermal created {distanceToAircraft}ft away: ({newThermalModel.Properties.Latitude},{newThermalModel.Properties.Longitude}) at {newThermalModel.Properties.Altitude}ft.");
+                    
                     thermals.Add(newThermalModel);
                 }
             } //Repeat if we have less than the minimum number
