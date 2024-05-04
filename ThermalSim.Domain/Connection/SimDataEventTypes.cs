@@ -9,5 +9,6 @@
     {
         AircraftPosition,
         ThermalVelocityUpdate,
+        TurbulenceEffect
     }
 }

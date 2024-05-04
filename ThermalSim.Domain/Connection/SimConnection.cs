@@ -4,6 +4,7 @@ using System.Net;
 using System.Windows.Forms;
 using ThermalSim.Domain.Position;
 using ThermalSim.Domain.Thermals;
+using ThermalSim.Domain.Turbulence;
 using ThermalSim.Helpers;
 
 namespace ThermalSim.Domain.Connection
@@ -72,7 +73,8 @@ namespace ThermalSim.Domain.Connection
             Connection.OnRecvSimobjectData += Connection_OnRecvSimobjectData;
 
             RegisterAircraftPositionDefinition(); 
-            RegisterThermalVelocityDefinition();
+            RegisterThermalAltitudeChangeDefinition();
+            RegisterTurbulenceEffectDefinition();
 
             messagePumpRunning.Set();
             Application.Run();
@@ -167,12 +169,21 @@ namespace ThermalSim.Domain.Connection
                 0, 0, 0);
         }
 
-        private void RegisterThermalVelocityDefinition()
+        private void RegisterThermalAltitudeChangeDefinition()
         {
             RegisterDataDefinition<ThermalAltitudeChange>(SimDataEventTypes.ThermalVelocityUpdate,
                 ("PLANE ALTITUDE", "Feet", (SIMCONNECT_DATATYPE)4),
                 ("VERTICAL SPEED", "Feet per second", (SIMCONNECT_DATATYPE)4),
                 ("PARTIAL PANEL VERTICAL VELOCITY", "Feet per second", (SIMCONNECT_DATATYPE)4)
+            );
+        }
+
+        private void RegisterTurbulenceEffectDefinition()
+        {
+            RegisterDataDefinition<TurbulenceEffect>(SimDataEventTypes.TurbulenceEffect,
+                ("ROTATION ACCELERATION BODY X", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
+                ("ROTATION ACCELERATION BODY Y", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
+                ("ROTATION ACCELERATION BODY Z", "Feet per second squared", (SIMCONNECT_DATATYPE)4)
             );
         }
 

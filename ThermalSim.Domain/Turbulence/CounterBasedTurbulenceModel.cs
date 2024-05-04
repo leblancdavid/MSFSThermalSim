@@ -1,5 +1,4 @@
 ﻿using ThermalSim.Domain.Position;
-using ThermalSim.Domain.Thermals;
 
 namespace ThermalSim.Domain.Turbulence
 {
@@ -9,17 +8,18 @@ namespace ThermalSim.Domain.Turbulence
         private int _maxCount;
         private int _counter;
         private int _resetCount;
+        private double _maxTurbulence;
         private Random _random = new Random();
 
-        public CounterBasedTurbulenceModel(int minCount, int maxCount)
+        public CounterBasedTurbulenceModel(int minCount, int maxCount, double maxTurbulence)
         {
             _minCount = minCount;
             _maxCount = maxCount;
-
+            _maxTurbulence = maxTurbulence;
             ResetCount();
         }
 
-        public TurbulenceEffect? GetTurbulenceEffect(AircraftPositionState position, IThermalModel thermal)
+        public TurbulenceEffect? GetTurbulenceEffect(AircraftPositionState position)
         {
             if(_counter < _resetCount)
             {
@@ -27,7 +27,15 @@ namespace ThermalSim.Domain.Turbulence
                 return null;
             }
 
-            throw new NotImplementedException();
+            ResetCount();
+
+            //For now let's make it simple
+            return new TurbulenceEffect()
+            {
+                RotationAccelerationBodyX = _random.NextDouble() * _maxTurbulence,
+                RotationAccelerationBodyY = _random.NextDouble() * _maxTurbulence,
+                RotationAccelerationBodyZ = _random.NextDouble() * _maxTurbulence,
+            };
         }
 
         private void ResetCount()
