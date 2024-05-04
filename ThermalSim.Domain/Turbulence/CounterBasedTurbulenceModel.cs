@@ -1,14 +1,18 @@
 ﻿using ThermalSim.Domain.Position;
+using ThermalSim.Domain.Thermals;
 
 namespace ThermalSim.Domain.Turbulence
 {
     public class CounterBasedTurbulenceModel : ITurbulenceModel
     {
-        private int _minCount;
-        private int _maxCount;
-        private int _turbulenceCount;
+        private readonly ValueRangeInt _framesBetweenTurbulence;
+        private readonly ValueRangeInt _turbulenceDuration;
+        private readonly ValueRangeDouble _turbulenceStrength;
+
+
         private int _counter;
         private int _resetCount;
+        private int _duration;
         private double _maxTurbulence;
 
         private double[] _smoothingKernel;
@@ -18,37 +22,28 @@ namespace ThermalSim.Domain.Turbulence
         private TurbulenceEffect? _turbulence = null;
 
         private double x_scaler = 0.5;
-        private double y_scaler = 0.5;
-        private double z_scaler = 2.0;
+        private double y_scaler = 0.25;
+        private double z_scaler = 1.0;
 
 
-        public CounterBasedTurbulenceModel(int minCount, int maxCount, double maxTurbulence, int turbulenceCount = 20)
+        public CounterBasedTurbulenceModel(ValueRangeInt framesBetweenTurbulence, ValueRangeInt turbulenceDuration, ValueRangeDouble turbulenceStrength)
         {
-            _minCount = minCount;
-            _maxCount = maxCount;
-            _maxTurbulence = maxTurbulence;
-            _turbulenceCount = turbulenceCount;
+            _framesBetweenTurbulence = framesBetweenTurbulence;
+            _turbulenceDuration = turbulenceDuration;
+            _turbulenceStrength = turbulenceStrength;
+        }
 
-            double sigma = (double)turbulenceCount / 5.0;
-            double f = 1.0 / (Math.Sqrt(2.0 * Math.PI) * sigma);
+        private void UpdatesSmoothingKernel(int duration)
+        {
+            double incr = (Math.PI * 3) / (double) duration;
 
-            _smoothingKernel = new double[turbulenceCount];
-            double x = -turbulenceCount / 2.0;
-            for (int i = 0; i < turbulenceCount; i++)
+            _smoothingKernel = new double[duration];
+            double x = 0;
+            for (int i = 0; i < duration; i++)
             {
-                var v = f * Math.Pow(Math.E, -1.0 * x * x / (2.0 * sigma * sigma));
-                _smoothingKernel[i] = v;
-                x++;
+                _smoothingKernel[i] = Math.Sin(x);
+                x += incr;
             }
-
-            double max = _smoothingKernel.Max();
-            for (int i = 0; i < turbulenceCount; i++)
-            {
-                _smoothingKernel[i] = 2.0 * (_smoothingKernel[i] / max) - 1.0;
-                //_smoothingKernel[i] /= max;
-            }
-
-            ResetCount();
         }
 
         public TurbulenceEffect? GetTurbulenceEffect(AircraftPositionState position)
@@ -58,20 +53,12 @@ namespace ThermalSim.Domain.Turbulence
             {
                 _counter++;
                 //If we've hit the number of frames of turbulence, then we reset it
-                if(_counter >= _turbulenceCount)
+                if(_counter >= _duration)
                 {
                     _turbulence = null;
                     ResetCount();
                     return _turbulence;
                 }
-
-                //otherwise, scale the turbulence affect by the fade factor (gets weaker or stronger with time)
-                //_turbulence = new TurbulenceEffect()
-                //{
-                //    RotationAccelerationBodyX = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * x_scaler,
-                //    RotationAccelerationBodyY = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * y_scaler,
-                //    RotationAccelerationBodyZ = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * z_scaler,
-                //};
 
                 var output = new TurbulenceEffect()
                 {
@@ -93,6 +80,8 @@ namespace ThermalSim.Domain.Turbulence
             //If we get here, we basically start a new turbulence
             ResetCount();
 
+            UpdatesSmoothingKernel(_duration);
+
             //For now let's make it simple
             _turbulence = new TurbulenceEffect()
             {
@@ -106,7 +95,9 @@ namespace ThermalSim.Domain.Turbulence
 
         private void ResetCount()
         {
-            _resetCount = _random.Next(_minCount, _maxCount);
+            _resetCount = _framesBetweenTurbulence.GetRandomValue(_random);
+            _duration = _turbulenceDuration.GetRandomValue(_random);
+            _maxTurbulence = _turbulenceStrength.GetRandomValue(_random);
             _counter = 0;
         }
     }
