@@ -88,8 +88,26 @@ namespace ThermalSim.Domain.Thermals
             do
             {
                 //Generate a new thermal
-                var t = thermalGenerator.GenerateThermalAroundAircraft(position);
-                thermals.Add(t);
+                var isNearAnotherThermal = true;
+                IThermalModel? newThermalModel = null;
+                int maxTry = 100;
+                int itr = 0;
+                //This loop ensures that we don't spawn thermals inside existing ones
+                do
+                {
+                    newThermalModel = thermalGenerator.GenerateThermalAroundAircraft(position);
+                    isNearAnotherThermal = thermals.Any(x => x.IsInThermal(
+                        newThermalModel.Properties.Latitude,
+                        newThermalModel.Properties.Longitude,
+                        newThermalModel.Properties.Altitude));
+                    itr++;
+                }
+                while (isNearAnotherThermal && itr < maxTry);
+
+                if(newThermalModel != null)
+                {
+                    thermals.Add(newThermalModel);
+                }
             } //Repeat if we have less than the minimum number
             while (thermals.Count < thermalGenerator.Configuration.NumberOfThermals.Min);
         }

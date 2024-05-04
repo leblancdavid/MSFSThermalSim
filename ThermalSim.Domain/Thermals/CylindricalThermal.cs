@@ -1,4 +1,5 @@
-﻿using ThermalSim.Domain.Position;
+﻿using System.Reflection.Metadata.Ecma335;
+using ThermalSim.Domain.Position;
 
 namespace ThermalSim.Domain.Thermals
 {
@@ -44,6 +45,8 @@ namespace ThermalSim.Domain.Thermals
                 PanelVerticalSpeed = verticalSpeedIndicator
             };
 
+            //DebugTrace(position, distance, lift);
+
             return change;
         }
 
@@ -60,12 +63,25 @@ namespace ThermalSim.Domain.Thermals
                 calculatedDistance < Properties.TotalRadius;
         }
 
+        public bool IsInThermal(double latitude, double longitude, double altitude)
+        {
+            var distance = GetDistanceToThermal(latitude, longitude);
+            return altitude >= Properties.Altitude &&
+                altitude <= Properties.TopAltitude &&
+                distance < Properties.TotalRadius;
+        }
+
         public double GetDistanceToThermal(AircraftPositionState position)
         {
+            return GetDistanceToThermal(position.Latitude, position.Longitude);
+        }
+
+        public double GetDistanceToThermal(double latitude, double longitude)
+        {
             return 20930000 * (Math.Acos(
-                Math.Cos(position.Latitude) * Math.Cos(position.Longitude) * Math.Cos(Properties.Latitude) * Math.Cos(Properties.Longitude) +
-                Math.Cos(position.Latitude) * Math.Sin(position.Longitude) * Math.Cos(Properties.Latitude) * Math.Sin(Properties.Longitude) +
-                Math.Sin(position.Latitude) * Math.Sin(Properties.Latitude)) / 360.0);
+                Math.Cos(latitude) * Math.Cos(longitude) * Math.Cos(Properties.Latitude) * Math.Cos(Properties.Longitude) +
+                Math.Cos(latitude) * Math.Sin(longitude) * Math.Cos(Properties.Latitude) * Math.Sin(Properties.Longitude) +
+                Math.Sin(latitude) * Math.Sin(Properties.Latitude)) / 360.0);
         }
 
         private double CalcBaseLiftValue(AircraftPositionState position, double distance)
@@ -136,5 +152,7 @@ namespace ThermalSim.Domain.Thermals
 
             Console.WriteLine($"{location}: {distance}ft with {modifiedLift}ft/s");
         }
+
+        
     }
 }
