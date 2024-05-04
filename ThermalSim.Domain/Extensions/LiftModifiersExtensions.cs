@@ -1,6 +1,6 @@
 ﻿using ThermalSim.Domain.Position;
 
-namespace ThermalSim.Domain.Thermals
+namespace ThermalSim.Domain.Extensions
 {
     public static class LiftModifiersExtensions
     {
@@ -44,7 +44,7 @@ namespace ThermalSim.Domain.Thermals
                 return lift;
             }
 
-            lift *= ((weightRatio - 0.5) / 2.0 + 1.0);
+            lift *= (weightRatio - 0.5) / 2.0 + 1.0;
             return lift;
         }
 
