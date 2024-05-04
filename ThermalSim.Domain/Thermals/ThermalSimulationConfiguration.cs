@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-using ThermalSim.Domain.Position;
+﻿using ThermalSim.Domain.Position;
 
 namespace ThermalSim.Domain.Thermals
 {
@@ -9,7 +8,7 @@ namespace ThermalSim.Domain.Thermals
         public ValueRangeInt SamplingSpeedSeconds { get; set; } = new ValueRangeInt(30, 60);
         public ValueRangeInt DurationMinutes { get; set; } = new ValueRangeInt(5, 30);
         public ValueRangeDouble AltitudeFromGround { get; set; } = new ValueRangeDouble(50.0, 200.0);
-        public ValueRangeDouble SpawnDistance { get; set; } = new ValueRangeDouble(0.01, 0.02); //This is in gps degrees
+        public ValueRangeDouble SpawnDistance { get; set; } = new ValueRangeDouble(0.005, 0.01); //This is in gps degrees
         public ValueRangeDouble RelativeSpawnAltitude { get; set; } = new ValueRangeDouble(-1000.0, 0.0);
         public ValueRangeDouble Radius { get; set; } = new ValueRangeDouble(500.0, 2000.0);
         public ValueRangeDouble Height { get; set; } = new ValueRangeDouble(1000.0, 5000.0);
@@ -22,6 +21,7 @@ namespace ThermalSim.Domain.Thermals
         public ValueRangeDouble LiftShapeFactor { get; set; } = new ValueRangeDouble(0.0, 1.0);
         public ValueRangeDouble WindSpeed { get; set; } = new ValueRangeDouble(0.0, 50.0);
         public ValueRangeDouble WindDirection { get; set; } = new ValueRangeDouble(0.0, 360.0);
+        public double ReplaceDistance { get; set; } = 20000;
 
         public ThermalProperties GenerateRandomThermalProperties(Random random, AircraftPositionState position)
         {

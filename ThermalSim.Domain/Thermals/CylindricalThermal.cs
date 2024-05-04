@@ -1,4 +1,6 @@
-﻿using ThermalSim.Domain.Position;
+﻿using System.Reflection.Metadata.Ecma335;
+using ThermalSim.Domain.Extensions;
+using ThermalSim.Domain.Position;
 
 namespace ThermalSim.Domain.Thermals
 {
@@ -26,7 +28,7 @@ namespace ThermalSim.Domain.Thermals
             if (stateChange?.AverageVelocity < 50.0) //TODO this number should be based on the plane's stall speed
                 return null;
 
-            var lift = CalcBaseLiftValue(position, distance) + UpdateLiftModifier(distance);
+            var lift = CalcBaseLiftValue(distance) + UpdateLiftModifier(distance);
 
             var verticalSpeed = stateChange == null ? position.VerticalSpeed : stateChange.AverageVerticalVelocity;
             if (Math.Abs(verticalSpeed) > Math.Abs(lift))
@@ -44,6 +46,8 @@ namespace ThermalSim.Domain.Thermals
                 PanelVerticalSpeed = verticalSpeedIndicator
             };
 
+            //DebugTrace(position, distance, lift);
+
             return change;
         }
 
@@ -60,15 +64,25 @@ namespace ThermalSim.Domain.Thermals
                 calculatedDistance < Properties.TotalRadius;
         }
 
-        public double GetDistanceToThermal(AircraftPositionState position)
+        public bool IsInThermal(double latitude, double longitude, double altitude)
         {
-            return 20930000 * (Math.Acos(
-                Math.Cos(position.Latitude) * Math.Cos(position.Longitude) * Math.Cos(Properties.Latitude) * Math.Cos(Properties.Longitude) +
-                Math.Cos(position.Latitude) * Math.Sin(position.Longitude) * Math.Cos(Properties.Latitude) * Math.Sin(Properties.Longitude) +
-                Math.Sin(position.Latitude) * Math.Sin(Properties.Latitude)) / 360.0);
+            var distance = GetDistanceToThermal(latitude, longitude);
+            return altitude >= Properties.Altitude &&
+                altitude <= Properties.TopAltitude &&
+                distance < Properties.TotalRadius;
         }
 
-        private double CalcBaseLiftValue(AircraftPositionState position, double distance)
+        public double GetDistanceToThermal(AircraftPositionState position)
+        {
+            return position.CalcDistance(this);
+        }
+
+        public double GetDistanceToThermal(double latitude, double longitude)
+        {
+            return this.CalcDistance(latitude, longitude);
+        }
+
+        private double CalcBaseLiftValue(double distance)
         {
             var atRadius = distance / Properties.TotalRadius;
             if (atRadius > 1.0)
@@ -136,5 +150,7 @@ namespace ThermalSim.Domain.Thermals
 
             Console.WriteLine($"{location}: {distance}ft with {modifiedLift}ft/s");
         }
+
+        
     }
 }

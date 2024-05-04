@@ -8,7 +8,9 @@ namespace ThermalSim.Domain.Thermals
         ThermalProperties Properties { get; set; }
 
         ThermalAltitudeChange? GetThermalAltitudeChange(AircraftPositionState position, AircraftStateChangeInfo? stateChange);
-        bool IsInThermal(AircraftPositionState position);
+        bool IsInThermal(AircraftPositionState position); 
+        bool IsInThermal(double latitude, double longitude, double altitude);
         double GetDistanceToThermal(AircraftPositionState position);
+        double GetDistanceToThermal(double latitude, double longitude);
     }
 }

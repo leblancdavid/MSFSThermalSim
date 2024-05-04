@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.FlightSimulator.SimConnect;
 using ThermalSim.Domain.Connection;
+using ThermalSim.Domain.Extensions;
 using ThermalSim.Domain.Position;
 
 namespace ThermalSim.Domain.Thermals
@@ -74,12 +75,46 @@ namespace ThermalSim.Domain.Thermals
 
         private void UpdateThermalModels(AircraftPositionState position)
         {
-            //Remove any thermals that have expired
-            var currentTime = DateTime.Now;
-            thermals.RemoveAll(x => x.Properties.EndTime < currentTime);
+            //Removed all thermals that have expired
+            RemoveExpiredThermals();
 
+            //Replace thermals that are out of range
+            ReplaceFarAwayThermals(position);
+
+            //Create new thermals
+            CreateNewThermals(position);
+        }
+
+        private void RemoveExpiredThermals()
+        {
+            var currentTime = DateTime.Now;
+             
+            //var expiredThermals = thermals.Where(x => x.Properties.EndTime < currentTime);
+            //foreach (var thermal in expiredThermals)
+            //{
+            //    Console.WriteLine($"Thermal expired: ({thermal.Properties.Latitude},{thermal.Properties.Longitude}) at {thermal.Properties.Altitude}ft.");
+            //}
+
+            thermals.RemoveAll(x => x.Properties.EndTime < currentTime);
+        }
+
+        private void ReplaceFarAwayThermals(AircraftPositionState position)
+        {
+            var distantThermals = thermals.Where(x => x.CalcDistance(position) > thermalGenerator.Configuration.ReplaceDistance).ToList();
+            foreach(var t in distantThermals)
+            {
+                //Console.WriteLine($"Thermal removed {t.CalcDistance(position)}ft away: ({t.Properties.Latitude},{t.Properties.Longitude}) at {t.Properties.Altitude}ft.");
+
+                thermals.Remove(t);
+                CreateNewThermals(position);
+            }
+
+        }
+
+        private void CreateNewThermals(AircraftPositionState position)
+        {
             //If we have reached the max number of thermals, ignore
-            if(thermals.Count >= thermalGenerator.Configuration.NumberOfThermals.Max ||
+            if (thermals.Count >= thermalGenerator.Configuration.NumberOfThermals.Max ||
                 !connection.IsConnected)
             {
                 return;
@@ -88,12 +123,33 @@ namespace ThermalSim.Domain.Thermals
             do
             {
                 //Generate a new thermal
-                var t = thermalGenerator.GenerateThermalAroundAircraft(position);
-                thermals.Add(t);
+                var isNearAnotherThermal = true;
+                IThermalModel? newThermalModel = null;
+                int maxTry = 100;
+                int itr = 0;
+                //This loop ensures that we don't spawn thermals inside existing ones
+                do
+                {
+                    newThermalModel = thermalGenerator.GenerateThermalAroundAircraft(position);
+                    isNearAnotherThermal = thermals.Any(x => x.IsInThermal(
+                        newThermalModel.Properties.Latitude,
+                        newThermalModel.Properties.Longitude,
+                        newThermalModel.Properties.Altitude));
+                    itr++;
+                }
+                while (isNearAnotherThermal && itr < maxTry);
+
+                if (newThermalModel != null)
+                {
+                    //double distanceToAircraft = newThermalModel.CalcDistance(position);
+                    //Console.WriteLine($"Thermal created {distanceToAircraft}ft away: ({newThermalModel.Properties.Latitude},{newThermalModel.Properties.Longitude}) at {newThermalModel.Properties.Altitude}ft.");
+                    
+                    thermals.Add(newThermalModel);
+                }
             } //Repeat if we have less than the minimum number
             while (thermals.Count < thermalGenerator.Configuration.NumberOfThermals.Min);
         }
-
+        
         private void ApplyThermalEffect(AircraftPositionState position)
         {
             try
