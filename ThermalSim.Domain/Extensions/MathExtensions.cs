@@ -1,4 +1,5 @@
-﻿using ThermalSim.Domain.Position;
+﻿using System.Device.Location;
+using ThermalSim.Domain.Position;
 using ThermalSim.Domain.Thermals;
 
 namespace ThermalSim.Domain.Extensions
@@ -8,6 +9,11 @@ namespace ThermalSim.Domain.Extensions
         public static double ToRadians(this double angleInDegrees)
         {
             return (Math.PI / 180) * angleInDegrees;
+        }
+
+        public static double ToDegrees(this double angleInRad)
+        {
+            return (angleInRad / Math.PI * 180.0);
         }
 
         public static double CalcDistance(this IThermalModel model, double latitude, double longitude)
@@ -37,17 +43,22 @@ namespace ThermalSim.Domain.Extensions
 
 
         //Calculates the distance in feet between 2 points (a1,a2) and (b1,b2)
-        public static double CalcDistance(double a1, double a2, double b1, double b2)
+        public static double CalcDistance(double lat1, double lon1, double lat2, double lon2)
         {
-            var a1Rad = a1.ToRadians();
-            var a2Rad = a2.ToRadians();
-            var b1Rad = b1.ToRadians();
-            var b2Rad = b2.ToRadians();
-
-            return 20930000 * (Math.Acos(
-                Math.Cos(a1Rad) * Math.Cos(a2Rad) * Math.Cos(b1Rad) * Math.Cos(b2Rad) +
-                Math.Cos(a1Rad) * Math.Sin(a2Rad) * Math.Cos(b1Rad) * Math.Sin(b2Rad) +
-                Math.Sin(a1Rad) * Math.Sin(b1Rad)));
+            if ((lat1 == lat2) && (lon1 == lon2))
+            {
+                return 0.0;
+            }
+            else
+            {
+                double theta = lon1 - lon2;
+                double dist = Math.Sin(lat1.ToRadians()) * Math.Sin(lat2.ToRadians()) + Math.Cos(lat1.ToRadians()) * Math.Cos(lat2.ToRadians()) * Math.Cos(theta.ToRadians());
+                dist = Math.Acos(dist);
+                dist = dist.ToDegrees();
+                dist = dist * 60.0 * 1.1515 * 5280;
+                return (dist);
+            }
         }
+
     }
 }

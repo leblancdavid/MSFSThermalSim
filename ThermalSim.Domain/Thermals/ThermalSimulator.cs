@@ -76,6 +76,15 @@ namespace ThermalSim.Domain.Thermals
         {
             //Remove any thermals that have expired
             var currentTime = DateTime.Now;
+
+
+            var expiredThermals = thermals.Where(x => x.Properties.EndTime < currentTime);
+            foreach (var thermal in expiredThermals)
+            {
+                Console.WriteLine($"Thermal expired: ({thermal.Properties.Latitude},{thermal.Properties.Longitude}) at {thermal.Properties.Altitude}ft.");
+            }
+
+
             thermals.RemoveAll(x => x.Properties.EndTime < currentTime);
 
             //If we have reached the max number of thermals, ignore
@@ -106,6 +115,7 @@ namespace ThermalSim.Domain.Thermals
 
                 if(newThermalModel != null)
                 {
+                    Console.WriteLine($"Thermal created: ({newThermalModel.Properties.Latitude},{newThermalModel.Properties.Longitude}) at {newThermalModel.Properties.Altitude}ft.");
                     thermals.Add(newThermalModel);
                 }
             } //Repeat if we have less than the minimum number
@@ -129,7 +139,7 @@ namespace ThermalSim.Domain.Thermals
                     }
                 }
 
-                //DebugTrace(position, minDistance, nearestThermal != null);
+                DebugTrace(position, minDistance, nearestThermal != null);
 
                 //If we are not in a thermal, don't do anything
                 if (nearestThermal == null)
