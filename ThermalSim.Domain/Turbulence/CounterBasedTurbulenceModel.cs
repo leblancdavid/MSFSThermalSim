@@ -5,32 +5,22 @@ namespace ThermalSim.Domain.Turbulence
 {
     public class CounterBasedTurbulenceModel : ITurbulenceModel
     {
-        private readonly ValueRangeInt _framesBetweenTurbulence;
-        private readonly ValueRangeInt _turbulenceDuration;
-        private readonly ValueRangeDouble _turbulenceStrength;
-
-
         private int _counter;
         private int _resetCount;
         private int _duration;
         private double _maxTurbulence;
 
-        private double[] _smoothingKernel;
+        private double[] _smoothingKernel = null;
 
         private Random _random = new Random();
         
         private TurbulenceEffect? _turbulence = null;
 
-        private double x_scaler = 0.5;
-        private double y_scaler = 0.25;
-        private double z_scaler = 1.0;
+        public TurbulenceProperties Properties { get; set; }
 
-
-        public CounterBasedTurbulenceModel(ValueRangeInt framesBetweenTurbulence, ValueRangeInt turbulenceDuration, ValueRangeDouble turbulenceStrength)
+        public CounterBasedTurbulenceModel(TurbulenceProperties properties)
         {
-            _framesBetweenTurbulence = framesBetweenTurbulence;
-            _turbulenceDuration = turbulenceDuration;
-            _turbulenceStrength = turbulenceStrength;
+            Properties = properties;
         }
 
         private void UpdatesSmoothingKernel(int duration)
@@ -85,9 +75,9 @@ namespace ThermalSim.Domain.Turbulence
             //For now let's make it simple
             _turbulence = new TurbulenceEffect()
             {
-                RotationAccelerationBodyX = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * x_scaler,
-                RotationAccelerationBodyY = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * y_scaler,
-                RotationAccelerationBodyZ = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * z_scaler,
+                RotationAccelerationBodyX = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * Properties.x_Scaler,
+                RotationAccelerationBodyY = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * Properties.y_Scaler,
+                RotationAccelerationBodyZ = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * Properties.z_Scaler,
             };
 
             return _turbulence;
@@ -95,9 +85,9 @@ namespace ThermalSim.Domain.Turbulence
 
         private void ResetCount()
         {
-            _resetCount = _framesBetweenTurbulence.GetRandomValue(_random);
-            _duration = _turbulenceDuration.GetRandomValue(_random);
-            _maxTurbulence = _turbulenceStrength.GetRandomValue(_random);
+            _resetCount = Properties.FramesBetweenTurbulence.GetRandomValue(_random);
+            _duration = Properties.TurbulenceDuration.GetRandomValue(_random);
+            _maxTurbulence = Properties.TurbulenceStrength.GetRandomValue(_random);
             _counter = 0;
         }
     }

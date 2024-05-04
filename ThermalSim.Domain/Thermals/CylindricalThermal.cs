@@ -15,11 +15,7 @@ namespace ThermalSim.Domain.Thermals
         public double SmoothingFactor { get; set; } = 0.05f;
         public double TimeFactor { get; set; } = 0.02;
         public double LiftModifier { get; set; } = 0.0;
-        public ITurbulenceModel TurbulenceModel { get; set; } = new CounterBasedTurbulenceModel(
-            new ValueRangeInt(120, 1200), //Time between turbulence should vary between roughly 2 - 20 seconds 
-            new ValueRangeInt(60, 360), //The duration of the turbulence is anywhere from 1 - 5 seconds
-            new ValueRangeDouble(20.0, 100.0) //The strength of the turbulence varies          
-            );
+        public ITurbulenceModel TurbulenceModel { get; set; } = new CounterBasedTurbulenceModel(new TurbulenceProperties());
 
         public ThermalAltitudeChange? GetThermalAltitudeChange(AircraftPositionState position, AircraftStateChangeInfo? stateChange)
         {

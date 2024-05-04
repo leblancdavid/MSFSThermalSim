@@ -181,15 +181,17 @@ namespace ThermalSim.Domain.Thermals
                 {
                     connection.Connection?.SetDataOnSimObject(SimDataEventTypes.ThermalVelocityUpdate,
                         1u, SIMCONNECT_DATA_SET_FLAG.DEFAULT, velocityChange);
+
+                    var turbulence = nearestThermal.TurbulenceModel.GetTurbulenceEffect(position);
+                    if (turbulence != null)
+                    {
+                        Console.WriteLine($"Turbulence: ({turbulence.Value.RotationAccelerationBodyX}, {turbulence.Value.RotationAccelerationBodyY}, {turbulence.Value.RotationAccelerationBodyZ})");
+                        connection.Connection?.SetDataOnSimObject(SimDataEventTypes.TurbulenceEffect,
+                            1u, SIMCONNECT_DATA_SET_FLAG.DEFAULT, turbulence);
+                    }
                 }
 
-                var turbulence = nearestThermal.TurbulenceModel.GetTurbulenceEffect(position);
-                if (turbulence != null)
-                {
-                    Console.WriteLine($"Turbulence: ({turbulence.Value.RotationAccelerationBodyX}, {turbulence.Value.RotationAccelerationBodyY}, {turbulence.Value.RotationAccelerationBodyZ})");
-                    connection.Connection?.SetDataOnSimObject(SimDataEventTypes.TurbulenceEffect,
-                        1u, SIMCONNECT_DATA_SET_FLAG.DEFAULT, turbulence);
-                }
+                
             }
             catch(Exception ex)
             {
