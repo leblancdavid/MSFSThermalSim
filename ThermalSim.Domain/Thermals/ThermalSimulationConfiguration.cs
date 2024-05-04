@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-using ThermalSim.Domain.Position;
+﻿using ThermalSim.Domain.Position;
 
 namespace ThermalSim.Domain.Thermals
 {
@@ -22,6 +21,7 @@ namespace ThermalSim.Domain.Thermals
         public ValueRangeDouble LiftShapeFactor { get; set; } = new ValueRangeDouble(0.0, 1.0);
         public ValueRangeDouble WindSpeed { get; set; } = new ValueRangeDouble(0.0, 50.0);
         public ValueRangeDouble WindDirection { get; set; } = new ValueRangeDouble(0.0, 360.0);
+        public double ReplaceDistance { get; set; }
 
         public ThermalProperties GenerateRandomThermalProperties(Random random, AircraftPositionState position)
         {

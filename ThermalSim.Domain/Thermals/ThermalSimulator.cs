@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.FlightSimulator.SimConnect;
 using ThermalSim.Domain.Connection;
+using ThermalSim.Domain.Extensions;
 using ThermalSim.Domain.Position;
 
 namespace ThermalSim.Domain.Thermals
@@ -74,21 +75,37 @@ namespace ThermalSim.Domain.Thermals
 
         private void UpdateThermalModels(AircraftPositionState position)
         {
-            //Remove any thermals that have expired
+            //Removed all thermals that have expired
+            RemoveExpiredThermals();
+
+
+
+            //Create new thermals
+            CreateNewThermals(position);
+        }
+
+        private void RemoveExpiredThermals()
+        {
             var currentTime = DateTime.Now;
 
-
-            var expiredThermals = thermals.Where(x => x.Properties.EndTime < currentTime);
-            foreach (var thermal in expiredThermals)
-            {
-                Console.WriteLine($"Thermal expired: ({thermal.Properties.Latitude},{thermal.Properties.Longitude}) at {thermal.Properties.Altitude}ft.");
-            }
-
+            //var expiredThermals = thermals.Where(x => x.Properties.EndTime < currentTime);
+            //foreach (var thermal in expiredThermals)
+            //{
+            //    Console.WriteLine($"Thermal expired: ({thermal.Properties.Latitude},{thermal.Properties.Longitude}) at {thermal.Properties.Altitude}ft.");
+            //}
 
             thermals.RemoveAll(x => x.Properties.EndTime < currentTime);
+        }
 
+        private void ReplaceFarAwayThermals(AircraftPositionState position)
+        {
+            var distantThermals = thermals.Where(x => x.CalcDistance(position) > thermalGenerator.Configuration.);
+        }
+
+        private void CreateNewThermals(AircraftPositionState position)
+        {
             //If we have reached the max number of thermals, ignore
-            if(thermals.Count >= thermalGenerator.Configuration.NumberOfThermals.Max ||
+            if (thermals.Count >= thermalGenerator.Configuration.NumberOfThermals.Max ||
                 !connection.IsConnected)
             {
                 return;
@@ -113,15 +130,16 @@ namespace ThermalSim.Domain.Thermals
                 }
                 while (isNearAnotherThermal && itr < maxTry);
 
-                if(newThermalModel != null)
+                if (newThermalModel != null)
                 {
-                    Console.WriteLine($"Thermal created: ({newThermalModel.Properties.Latitude},{newThermalModel.Properties.Longitude}) at {newThermalModel.Properties.Altitude}ft.");
+                    double distanceToAircraft = newThermalModel.CalcDistance(position);
+                    Console.WriteLine($"Thermal created {distanceToAircraft}ft away: ({newThermalModel.Properties.Latitude},{newThermalModel.Properties.Longitude}) at {newThermalModel.Properties.Altitude}ft.");
                     thermals.Add(newThermalModel);
                 }
             } //Repeat if we have less than the minimum number
             while (thermals.Count < thermalGenerator.Configuration.NumberOfThermals.Min);
         }
-
+        
         private void ApplyThermalEffect(AircraftPositionState position)
         {
             try
@@ -139,7 +157,7 @@ namespace ThermalSim.Domain.Thermals
                     }
                 }
 
-                DebugTrace(position, minDistance, nearestThermal != null);
+                //DebugTrace(position, minDistance, nearestThermal != null);
 
                 //If we are not in a thermal, don't do anything
                 if (nearestThermal == null)
