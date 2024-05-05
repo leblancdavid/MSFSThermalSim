@@ -1,5 +1,4 @@
-﻿using System.Device.Location;
-using ThermalSim.Domain.Position;
+﻿using ThermalSim.Domain.Position;
 using ThermalSim.Domain.Thermals;
 
 namespace ThermalSim.Domain.Extensions

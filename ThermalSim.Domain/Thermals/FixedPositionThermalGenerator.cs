@@ -1,4 +1,5 @@
 ﻿using ThermalSim.Domain.Position;
+using ThermalSim.Domain.Turbulence;
 
 namespace ThermalSim.Domain.Thermals
 {
@@ -21,7 +22,8 @@ namespace ThermalSim.Domain.Thermals
             return new CylindricalThermal
             {
                 ObjectId = lastId,
-                Properties = configuration.GenerateRandomThermalProperties(random, position)
+                Properties = configuration.GenerateRandomThermalProperties(random, position),
+                TurbulenceModel = new CounterBasedTurbulenceModel(configuration.GenerateRandomTurbulenceProperties(random))
             };
         }
 
@@ -32,7 +34,8 @@ namespace ThermalSim.Domain.Thermals
             var thermal = new CylindricalThermal
             {
                 ObjectId = lastId,
-                Properties = configuration.GenerateRandomThermalProperties(random, position)
+                Properties = configuration.GenerateRandomThermalProperties(random, position),
+                TurbulenceModel = new CounterBasedTurbulenceModel(configuration.GenerateRandomTurbulenceProperties(random))
             };
 
             thermal.Properties.Longitude = position.Longitude;
