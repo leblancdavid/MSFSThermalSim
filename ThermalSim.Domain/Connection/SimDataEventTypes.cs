@@ -9,6 +9,7 @@
     {
         AircraftPosition,
         ThermalVelocityUpdate,
-        TurbulenceEffect
+        TurbulenceEffect,
+        TowingSpeedUpdate
     }
 }

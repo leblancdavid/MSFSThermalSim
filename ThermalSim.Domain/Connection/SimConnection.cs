@@ -4,6 +4,7 @@ using System.Net;
 using System.Windows.Forms;
 using ThermalSim.Domain.Position;
 using ThermalSim.Domain.Thermals;
+using ThermalSim.Domain.Towing;
 using ThermalSim.Domain.Turbulence;
 using ThermalSim.Helpers;
 
@@ -75,6 +76,7 @@ namespace ThermalSim.Domain.Connection
             RegisterAircraftPositionDefinition(); 
             RegisterThermalAltitudeChangeDefinition();
             RegisterTurbulenceEffectDefinition();
+            RegisterTowingSpeedUpdateDefinition();
 
             messagePumpRunning.Set();
             Application.Run();
@@ -183,6 +185,14 @@ namespace ThermalSim.Domain.Connection
             RegisterDataDefinition<TurbulenceEffect>(SimDataEventTypes.TurbulenceEffect,
                 ("ROTATION ACCELERATION BODY X", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
                 ("ROTATION ACCELERATION BODY Y", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
+                ("ROTATION ACCELERATION BODY Z", "Feet per second squared", (SIMCONNECT_DATATYPE)4)
+            );
+        }
+
+        private void RegisterTowingSpeedUpdateDefinition()
+        {
+            RegisterDataDefinition<TowingSpeedUpdate>(SimDataEventTypes.TowingSpeedUpdate,
+                ("VELOCITY BODY Y", "Feet per second", (SIMCONNECT_DATATYPE)4),
                 ("ROTATION ACCELERATION BODY Z", "Feet per second squared", (SIMCONNECT_DATATYPE)4)
             );
         }
