@@ -1,4 +1,5 @@
 ﻿using ThermalSim.Domain.Position;
+using ThermalSim.Domain.Turbulence;
 
 namespace ThermalSim.Domain.Thermals
 {
@@ -10,9 +11,9 @@ namespace ThermalSim.Domain.Thermals
         public ValueRangeDouble AltitudeFromGround { get; set; } = new ValueRangeDouble(50.0, 200.0);
         public ValueRangeDouble SpawnDistance { get; set; } = new ValueRangeDouble(0.005, 0.01); //This is in gps degrees
         public ValueRangeDouble RelativeSpawnAltitude { get; set; } = new ValueRangeDouble(-1000.0, 0.0);
-        public ValueRangeDouble Radius { get; set; } = new ValueRangeDouble(500.0, 2000.0);
+        public ValueRangeDouble Radius { get; set; } = new ValueRangeDouble(1000.0, 2000.0);
         public ValueRangeDouble Height { get; set; } = new ValueRangeDouble(1000.0, 5000.0);
-        public ValueRangeDouble CoreLiftRate { get; set; } = new ValueRangeDouble(5.0, 30.0);
+        public ValueRangeDouble CoreLiftRate { get; set; } = new ValueRangeDouble(5.0, 40.0);
         public ValueRangeDouble CoreRadiusPercent { get; set; } = new ValueRangeDouble(0.7, 0.9);
         public ValueRangeDouble CoreTurbulencePercent { get; set; } = new ValueRangeDouble(0.0, 2.0);
         public ValueRangeDouble SinkRate { get; set; } = new ValueRangeDouble(-20.0, - 5.0);
@@ -22,6 +23,9 @@ namespace ThermalSim.Domain.Thermals
         public ValueRangeDouble WindSpeed { get; set; } = new ValueRangeDouble(0.0, 50.0);
         public ValueRangeDouble WindDirection { get; set; } = new ValueRangeDouble(0.0, 360.0);
         public double ReplaceDistance { get; set; } = 20000;
+        public ValueRangeInt FramesBetweenTurbulence { get; set; } = new ValueRangeInt(120, 1200);
+        public ValueRangeInt TurbulenceDuration { get; set; } = new ValueRangeInt(60, 360);
+        public ValueRangeDouble TurbulenceStrength { get; set; } = new ValueRangeDouble(50.0, 100.0);
 
         public ThermalProperties GenerateRandomThermalProperties(Random random, AircraftPositionState position)
         {
@@ -51,6 +55,17 @@ namespace ThermalSim.Domain.Thermals
             };
 
             return properties;
+        }
+
+        public TurbulenceProperties GenerateRandomTurbulenceProperties(Random random)
+        {
+            var strength = TurbulenceStrength.GetRandomValue(random);
+            return new TurbulenceProperties()
+            {
+                FramesBetweenTurbulence = FramesBetweenTurbulence,
+                TurbulenceDuration = TurbulenceDuration,
+                TurbulenceStrength = new ValueRangeDouble(strength / 10.0, strength)
+            };
         }
 
 

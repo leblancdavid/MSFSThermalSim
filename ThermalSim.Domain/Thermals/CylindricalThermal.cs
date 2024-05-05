@@ -27,9 +27,6 @@ namespace ThermalSim.Domain.Thermals
             if(position.AltitudeAboveGround < Properties.MinAltitudeFromGround)
                 return null;
 
-            if (stateChange?.AverageVelocity < 50.0) //TODO this number should be based on the plane's stall speed
-                return null;
-
             var lift = CalcBaseLiftValue(distance) + UpdateLiftModifier(distance);
 
             var verticalSpeed = stateChange == null ? position.VerticalSpeed : stateChange.AverageVerticalVelocity;

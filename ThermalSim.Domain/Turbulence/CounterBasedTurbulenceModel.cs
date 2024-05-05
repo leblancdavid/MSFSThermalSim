@@ -46,7 +46,7 @@ namespace ThermalSim.Domain.Turbulence
                 if(_counter >= _duration)
                 {
                     _turbulence = null;
-                    ResetCount();
+                    //ResetCount();
                     return _turbulence;
                 }
 

@@ -185,7 +185,7 @@ namespace ThermalSim.Domain.Thermals
                     var turbulence = nearestThermal.TurbulenceModel.GetTurbulenceEffect(position);
                     if (turbulence != null)
                     {
-                        Console.WriteLine($"Turbulence: ({turbulence.Value.RotationAccelerationBodyX}, {turbulence.Value.RotationAccelerationBodyY}, {turbulence.Value.RotationAccelerationBodyZ})");
+                        //Console.WriteLine($"Turbulence: ({turbulence.Value.RotationAccelerationBodyX}, {turbulence.Value.RotationAccelerationBodyY}, {turbulence.Value.RotationAccelerationBodyZ})");
                         connection.Connection?.SetDataOnSimObject(SimDataEventTypes.TurbulenceEffect,
                             1u, SIMCONNECT_DATA_SET_FLAG.DEFAULT, turbulence);
                     }
