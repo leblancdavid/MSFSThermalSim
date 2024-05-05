@@ -14,7 +14,7 @@ namespace ThermalSim.Domain.Thermals
         public ValueRangeDouble Radius { get; set; } = new ValueRangeDouble(1000.0, 2000.0);
         public ValueRangeDouble Height { get; set; } = new ValueRangeDouble(1000.0, 5000.0);
         public ValueRangeDouble CoreLiftRate { get; set; } = new ValueRangeDouble(5.0, 40.0);
-        public ValueRangeDouble CoreRadiusPercent { get; set; } = new ValueRangeDouble(0.7, 0.9);
+        public ValueRangeDouble CoreRadiusPercent { get; set; } = new ValueRangeDouble(0.85, 0.90);
         public ValueRangeDouble CoreTurbulencePercent { get; set; } = new ValueRangeDouble(0.0, 2.0);
         public ValueRangeDouble SinkRate { get; set; } = new ValueRangeDouble(-20.0, - 5.0);
         public ValueRangeDouble SinkTurbulencePercent { get; set; } = new ValueRangeDouble(0.0, 2.0);
@@ -25,7 +25,7 @@ namespace ThermalSim.Domain.Thermals
         public double ReplaceDistance { get; set; } = 20000;
         public ValueRangeInt FramesBetweenTurbulence { get; set; } = new ValueRangeInt(120, 1200);
         public ValueRangeInt TurbulenceDuration { get; set; } = new ValueRangeInt(60, 360);
-        public ValueRangeDouble TurbulenceStrength { get; set; } = new ValueRangeDouble(50.0, 100.0);
+        public ValueRangeDouble TurbulenceStrength { get; set; } = new ValueRangeDouble(20.0, 80.0);
 
         public ThermalProperties GenerateRandomThermalProperties(Random random, AircraftPositionState position)
         {
@@ -46,7 +46,7 @@ namespace ThermalSim.Domain.Thermals
                 CoreLiftRate = coreRate,
                 CoreTurbulencePercent = CoreTurbulencePercent.GetRandomValue(random),
                 CoreRadiusPercent = coreRadius,
-                SinkRate = coreRate / -2.0,
+                SinkRate = coreRate * -0.80,
                 SinkTurbulencePercent = SinkTurbulencePercent.GetRandomValue(random),
                 SinkTransitionRadiusPercent = coreRadius + transitionRadius,
                 WindSpeed = WindSpeed.GetRandomValue(random),
