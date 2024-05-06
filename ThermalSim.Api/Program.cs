@@ -1,6 +1,7 @@
 using ThermalSim.Api.Services;
 using ThermalSim.Domain.Connection;
 using ThermalSim.Domain.Thermals;
+using ThermalSim.Domain.Towing;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<ISimConnection, SimConnection>();
 builder.Services.AddSingleton<IThermalSimulator, ThermalSimulator>();
+builder.Services.AddSingleton<ITowingService, TowingService>();
 builder.Services.AddTransient<IThermalGenerator, FixedPositionThermalGenerator>();
 
 builder.Services.AddHostedService<ThermalSimulatorBackgroundService>();

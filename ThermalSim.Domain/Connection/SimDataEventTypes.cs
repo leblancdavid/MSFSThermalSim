@@ -2,13 +2,16 @@
 {
     public enum SimDataRequests
     {
-        AIRCRAFT_POSITION
+        AIRCRAFT_POSITION,
+        ENUM_INPUTS,
+        INPUT_EVENT
     }
 
     public enum SimDataEventTypes
     {
         AircraftPosition,
         ThermalVelocityUpdate,
-        TurbulenceEffect
+        TurbulenceEffect,
+        TowingSpeedUpdate
     }
 }

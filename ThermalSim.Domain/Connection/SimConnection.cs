@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.FlightSimulator.SimConnect;
+using System.Diagnostics;
 using System.Net;
 using System.Windows.Forms;
 using ThermalSim.Domain.Position;
 using ThermalSim.Domain.Thermals;
+using ThermalSim.Domain.Towing;
 using ThermalSim.Domain.Turbulence;
 using ThermalSim.Helpers;
 
@@ -59,27 +61,41 @@ namespace ThermalSim.Domain.Connection
 
         private void ConnectThread()
         {
-            messageHandler = new MessageHandler();
-            messageHandler.MessageReceived += MessageHandler_MessageReceived;
-            messageHandler.CreateHandle();
+            try
+            {
+                messageHandler = new MessageHandler();
+                messageHandler.MessageReceived += MessageHandler_MessageReceived;
+                messageHandler.CreateHandle();
 
-            Connection = new SimConnect("ThermalSim", messageHandler.Handle, ConnectionConstants.WM_USER_SIMCONNECT, null, 0);
+                Connection = new SimConnect("ThermalSim", messageHandler.Handle, ConnectionConstants.WM_USER_SIMCONNECT, null, 0);
 
-            Connection.OnRecvOpen += new SimConnect.RecvOpenEventHandler(Connection_OnRecvOpen);
-            Connection.OnRecvQuit += new SimConnect.RecvQuitEventHandler(Connection_OnRecvQuit);
+                Connection.OnRecvOpen += new SimConnect.RecvOpenEventHandler(Connection_OnRecvOpen);
+                Connection.OnRecvQuit += new SimConnect.RecvQuitEventHandler(Connection_OnRecvQuit);
 
-            Connection.OnRecvException += Connection_OnRecvException;
-            Connection.OnRecvEvent += Connection_OnRecvEvent;
-            Connection.OnRecvSimobjectData += Connection_OnRecvSimobjectData;
+                Connection.OnRecvException += Connection_OnRecvException;
+                Connection.OnRecvEvent += Connection_OnRecvEvent;
+                Connection.OnRecvSimobjectData += Connection_OnRecvSimobjectData;
 
-            RegisterAircraftPositionDefinition(); 
-            RegisterThermalAltitudeChangeDefinition();
-            RegisterTurbulenceEffectDefinition();
+                //TODO: figure out how to get input events
+                //Connection.OnRecvEnumerateInputEvents += Connection_OnRecvEnumerateInputEvents;
+                //Connection.OnRecvGetInputEvent += Connection_OnRecvGetInputEvent;
+                //Connection.EnumerateInputEvents(SimDataRequests.ENUM_INPUTS);
 
-            messagePumpRunning.Set();
-            Application.Run();
+                RegisterAircraftPositionDefinition();
+                RegisterThermalAltitudeChangeDefinition();
+                RegisterTurbulenceEffectDefinition();
+                RegisterTowingSpeedUpdateDefinition();
+
+                messagePumpRunning.Set();
+                Application.Run();
+            }
+            catch(Exception ex)
+            {
+                logger.LogError(ex, $"Unable to connect to SimConnect! Error: {ex.Message}");
+            }
         }
 
+        
         private void MessageHandler_MessageReceived(object? sender, System.Windows.Forms.Message e)
         {
             if (e.Msg == WM_USER_SIMCONNECT && Connection != null)
@@ -159,6 +175,33 @@ namespace ThermalSim.Domain.Connection
             }
         }
 
+        private void Connection_OnRecvEnumerateInputEvents(SimConnect sender, SIMCONNECT_RECV_ENUMERATE_INPUT_EVENTS data)
+        {
+            for (int i = 0; i < data.dwArraySize; ++i)
+            {
+                SIMCONNECT_INPUT_EVENT_DESCRIPTOR msg = (SIMCONNECT_INPUT_EVENT_DESCRIPTOR)data.rgData[i];
+                Connection?.GetInputEvent(SimDataRequests.INPUT_EVENT, msg.Hash);
+                Connection?.EnumerateInputEventParams(msg.Hash);
+            }
+        }
+
+        private void Connection_OnRecvGetInputEvent(SimConnect sender, SIMCONNECT_RECV_GET_INPUT_EVENT data)
+        {
+            switch (data.eType)
+            {
+                case SIMCONNECT_INPUT_EVENT_TYPE.DOUBLE:
+                    double d = (double)data.Value[0];
+                    Console.WriteLine("Receive Double: " + d.ToString());
+                    break;
+                case SIMCONNECT_INPUT_EVENT_TYPE.STRING:
+                    SimConnect.InputEventString str = (SimConnect.InputEventString)data.Value[0];
+                    Console.WriteLine("Receive String: " + str.value.ToString());
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private void RequestDataOnConnected()
         {
             Connection?.RequestDataOnSimObject(
@@ -184,6 +227,15 @@ namespace ThermalSim.Domain.Connection
                 ("ROTATION ACCELERATION BODY X", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
                 ("ROTATION ACCELERATION BODY Y", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
                 ("ROTATION ACCELERATION BODY Z", "Feet per second squared", (SIMCONNECT_DATATYPE)4)
+            );
+        }
+
+        private void RegisterTowingSpeedUpdateDefinition()
+        {
+            RegisterDataDefinition<TowingSpeedUpdate>(SimDataEventTypes.TowingSpeedUpdate,
+                ("VELOCITY BODY Z", "Feet per second", (SIMCONNECT_DATATYPE)4),
+                ("ROTATION VELOCITY BODY Y", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
+                ("ROTATION VELOCITY BODY Z", "Feet per second squared", (SIMCONNECT_DATATYPE)4)
             );
         }
 
