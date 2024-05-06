@@ -9,9 +9,9 @@ namespace ThermalSim.Domain.Towing
     {
         [SimConnectVariable(Name = "VELOCITY BODY X", Unit = "Feet per second", Type = SIMCONNECT_DATATYPE.FLOAT64)]
         public double VelocityBodyZ;
-        [SimConnectVariable(Name = "ROTATION ACCELERATION BODY Y", Unit = "Feet per second squared", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
-        public double RotationAccelerationBodyY;
-        [SimConnectVariable(Name = "ROTATION ACCELERATION BODY Z", Unit = "Feet per second squared", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
-        public double RotationAccelerationBodyZ;
+        [SimConnectVariable(Name = "ROTATION VELOCITY BODY Y", Unit = "Feet per second squared", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
+        public double RotationVelocityBodyY;
+        [SimConnectVariable(Name = "ROTATION VELOCITY BODY Z", Unit = "Feet per second squared", Type = SIMCONNECT_DATATYPE.FLOAT64, SetType = SetType.None)]
+        public double RotationVelocityBodyZ;
     }
 }

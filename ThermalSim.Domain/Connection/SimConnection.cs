@@ -234,8 +234,8 @@ namespace ThermalSim.Domain.Connection
         {
             RegisterDataDefinition<TowingSpeedUpdate>(SimDataEventTypes.TowingSpeedUpdate,
                 ("VELOCITY BODY Z", "Feet per second", (SIMCONNECT_DATATYPE)4),
-                ("ROTATION ACCELERATION BODY Y", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
-                ("ROTATION ACCELERATION BODY Z", "Feet per second squared", (SIMCONNECT_DATATYPE)4)
+                ("ROTATION VELOCITY BODY Y", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
+                ("ROTATION VELOCITY BODY Z", "Feet per second squared", (SIMCONNECT_DATATYPE)4)
             );
         }
 

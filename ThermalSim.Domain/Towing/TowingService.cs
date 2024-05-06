@@ -11,6 +11,10 @@ namespace ThermalSim.Domain.Towing
         private readonly ISimConnection connection;
         private readonly ILogger<TowingService> logger;
 
+        private const double ROTATION_FACTOR = -0.05;
+        private const double RUDDER_FACTOR = 0.25;
+        private const double STOP_ROTATION_THRESHOLD = 0.05;
+
         public TowingService(ISimConnection connection, ILogger<TowingService> logger)
         {
             this.connection = connection;
@@ -48,19 +52,23 @@ namespace ThermalSim.Domain.Towing
                     return;
                 }
 
-                var rotationFactor = -2.0;
-                var rudderFactor = 50.0;
+                var rotation = ROTATION_FACTOR * e.Position.Bank;
+                var rudder = RUDDER_FACTOR * e.Position.RudderPosition;
 
                 var speed = TowingSpeed * (1.0 - e.Position.SpoilerHandlePosition / 100.0);
-                var rotation = rotationFactor * e.Position.Bank;
-                var rudder = rudderFactor * e.Position.RudderPosition;
+
+                //Stop towing if the the wing is being lifted
+                if(Math.Abs(rotation) > STOP_ROTATION_THRESHOLD)
+                {
+                    speed = 0.0;
+                }
+
                 var update = new TowingSpeedUpdate()
                 {
-                    RotationAccelerationBodyY = rudder,
-                    RotationAccelerationBodyZ = rotation,
+                    RotationVelocityBodyY = rudder,
+                    RotationVelocityBodyZ = rotation,
                     VelocityBodyZ = speed,
                 };
-                //e.Position.ThrottleLeverPosition1 = e.Position.ThrottleLeverPosition2;
 
                 connection.Connection?.SetDataOnSimObject(SimDataEventTypes.TowingSpeedUpdate,
                             1u, SIMCONNECT_DATA_SET_FLAG.DEFAULT, update);
