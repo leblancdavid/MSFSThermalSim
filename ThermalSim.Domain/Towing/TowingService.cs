@@ -18,6 +18,7 @@ namespace ThermalSim.Domain.Towing
         }
 
         public bool IsTowing { get; private set; }
+        public double TowingSpeed { get; set; }
 
         public bool StartTowing()
         {
@@ -42,7 +43,12 @@ namespace ThermalSim.Domain.Towing
         {
             try
             {
-                var speed = e.Position.ThrottleLeverPosition1;
+                if (!IsTowing || e.Position.IsOnGround == 0 || e.Position.GearHandlePosition == 0)
+                {
+                    return;
+                }
+
+                //var speed = ;
                 //e.Position.ThrottleLeverPosition1 = e.Position.ThrottleLeverPosition2;
 
                 //connection.Connection?.SetDataOnSimObject(SimDataEventTypes.TurbulenceEffect,
@@ -50,7 +56,7 @@ namespace ThermalSim.Domain.Towing
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, $"Error occurred while processing thermals: {ex.Message}");
+                logger.LogError(ex, $"Error occurred while updating the towing status: {ex.Message}");
             }
         }
 
