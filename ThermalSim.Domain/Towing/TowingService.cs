@@ -18,7 +18,7 @@ namespace ThermalSim.Domain.Towing
         }
 
         public bool IsTowing { get; private set; }
-        public double TowingSpeed { get; set; }
+        public double TowingSpeed { get; set; } = 5.0;
 
         public bool StartTowing()
         {
@@ -48,11 +48,22 @@ namespace ThermalSim.Domain.Towing
                     return;
                 }
 
-                //var speed = ;
+                var rotationFactor = -2.0;
+                var rudderFactor = 50.0;
+
+                var speed = TowingSpeed * (1.0 - e.Position.SpoilerHandlePosition / 100.0);
+                var rotation = rotationFactor * e.Position.Bank;
+                var rudder = rudderFactor * e.Position.RudderPosition;
+                var update = new TowingSpeedUpdate()
+                {
+                    RotationAccelerationBodyY = rudder,
+                    RotationAccelerationBodyZ = rotation,
+                    VelocityBodyZ = speed,
+                };
                 //e.Position.ThrottleLeverPosition1 = e.Position.ThrottleLeverPosition2;
 
-                //connection.Connection?.SetDataOnSimObject(SimDataEventTypes.TurbulenceEffect,
-                //            1u, SIMCONNECT_DATA_SET_FLAG.DEFAULT, turbulence);
+                connection.Connection?.SetDataOnSimObject(SimDataEventTypes.TowingSpeedUpdate,
+                            1u, SIMCONNECT_DATA_SET_FLAG.DEFAULT, update);
             }
             catch (Exception ex)
             {
