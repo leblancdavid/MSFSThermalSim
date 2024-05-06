@@ -52,5 +52,19 @@ namespace ThermalSim.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut("speed/{speed}")]
+        public IActionResult SetTowingSpeed(double speed)
+        {
+            try
+            {
+                towingService.TowingSpeed = speed;
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

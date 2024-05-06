@@ -14,7 +14,8 @@ namespace ThermalSim.Domain.Towing
         private const double ROTATION_FACTOR = -0.05;
         private const double RUDDER_FACTOR = 0.25;
         private const double STOP_ROTATION_THRESHOLD = 0.05;
-
+        private const double MAX_TOW_SPEED = 20.0;
+        private const double MIN_TOW_SPEED = -20.0;
         public TowingService(ISimConnection connection, ILogger<TowingService> logger)
         {
             this.connection = connection;
@@ -22,7 +23,27 @@ namespace ThermalSim.Domain.Towing
         }
 
         public bool IsTowing { get; private set; }
-        public double TowingSpeed { get; set; } = 5.0;
+
+        private double _towSpeed = 5.0;
+        public double TowingSpeed 
+        { 
+            get
+            {
+                return _towSpeed;
+            }
+            set
+            {
+                _towSpeed = value;
+                if(_towSpeed < MIN_TOW_SPEED)
+                {
+                    _towSpeed = MIN_TOW_SPEED;
+                }
+                if(_towSpeed > MAX_TOW_SPEED)
+                {
+                    _towSpeed = MAX_TOW_SPEED;
+                }
+            }
+        }
 
         public bool StartTowing()
         {
