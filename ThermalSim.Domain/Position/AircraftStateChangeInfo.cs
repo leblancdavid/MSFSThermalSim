@@ -31,6 +31,7 @@ namespace ThermalSim.Domain.Position
         public AircraftStateChangeInfo(ILogger logger)
         {
             this.logger = logger;
+            this._thermalState = ThermalPositionState.NotInThermal;
         }
 
     }

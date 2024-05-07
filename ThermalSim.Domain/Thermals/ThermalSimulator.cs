@@ -172,6 +172,9 @@ namespace ThermalSim.Domain.Thermals
                 //If we are not in a thermal, don't do anything
                 if (nearestThermal == null)
                 {
+                    if(stateTracker.AircraftStateChangeInfo != null)
+                        stateTracker.AircraftStateChangeInfo.ThermalState = ThermalPositionState.NotInThermal;
+
                     return;
                 }
 
