@@ -142,7 +142,7 @@ namespace ThermalSim.Domain.Thermals
                 if (newThermalModel != null)
                 {
                     double distanceToAircraft = newThermalModel.CalcDistance(position);
-                    Console.WriteLine($"Thermal created {distanceToAircraft}ft away: ({newThermalModel.Properties.Latitude},{newThermalModel.Properties.Longitude}) at {newThermalModel.Properties.Altitude}ft.");
+                    logger.LogInformation($"Thermal created {distanceToAircraft}ft away: ({newThermalModel.Properties.Latitude},{newThermalModel.Properties.Longitude}) at {newThermalModel.Properties.Altitude}ft.");
                     
                     thermals.Add(newThermalModel);
                 }
@@ -224,7 +224,7 @@ namespace ThermalSim.Domain.Thermals
         private void DebugTrace(AircraftPositionState position, double distanceToNearest, bool inThermal)
         {
             string thermalMsg = inThermal ? "(IN THERMAL)" : "";
-            Console.WriteLine($"Aircraft: ({position.Latitude},{position.Longitude}) at {position.Altitude}ft. Nearest Thermal: {distanceToNearest}ft {thermalMsg}");
+            logger.LogInformation($"Aircraft: ({position.Latitude},{position.Longitude}) at {position.Altitude}ft. Nearest Thermal: {distanceToNearest}ft {thermalMsg}");
         }
     }
 }

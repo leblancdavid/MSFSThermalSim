@@ -21,7 +21,7 @@ namespace ThermalSim.Domain.Position
             {
                 if (_thermalState != value)
                 {
-                    logger.LogInformation($"{_thermalState} -> {value}");
+                    logger.LogInformation($"{value} <- {_thermalState}");
                     _thermalState = value;
                 }
             }
