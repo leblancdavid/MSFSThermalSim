@@ -1,10 +1,16 @@
 ﻿namespace ThermalSim.Domain.Turbulence
 {
-    public class SinusTurbulenceKernel : ITurbulenceKernel
+    public class SineTurbulenceKernel : ITurbulenceKernel
     {
+        private readonly double piWaves;
+
+        public SineTurbulenceKernel(double piWaves = 3.0) 
+        {
+            this.piWaves = piWaves;
+        }
         public double[] GetTurbulenceKernel(int duration)
         {
-            double incr = (Math.PI * 3) / (double)duration;
+            double incr = (Math.PI * piWaves) / (double)duration;
 
             var kernel = new double[duration];
             double sigma = 1.0;

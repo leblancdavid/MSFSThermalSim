@@ -1,5 +1,4 @@
 ﻿using ThermalSim.Domain.Position;
-using ThermalSim.Domain.Thermals;
 
 namespace ThermalSim.Domain.Turbulence
 {
@@ -29,7 +28,7 @@ namespace ThermalSim.Domain.Turbulence
             }
             else
             {
-                _turbulenceKernel = new SinusTurbulenceKernel();
+                _turbulenceKernel = new CosineTurbulenceKernel();
             }
         }
 
