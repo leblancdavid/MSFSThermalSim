@@ -58,11 +58,17 @@ namespace ThermalSim.Domain.Extensions
             return lift;
         }
 
-        public static double ApplyThermalAltitudeModifier(this ref double lift, double percentHeightInThermal, double weakeningFactor = 0.9)
+        public static double ApplyThermalAltitudeModifier(this ref double lift, double percentHeightInThermal, double weakeningFactor = 0.9, double liftHeightThreshold = 0.95)
         {
             double topLift = lift * weakeningFactor;
 
             lift -= percentHeightInThermal * (lift - topLift);
+
+            //At the top of the thermal, the amount of lift drops off
+            if(percentHeightInThermal > liftHeightThreshold)
+            {
+                lift *= (1.0 - percentHeightInThermal) / (1.0 - liftHeightThreshold);
+            }
 
             return lift;
         }
