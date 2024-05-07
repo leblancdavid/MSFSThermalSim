@@ -104,9 +104,8 @@ namespace ThermalSim.Domain.Thermals
             var distantThermals = thermals.Where(x => x.CalcDistance(position) > thermalGenerator.Configuration.ReplaceDistance).ToList();
             foreach(var t in distantThermals)
             {
-                //Console.WriteLine($"Thermal removed {t.CalcDistance(position)}ft away: ({t.Properties.Latitude},{t.Properties.Longitude}) at {t.Properties.Altitude}ft.");
-
                 thermals.Remove(t);
+                logger.LogInformation($"Thermal removed {t.CalcDistance(position)}ft away: ({t.Properties.Latitude},{t.Properties.Longitude}) at {t.Properties.Altitude}ft. (count: {thermals.Count})");
                 CreateNewThermals(position);
             }
 
@@ -142,9 +141,9 @@ namespace ThermalSim.Domain.Thermals
                 if (newThermalModel != null)
                 {
                     double distanceToAircraft = newThermalModel.CalcDistance(position);
-                    logger.LogInformation($"Thermal created {distanceToAircraft}ft away: ({newThermalModel.Properties.Latitude},{newThermalModel.Properties.Longitude}) at {newThermalModel.Properties.Altitude}ft.");
-                    
                     thermals.Add(newThermalModel);
+
+                    logger.LogInformation($"Thermal created (Total Count: {thermals.Count}) \n\tDistance: {distanceToAircraft}ft away \n\tCoordinates: ({newThermalModel.Properties.Latitude},{newThermalModel.Properties.Longitude}) \n\tAltitude: {newThermalModel.Properties.Altitude}ft. \n\tRadius: {newThermalModel.Properties.TotalRadius}ft. \n\tCore Rate: {newThermalModel.Properties.CoreLiftRate}ft/s");
                 }
             } //Repeat if we have less than the minimum number
             while (thermals.Count < thermalGenerator.Configuration.NumberOfThermals.Min);
