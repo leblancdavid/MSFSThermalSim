@@ -14,18 +14,18 @@ namespace ThermalSim.Domain.Thermals
         public ValueRangeDouble Radius { get; set; } = new ValueRangeDouble(3000.0, 6000.0);
         public ValueRangeDouble Height { get; set; } = new ValueRangeDouble(1000.0, 5000.0);
         public ValueRangeDouble CoreLiftRate { get; set; } = new ValueRangeDouble(5.0, 30.0);
-        public ValueRangeDouble CoreRadiusPercent { get; set; } = new ValueRangeDouble(0.85, 0.90);
+        public ValueRangeDouble CoreRadiusPercent { get; set; } = new ValueRangeDouble(0.80, 0.85);
         public ValueRangeDouble CoreTurbulencePercent { get; set; } = new ValueRangeDouble(0.0, 2.0);
-        public ValueRangeDouble SinkRatePercent { get; set; } = new ValueRangeDouble(-1.0, -0.5);
+        public ValueRangeDouble SinkRatePercent { get; set; } = new ValueRangeDouble(-1.5, -0.5);
         public ValueRangeDouble SinkTurbulencePercent { get; set; } = new ValueRangeDouble(0.0, 2.0);
-        public ValueRangeDouble SinkTransitionRadiusPercent { get; set; } = new ValueRangeDouble(0.01, 0.05);
+        public ValueRangeDouble SinkTransitionRadiusPercent { get; set; } = new ValueRangeDouble(0.05, 0.1);
         public ValueRangeDouble LiftShapeFactor { get; set; } = new ValueRangeDouble(0.0, 1.0);
         public ValueRangeDouble WindSpeed { get; set; } = new ValueRangeDouble(0.0, 50.0);
         public ValueRangeDouble WindDirection { get; set; } = new ValueRangeDouble(0.0, 360.0);
-        public double ReplaceDistance { get; set; } = 50000;
+        public double ReplaceDistance { get; set; } = 25000;
         public ValueRangeInt FramesBetweenTurbulence { get; set; } = new ValueRangeInt(30, 240);
-        public ValueRangeInt TurbulenceDuration { get; set; } = new ValueRangeInt(30, 120);
-        public ValueRangeDouble TurbulenceStrengthPercent { get; set; } = new ValueRangeDouble(0.5, 3.0);
+        public ValueRangeInt TurbulenceDuration { get; set; } = new ValueRangeInt(30, 240);
+        public ValueRangeDouble TurbulenceStrengthPercent { get; set; } = new ValueRangeDouble(1.0, 3.0);
 
         public ThermalProperties GenerateRandomThermalProperties(Random random, AircraftPositionState position)
         {

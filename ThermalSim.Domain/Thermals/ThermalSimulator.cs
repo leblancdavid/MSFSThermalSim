@@ -123,7 +123,7 @@ namespace ThermalSim.Domain.Thermals
             do
             {
                 //Generate a new thermal
-                var isNearAnotherThermal = true;
+                var isNearAnotherObject = true;
                 IThermalModel? newThermalModel = null;
                 int maxTry = 100;
                 int itr = 0;
@@ -131,12 +131,13 @@ namespace ThermalSim.Domain.Thermals
                 do
                 {
                     newThermalModel = thermalGenerator.GenerateThermalAroundAircraft(position);
-                    isNearAnotherThermal = thermals.Any(x => 
+                    isNearAnotherObject = thermals.Any(x => 
                     x.CalcDistance(newThermalModel.Properties.Latitude,
-                        newThermalModel.Properties.Longitude) < x.Properties.TotalRadius + newThermalModel.Properties.TotalRadius);
+                        newThermalModel.Properties.Longitude) < x.Properties.TotalRadius + newThermalModel.Properties.TotalRadius) ||
+                        newThermalModel.IsInThermal(position);
                     itr++;
                 }
-                while (isNearAnotherThermal && itr < maxTry);
+                while (isNearAnotherObject && itr < maxTry);
 
                 if (newThermalModel != null)
                 {
@@ -153,18 +154,7 @@ namespace ThermalSim.Domain.Thermals
         {
             try
             {
-                double minDistance = double.MaxValue;
-                IThermalModel? nearestThermal = null;
-                foreach (var t in thermals)
-                {
-                    var d = t.GetDistanceToThermal(position);
-                    if (d < minDistance)
-                    {
-                        minDistance = d;
-                        if(t.IsInThermal(position))
-                            nearestThermal = t;
-                    }
-                }
+                IThermalModel? nearestThermal = thermals.FirstOrDefault(x => x.IsInThermal(position));
 
                 //DebugTrace(position, minDistance, nearestThermal != null);
 
