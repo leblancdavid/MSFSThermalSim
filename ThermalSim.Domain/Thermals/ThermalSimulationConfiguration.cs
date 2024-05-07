@@ -8,7 +8,7 @@ namespace ThermalSim.Domain.Thermals
         public ValueRangeInt NumberOfThermals { get; set; } = new ValueRangeInt(5, 20);
         public ValueRangeInt SamplingSpeedSeconds { get; set; } = new ValueRangeInt(30, 60);
         public ValueRangeInt DurationMinutes { get; set; } = new ValueRangeInt(5, 30);
-        public ValueRangeDouble AltitudeFromGround { get; set; } = new ValueRangeDouble(50.0, 200.0);
+        public ValueRangeDouble AltitudeFromGround { get; set; } = new ValueRangeDouble(100.0, 1000.0);
         public ValueRangeDouble SpawnDistance { get; set; } = new ValueRangeDouble(0.01, 0.05); //This is in gps degrees
         public ValueRangeDouble RelativeSpawnAltitude { get; set; } = new ValueRangeDouble(-1000.0, 0.0);
         public ValueRangeDouble Radius { get; set; } = new ValueRangeDouble(5000.0, 10000.0);
@@ -40,7 +40,8 @@ namespace ThermalSim.Domain.Thermals
                 Latitude = position.Latitude + RandomInvert(random) * SpawnDistance.GetRandomValue(random),
                 Longitude = position.Longitude + RandomInvert(random) * SpawnDistance.GetRandomValue(random),
                 Altitude = position.Altitude + RelativeSpawnAltitude.GetRandomValue(random),
-                MinAltitudeFromGround = AltitudeFromGround.GetRandomValue(random),
+                MinAltitudeFromGround = AltitudeFromGround.Min,
+                MaxAltitudeFromGround = AltitudeFromGround.Max,
                 Height = Height.GetRandomValue(random),
                 TotalRadius = Radius.GetRandomValue(random),
                 CoreLiftRate = coreRate,

@@ -48,5 +48,24 @@ namespace ThermalSim.Domain.Extensions
             return lift;
         }
 
+        public static double ApplyAboveGroundAltitudeModifier(this ref double lift, AircraftPositionState position, double maxAboveGroundAltitude)
+        {
+            if (position.AltitudeAboveGround < maxAboveGroundAltitude)
+            {
+                lift *= position.AltitudeAboveGround / maxAboveGroundAltitude;
+            }
+
+            return lift;
+        }
+
+        public static double ApplyThermalAltitudeModifier(this ref double lift, double percentHeightInThermal, double weakeningFactor = 0.9)
+        {
+            double topLift = lift * weakeningFactor;
+
+            lift -= percentHeightInThermal * (lift - topLift);
+
+            return lift;
+        }
+
     }
 }

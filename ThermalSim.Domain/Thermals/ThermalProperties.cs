@@ -9,6 +9,7 @@
         public double Altitude { get; set; }
         public double Height { get; set; }
         public double MinAltitudeFromGround { get; set; }
+        public double MaxAltitudeFromGround { get; set; }
         public double TopAltitude => Altitude + Height;
         public double TotalRadius { get; set; }
         public double CoreLiftRate { get; set; }

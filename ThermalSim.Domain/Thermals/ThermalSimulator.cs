@@ -211,7 +211,7 @@ namespace ThermalSim.Domain.Thermals
                 return false;
             }
 
-            var t = thermalGenerator.GenerateThermalAroundAircraft(stateTracker.LastState.Value);
+            var t = thermalGenerator.GenerateThermalAtAircraft(stateTracker.LastState.Value);
             thermals.Add(t);
 
             return true;
