@@ -131,18 +131,17 @@ namespace ThermalSim.Domain.Thermals
                 do
                 {
                     newThermalModel = thermalGenerator.GenerateThermalAroundAircraft(position);
-                    isNearAnotherThermal = thermals.Any(x => x.IsInThermal(
-                        newThermalModel.Properties.Latitude,
-                        newThermalModel.Properties.Longitude,
-                        newThermalModel.Properties.Altitude));
+                    isNearAnotherThermal = thermals.Any(x => 
+                    x.CalcDistance(newThermalModel.Properties.Latitude,
+                        newThermalModel.Properties.Longitude) < x.Properties.TotalRadius + newThermalModel.Properties.TotalRadius);
                     itr++;
                 }
                 while (isNearAnotherThermal && itr < maxTry);
 
                 if (newThermalModel != null)
                 {
-                    //double distanceToAircraft = newThermalModel.CalcDistance(position);
-                    //Console.WriteLine($"Thermal created {distanceToAircraft}ft away: ({newThermalModel.Properties.Latitude},{newThermalModel.Properties.Longitude}) at {newThermalModel.Properties.Altitude}ft.");
+                    double distanceToAircraft = newThermalModel.CalcDistance(position);
+                    Console.WriteLine($"Thermal created {distanceToAircraft}ft away: ({newThermalModel.Properties.Latitude},{newThermalModel.Properties.Longitude}) at {newThermalModel.Properties.Altitude}ft.");
                     
                     thermals.Add(newThermalModel);
                 }
