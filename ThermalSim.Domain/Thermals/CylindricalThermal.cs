@@ -33,6 +33,8 @@ namespace ThermalSim.Domain.Thermals
             if (Math.Abs(verticalSpeed) > Math.Abs(lift))
                 return null;
 
+            lift.ApplyAboveGroundAltitudeModifier(position, Properties.MaxAltitudeFromGround);
+            lift.ApplyThermalAltitudeModifier((position.Altitude - Properties.Altitude) / Properties.Height);
             lift.ApplyStallModifier(position);
             lift.ApplySpoilerModifier(position);
             lift.ApplyWeightModifier(position);

@@ -1,5 +1,4 @@
 ﻿using ThermalSim.Domain.Position;
-using ThermalSim.Domain.Thermals;
 
 namespace ThermalSim.Domain.Turbulence
 {
@@ -15,25 +14,27 @@ namespace ThermalSim.Domain.Turbulence
         private Random _random = new Random();
         
         private TurbulenceEffect? _turbulence = null;
+        private readonly ITurbulenceKernel _turbulenceKernel;
 
         public TurbulenceProperties Properties { get; set; }
 
-        public CounterBasedTurbulenceModel(TurbulenceProperties properties)
+        public CounterBasedTurbulenceModel(TurbulenceProperties properties, ITurbulenceKernel? turbulenceKernel = null)
         {
+
             Properties = properties;
+            if(turbulenceKernel != null)
+            {
+                _turbulenceKernel = turbulenceKernel;
+            }
+            else
+            {
+                _turbulenceKernel = new CosineTurbulenceKernel();
+            }
         }
 
-        private void UpdatesSmoothingKernel(int duration)
+        private void UpdateTurbulenceKernel(int duration)
         {
-            double incr = (Math.PI * 3) / (double) duration;
-
-            _smoothingKernel = new double[duration];
-            double x = 0;
-            for (int i = 0; i < duration; i++)
-            {
-                _smoothingKernel[i] = Math.Sin(x);
-                x += incr;
-            }
+            _smoothingKernel = _turbulenceKernel.GetTurbulenceKernel(duration);
         }
 
         public TurbulenceEffect? GetTurbulenceEffect(AircraftPositionState position)
@@ -70,7 +71,7 @@ namespace ThermalSim.Domain.Turbulence
             //If we get here, we basically start a new turbulence
             ResetCount();
 
-            UpdatesSmoothingKernel(_duration);
+            UpdateTurbulenceKernel(_duration);
 
             //For now let's make it simple
             _turbulence = new TurbulenceEffect()
