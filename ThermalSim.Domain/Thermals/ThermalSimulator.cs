@@ -11,7 +11,7 @@ namespace ThermalSim.Domain.Thermals
         private readonly ISimConnection connection;
         private readonly IThermalGenerator thermalGenerator;
         private readonly ILogger<ThermalSimulator> logger;
-        private AircraftStateTracker stateTracker = new AircraftStateTracker();
+        private AircraftStateTracker stateTracker;
 
         private DateTime nextSampleTime = DateTime.Now;
 
@@ -24,6 +24,7 @@ namespace ThermalSim.Domain.Thermals
             this.connection = connection;
             this.thermalGenerator = thermalGenerator;
             this.logger = logger;
+            this.stateTracker = new AircraftStateTracker(logger);
         }
 
         public bool IsRunning { get; private set; }
