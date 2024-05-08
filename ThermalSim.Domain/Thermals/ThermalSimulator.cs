@@ -148,7 +148,7 @@ namespace ThermalSim.Domain.Thermals
                     isNearAnotherObject = thermals.Any(x => 
                     x.CalcDistance(newThermalModel.Properties.Latitude,
                         newThermalModel.Properties.Longitude) < x.Properties.TotalRadius + newThermalModel.Properties.TotalRadius) ||
-                        newThermalModel.IsInThermal(position);
+                        (!Configuration.AllowSpawningOnAircraft && newThermalModel.IsInThermal(position));
                     itr++;
                 }
                 while (isNearAnotherObject && itr < maxTry);
