@@ -7,24 +7,23 @@ namespace ThermalSim.Domain.Thermals
     {
         private uint lastId = 0;
         private Random random = new Random();
-        private ThermalSimulationConfiguration configuration = new ThermalSimulationConfiguration();
         public FixedPositionThermalGenerator()
         {
             
         }
 
-        public ThermalSimulationConfiguration Configuration => configuration;
+        public ThermalSimulationConfiguration Configuration { get; set; } = new ThermalSimulationConfiguration();
 
         public IThermalModel GenerateThermalAroundAircraft(AircraftPositionState position)
         {
             lastId++;
 
-            var thermalProp = configuration.GenerateRandomThermalProperties(random, position);
+            var thermalProp = Configuration.GenerateRandomThermalProperties(random, position);
             return new CylindricalThermal
             {
                 ObjectId = lastId,
                 Properties = thermalProp,
-                TurbulenceModel = new CounterBasedTurbulenceModel(configuration.GenerateRandomTurbulenceProperties(random, thermalProp.CoreLiftRate))
+                TurbulenceModel = new CounterBasedTurbulenceModel(Configuration.GenerateRandomTurbulenceProperties(random, thermalProp.CoreLiftRate))
             };
         }
 
@@ -32,12 +31,12 @@ namespace ThermalSim.Domain.Thermals
         {
             lastId++;
 
-            var thermalProp = configuration.GenerateRandomThermalProperties(random, position);
+            var thermalProp = Configuration.GenerateRandomThermalProperties(random, position);
             var thermal = new CylindricalThermal
             {
                 ObjectId = lastId,
                 Properties = thermalProp,
-                TurbulenceModel = new CounterBasedTurbulenceModel(configuration.GenerateRandomTurbulenceProperties(random, thermalProp.CoreLiftRate))
+                TurbulenceModel = new CounterBasedTurbulenceModel(Configuration.GenerateRandomTurbulenceProperties(random, thermalProp.CoreLiftRate))
             };
 
             thermal.Properties.Longitude = position.Longitude;
