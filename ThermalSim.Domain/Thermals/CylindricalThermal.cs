@@ -13,7 +13,7 @@ namespace ThermalSim.Domain.Thermals
         public ThermalProperties Properties { get; set; } = new ThermalProperties();
 
         public double SmoothingFactor { get; set; } = 0.05f;
-        public double TimeFactor { get; set; } = 0.02;
+        public double TimeFactor { get; set; } = Constants.DEFAULT_TIME_FACTOR;
         public double LiftModifier { get; set; } = 0.0;
         public ITurbulenceModel TurbulenceModel { get; set; } = new CounterBasedTurbulenceModel(new TurbulenceProperties());
 
@@ -82,6 +82,13 @@ namespace ThermalSim.Domain.Thermals
         {
             return this.CalcDistance(latitude, longitude);
         }
+
+        public void ApplyWindDrift(double direction, double windSpeedFps)
+        {
+            this.CalcApplyWindDrift(direction, windSpeedFps);
+        }
+
+
 
         private double CalcBaseLiftValue(double distance, AircraftStateChangeInfo? stateChange)
         {

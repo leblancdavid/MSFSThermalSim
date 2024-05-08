@@ -154,6 +154,8 @@ namespace ThermalSim.Domain.Thermals
         {
             try
             {
+                thermals.ForEach(x => x.ApplyWindDrift(position.WindDirection, position.WindVelocity));
+
                 IThermalModel? nearestThermal = thermals.FirstOrDefault(x => x.IsInThermal(position));
 
                 //DebugTrace(position, minDistance, nearestThermal != null);
