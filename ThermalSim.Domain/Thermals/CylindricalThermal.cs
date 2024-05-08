@@ -15,7 +15,7 @@ namespace ThermalSim.Domain.Thermals
         public double SmoothingFactor { get; set; } = 0.05f;
         public double TimeFactor { get; set; } = Constants.DEFAULT_TIME_FACTOR;
         public double LiftModifier { get; set; } = 0.0;
-        public ITurbulenceModel TurbulenceModel { get; set; } = new CounterBasedTurbulenceModel(new TurbulenceProperties());
+        public ITurbulenceModel TurbulenceModel { get; set; } = new DirectionalTurbulenceModel(new TurbulenceProperties());
 
         public ThermalAltitudeChange? GetThermalAltitudeChange(AircraftPositionState position, AircraftStateChangeInfo? stateChange)
         {
@@ -88,7 +88,7 @@ namespace ThermalSim.Domain.Thermals
             this.CalcApplyWindDrift(direction, windSpeedFps);
         }
 
-        public ThermalPositionState GetPositionState(AircraftPositionState position)
+        public ThermalPositionState GetPositionInThermal(AircraftPositionState position)
         {
             double distance = GetDistanceToThermal(position);
             return GetPositionState(distance);

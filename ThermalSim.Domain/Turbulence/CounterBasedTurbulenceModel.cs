@@ -76,7 +76,13 @@ namespace ThermalSim.Domain.Turbulence
             UpdateTurbulenceKernel(_duration);
 
             //For now let's make it simple
-            _turbulence = GetBaseTurbulenceEffect(position, thermal);
+            _turbulence = new TurbulenceEffect()
+            {
+                RotationAccelerationBodyX = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * Properties.x_Scaler,
+                RotationAccelerationBodyY = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * Properties.y_Scaler,
+                RotationAccelerationBodyZ = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * Properties.z_Scaler,
+            };
+
 
             return _turbulence;
         }

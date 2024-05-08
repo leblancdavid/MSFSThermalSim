@@ -23,7 +23,7 @@ namespace ThermalSim.Domain.Thermals
             {
                 ObjectId = lastId,
                 Properties = thermalProp,
-                TurbulenceModel = new CounterBasedTurbulenceModel(Configuration.GenerateRandomTurbulenceProperties(random, thermalProp.CoreLiftRate))
+                TurbulenceModel = new DirectionalTurbulenceModel(Configuration.GenerateRandomTurbulenceProperties(random, thermalProp.CoreLiftRate))
             };
         }
 
@@ -36,7 +36,7 @@ namespace ThermalSim.Domain.Thermals
             {
                 ObjectId = lastId,
                 Properties = thermalProp,
-                TurbulenceModel = new CounterBasedTurbulenceModel(Configuration.GenerateRandomTurbulenceProperties(random, thermalProp.CoreLiftRate))
+                TurbulenceModel = new DirectionalTurbulenceModel(Configuration.GenerateRandomTurbulenceProperties(random, thermalProp.CoreLiftRate))
             };
 
             thermal.Properties.Longitude = position.Longitude;
