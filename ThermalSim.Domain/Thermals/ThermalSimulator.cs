@@ -11,7 +11,7 @@ namespace ThermalSim.Domain.Thermals
         private readonly ISimConnection connection;
         private readonly IThermalGenerator thermalGenerator;
         private readonly ILogger<ThermalSimulator> logger;
-        private AircraftStateTracker stateTracker = new AircraftStateTracker();
+        private AircraftStateTracker stateTracker;
 
         private DateTime nextSampleTime = DateTime.Now;
 
@@ -24,6 +24,7 @@ namespace ThermalSim.Domain.Thermals
             this.connection = connection;
             this.thermalGenerator = thermalGenerator;
             this.logger = logger;
+            this.stateTracker = new AircraftStateTracker(logger);
         }
 
         public bool IsRunning { get; private set; }
@@ -103,9 +104,8 @@ namespace ThermalSim.Domain.Thermals
             var distantThermals = thermals.Where(x => x.CalcDistance(position) > thermalGenerator.Configuration.ReplaceDistance).ToList();
             foreach(var t in distantThermals)
             {
-                //Console.WriteLine($"Thermal removed {t.CalcDistance(position)}ft away: ({t.Properties.Latitude},{t.Properties.Longitude}) at {t.Properties.Altitude}ft.");
-
                 thermals.Remove(t);
+                logger.LogInformation($"Thermal removed {t.CalcDistance(position)}ft away: ({t.Properties.Latitude},{t.Properties.Longitude}) at {t.Properties.Altitude}ft. (count: {thermals.Count})");
                 CreateNewThermals(position);
             }
 
@@ -123,7 +123,7 @@ namespace ThermalSim.Domain.Thermals
             do
             {
                 //Generate a new thermal
-                var isNearAnotherThermal = true;
+                var isNearAnotherObject = true;
                 IThermalModel? newThermalModel = null;
                 int maxTry = 100;
                 int itr = 0;
@@ -131,19 +131,20 @@ namespace ThermalSim.Domain.Thermals
                 do
                 {
                     newThermalModel = thermalGenerator.GenerateThermalAroundAircraft(position);
-                    isNearAnotherThermal = thermals.Any(x => 
+                    isNearAnotherObject = thermals.Any(x => 
                     x.CalcDistance(newThermalModel.Properties.Latitude,
-                        newThermalModel.Properties.Longitude) < x.Properties.TotalRadius + newThermalModel.Properties.TotalRadius);
+                        newThermalModel.Properties.Longitude) < x.Properties.TotalRadius + newThermalModel.Properties.TotalRadius) ||
+                        newThermalModel.IsInThermal(position);
                     itr++;
                 }
-                while (isNearAnotherThermal && itr < maxTry);
+                while (isNearAnotherObject && itr < maxTry);
 
                 if (newThermalModel != null)
                 {
                     double distanceToAircraft = newThermalModel.CalcDistance(position);
-                    Console.WriteLine($"Thermal created {distanceToAircraft}ft away: ({newThermalModel.Properties.Latitude},{newThermalModel.Properties.Longitude}) at {newThermalModel.Properties.Altitude}ft.");
-                    
                     thermals.Add(newThermalModel);
+
+                    logger.LogInformation($"Thermal created (Total Count: {thermals.Count}) \n\tDistance: {distanceToAircraft}ft away \n\tCoordinates: ({newThermalModel.Properties.Latitude},{newThermalModel.Properties.Longitude}) \n\tAltitude: {newThermalModel.Properties.Altitude}ft. \n\tRadius: {newThermalModel.Properties.TotalRadius}ft. \n\tCore Rate: {newThermalModel.Properties.CoreLiftRate}ft/s");
                 }
             } //Repeat if we have less than the minimum number
             while (thermals.Count < thermalGenerator.Configuration.NumberOfThermals.Min);
@@ -153,24 +154,16 @@ namespace ThermalSim.Domain.Thermals
         {
             try
             {
-                double minDistance = double.MaxValue;
-                IThermalModel? nearestThermal = null;
-                foreach (var t in thermals)
-                {
-                    var d = t.GetDistanceToThermal(position);
-                    if (d < minDistance)
-                    {
-                        minDistance = d;
-                        if(t.IsInThermal(position))
-                            nearestThermal = t;
-                    }
-                }
+                IThermalModel? nearestThermal = thermals.FirstOrDefault(x => x.IsInThermal(position));
 
                 //DebugTrace(position, minDistance, nearestThermal != null);
 
                 //If we are not in a thermal, don't do anything
                 if (nearestThermal == null)
                 {
+                    if(stateTracker.AircraftStateChangeInfo != null)
+                        stateTracker.AircraftStateChangeInfo.ThermalState = ThermalPositionState.NotInThermal;
+
                     return;
                 }
 
@@ -220,7 +213,7 @@ namespace ThermalSim.Domain.Thermals
         private void DebugTrace(AircraftPositionState position, double distanceToNearest, bool inThermal)
         {
             string thermalMsg = inThermal ? "(IN THERMAL)" : "";
-            Console.WriteLine($"Aircraft: ({position.Latitude},{position.Longitude}) at {position.Altitude}ft. Nearest Thermal: {distanceToNearest}ft {thermalMsg}");
+            logger.LogInformation($"Aircraft: ({position.Latitude},{position.Longitude}) at {position.Altitude}ft. Nearest Thermal: {distanceToNearest}ft {thermalMsg}");
         }
     }
 }

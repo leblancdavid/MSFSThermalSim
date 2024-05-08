@@ -19,11 +19,12 @@ namespace ThermalSim.Domain.Thermals
         {
             lastId++;
 
+            var thermalProp = configuration.GenerateRandomThermalProperties(random, position);
             return new CylindricalThermal
             {
                 ObjectId = lastId,
-                Properties = configuration.GenerateRandomThermalProperties(random, position),
-                TurbulenceModel = new CounterBasedTurbulenceModel(configuration.GenerateRandomTurbulenceProperties(random))
+                Properties = thermalProp,
+                TurbulenceModel = new CounterBasedTurbulenceModel(configuration.GenerateRandomTurbulenceProperties(random, thermalProp.CoreLiftRate))
             };
         }
 
@@ -31,11 +32,12 @@ namespace ThermalSim.Domain.Thermals
         {
             lastId++;
 
+            var thermalProp = configuration.GenerateRandomThermalProperties(random, position);
             var thermal = new CylindricalThermal
             {
                 ObjectId = lastId,
-                Properties = configuration.GenerateRandomThermalProperties(random, position),
-                TurbulenceModel = new CounterBasedTurbulenceModel(configuration.GenerateRandomTurbulenceProperties(random))
+                Properties = thermalProp,
+                TurbulenceModel = new CounterBasedTurbulenceModel(configuration.GenerateRandomTurbulenceProperties(random, thermalProp.CoreLiftRate))
             };
 
             thermal.Properties.Longitude = position.Longitude;

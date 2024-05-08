@@ -1,9 +1,12 @@
-﻿namespace ThermalSim.Domain.Position
+﻿using Microsoft.Extensions.Logging;
+
+namespace ThermalSim.Domain.Position
 {
     public class AircraftStateTracker : IAircraftStateTracker
     {
-        public AircraftStateTracker(int samplingLength = 20)
+        public AircraftStateTracker(ILogger logger, int samplingLength = 20)
         {
+            this.logger = logger;
             SamplingLength = samplingLength;
         }
 
@@ -12,41 +15,12 @@
         public AircraftPositionState? LastState => stateQueue.LastOrDefault();
         public AircraftPositionState? FirstState => stateQueue.FirstOrDefault();
 
-        public AircraftStateChangeInfo? AircraftStateChangeInfo 
-        { 
-            get
-            {
-                if(!stateQueue.Any())
-                {
-                    return null;
-                }
-                if(stateQueue.Count < SamplingLength && LastState.HasValue) 
-                {
-                    return new AircraftStateChangeInfo()
-                    {
-                        AltitudeChange = 0.0,
-                        AverageAltitude = LastState.Value.Altitude,
-                        AverageVerticalVelocity = LastState.Value.VerticalSpeed,
-                        AverageVelocity = GetVelocity(LastState.Value)
-                    };
-                }
-
-                if(LastState.HasValue && FirstState.HasValue) 
-                {
-                    return new AircraftStateChangeInfo()
-                    {
-                        AltitudeChange = LastState.Value.Altitude - FirstState.Value.Altitude,
-                        AverageAltitude = stateQueue.Average(x => x.Altitude),
-                        AverageVerticalVelocity = (LastState.Value.Altitude - FirstState.Value.Altitude) / (LastState.Value.AbsoluteTime - FirstState.Value.AbsoluteTime),
-                        AverageVelocity = stateQueue.Average(x => GetVelocity(x))
-                    };
-                }
-
-                return null;
-            }
-        }
+        private AircraftStateChangeInfo? _aircraftStateChangeInfo = null;
+        public AircraftStateChangeInfo? AircraftStateChangeInfo => _aircraftStateChangeInfo;
 
         private Queue<AircraftPositionState> stateQueue = new Queue<AircraftPositionState>();
+        private readonly ILogger logger;
+
         public void UpdatePosition(AircraftPositionState state)
         {
             if(stateQueue.Count >= SamplingLength)
@@ -55,6 +29,19 @@
             }
 
             stateQueue.Enqueue(state);
+
+            if(_aircraftStateChangeInfo == null)
+            {
+                _aircraftStateChangeInfo = new AircraftStateChangeInfo(logger);
+                {
+                    
+                };
+            }
+
+            _aircraftStateChangeInfo.AltitudeChange = LastState!.Value.Altitude - FirstState!.Value.Altitude;
+            _aircraftStateChangeInfo.AverageAltitude = stateQueue.Average(x => x.Altitude);
+            _aircraftStateChangeInfo.AverageVerticalVelocity = (LastState.Value.Altitude - FirstState.Value.Altitude) / (LastState.Value.AbsoluteTime - FirstState.Value.AbsoluteTime);
+            _aircraftStateChangeInfo.AverageVelocity = stateQueue.Average(x => GetVelocity(x));
         }
 
         private double GetVelocity(AircraftPositionState state)

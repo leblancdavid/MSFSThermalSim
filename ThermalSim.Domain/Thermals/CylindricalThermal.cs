@@ -27,7 +27,7 @@ namespace ThermalSim.Domain.Thermals
             if(position.AltitudeAboveGround < Properties.MinAltitudeFromGround)
                 return null;
 
-            var lift = CalcBaseLiftValue(distance) + UpdateLiftModifier(distance);
+            var lift = CalcBaseLiftValue(distance, stateChange) + UpdateLiftModifier(distance);
 
             var verticalSpeed = stateChange == null ? position.VerticalSpeed : stateChange.AverageVerticalVelocity;
             if (Math.Abs(verticalSpeed) > Math.Abs(lift))
@@ -83,27 +83,40 @@ namespace ThermalSim.Domain.Thermals
             return this.CalcDistance(latitude, longitude);
         }
 
-        private double CalcBaseLiftValue(double distance)
+        private double CalcBaseLiftValue(double distance, AircraftStateChangeInfo? stateChange)
         {
             var atRadius = distance / Properties.TotalRadius;
             if (atRadius > 1.0)
+            {
+                if(stateChange != null)
+                    stateChange.ThermalState = ThermalPositionState.NotInThermal;
+
                 return 0.0;
+            }
 
             if(atRadius < Properties.CoreRadiusPercent)
             {
+                if (stateChange != null)
+                    stateChange.ThermalState = ThermalPositionState.InThermalCore;
+
                 double liftAtCenter = (Properties.LiftShapeFactor * 0.5 + 1.0) * Properties.CoreLiftRate;
                 double liftChange = (Properties.CoreLiftRate - liftAtCenter) / Properties.CoreRadiusPercent;
                 //basic y = mx + b linear equation
                 return liftChange * atRadius + liftAtCenter; 
             }
-            else if(atRadius < Properties.SinkTransitionRadiusPercent) 
+            else if(atRadius < Properties.SinkTransitionRadiusPercent)
             {
+                if (stateChange != null)
+                    stateChange.ThermalState = ThermalPositionState.InThermalTransition;
+
                 double liftAtTransition = Properties.CoreLiftRate;
                 double transitionChange = (Properties.SinkRate - liftAtTransition) / (Properties.SinkTransitionRadiusPercent - Properties.CoreRadiusPercent);
                 //basic y = mx + b linear equation
                 return transitionChange * (atRadius - Properties.CoreRadiusPercent) + liftAtTransition;
             }
 
+            if (stateChange != null)
+                stateChange.ThermalState = ThermalPositionState.InThermalSink;
 
             double liftAtSinkTransition = Properties.SinkRate;
             double sinkChange = ((Properties.SinkRate / (Properties.LiftShapeFactor * 0.5 + 1.0)) - liftAtSinkTransition) / ((1.0 - Properties.SinkTransitionRadiusPercent));
