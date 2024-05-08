@@ -1,4 +1,5 @@
-﻿using ThermalSim.Domain.Position;
+﻿using ThermalSim.Domain.Extensions;
+using ThermalSim.Domain.Position;
 using ThermalSim.Domain.Thermals;
 
 namespace ThermalSim.Domain.Turbulence
@@ -38,7 +39,7 @@ namespace ThermalSim.Domain.Turbulence
             _smoothingKernel = _turbulenceKernel.GetTurbulenceKernel(duration);
         }
 
-        public TurbulenceEffect? GetTurbulenceEffect(AircraftPositionState position, IThermalModel? thermal = null)
+        public TurbulenceEffect? GetTurbulenceEffect(AircraftPositionState position, IThermalModel thermal)
         {
             //If we hit turbulence, this will be not null
             if(_turbulence != null)
@@ -75,14 +76,43 @@ namespace ThermalSim.Domain.Turbulence
             UpdateTurbulenceKernel(_duration);
 
             //For now let's make it simple
-            _turbulence = new TurbulenceEffect()
-            {
-                RotationAccelerationBodyX = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * Properties.x_Scaler,
-                RotationAccelerationBodyY = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * Properties.y_Scaler,
-                RotationAccelerationBodyZ = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * Properties.z_Scaler,
-            };
+            _turbulence = GetBaseTurbulenceEffect(position, thermal);
 
             return _turbulence;
+        }
+
+        private TurbulenceEffect GetBaseTurbulenceEffect(AircraftPositionState position, IThermalModel thermal)
+        {
+            //First we need to calculate the angle between the orientation of the aircraft relative to the center of the thermal
+            var planeX = Math.Cos(position.HeadingIndicator.ToRadians());
+            var planeY = Math.Sin(position.HeadingIndicator.ToRadians());
+
+            var thermalX = thermal.Properties.Longitude - position.Longitude;
+            var thermalY = thermal.Properties.Latitude - position.Latitude;
+
+            //calculate the magnitude so we have a normal vector
+            var m = Math.Sqrt(thermalX * thermalX + thermalY * thermalY);
+            thermalX /= m;
+            thermalY /= m;
+
+            var dot = planeX * thermalX + planeY * thermalY;
+            var det = planeX * thermalY + planeY * thermalX;
+            
+            var angleToThermalCore = Math.Atan2(det, dot);
+
+            var rollEffect = Math.Sin(angleToThermalCore);
+            var elevatorEffect = Math.Cos(angleToThermalCore);
+            var yawEffect = rollEffect * _random.NextDouble();
+
+
+            var effect = new TurbulenceEffect()
+            {
+                RotationAccelerationBodyX = elevatorEffect * _maxTurbulence * Properties.x_Scaler,
+                RotationAccelerationBodyY = yawEffect * _maxTurbulence * Properties.y_Scaler,
+                RotationAccelerationBodyZ = rollEffect * _maxTurbulence * Properties.z_Scaler,
+            };
+
+            return effect;
         }
 
         private void ResetCount()
