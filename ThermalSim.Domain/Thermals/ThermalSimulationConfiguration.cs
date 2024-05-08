@@ -5,15 +5,15 @@ namespace ThermalSim.Domain.Thermals
 {
     public class ThermalSimulationConfiguration
     {
-        public ValueRangeInt NumberOfThermals { get; set; } = new ValueRangeInt(5, 20);
+        public ValueRangeInt NumberOfThermals { get; set; } = new ValueRangeInt(5, 10);
         public ValueRangeInt SamplingSpeedSeconds { get; set; } = new ValueRangeInt(30, 60);
         public ValueRangeInt DurationMinutes { get; set; } = new ValueRangeInt(5, 30);
         public ValueRangeDouble AltitudeFromGround { get; set; } = new ValueRangeDouble(100.0, 500.0);
         public ValueRangeDouble SpawnDistance { get; set; } = new ValueRangeDouble(0.01, 0.03); //This is in gps degrees
         public ValueRangeDouble RelativeSpawnAltitude { get; set; } = new ValueRangeDouble(-1000.0, 0.0);
         public ValueRangeDouble Radius { get; set; } = new ValueRangeDouble(3000.0, 6000.0);
-        public ValueRangeDouble Height { get; set; } = new ValueRangeDouble(1000.0, 5000.0);
-        public ValueRangeDouble CoreLiftRate { get; set; } = new ValueRangeDouble(5.0, 30.0);
+        public ValueRangeDouble Height { get; set; } = new ValueRangeDouble(3000.0, 10000.0);
+        public ValueRangeDouble CoreLiftRate { get; set; } = new ValueRangeDouble(1.0, 10.0);
         public ValueRangeDouble CoreRadiusPercent { get; set; } = new ValueRangeDouble(0.80, 0.85);
         public ValueRangeDouble CoreTurbulencePercent { get; set; } = new ValueRangeDouble(0.0, 2.0);
         public ValueRangeDouble SinkRatePercent { get; set; } = new ValueRangeDouble(-1.5, -0.5);
