@@ -27,7 +27,7 @@ namespace ThermalSim.Api.Controllers
 
                 return BadRequest("Unable to start the thermal simulation");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -47,7 +47,7 @@ namespace ThermalSim.Api.Controllers
                 thermalSimulator.Stop();
                 return Ok();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -64,6 +64,43 @@ namespace ThermalSim.Api.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("configuration")]
+        public IActionResult GetCurrentConfiguration()
+        {
+            try
+            {
+                if(!thermalSimulator.IsRunning)
+                {
+                    return BadRequest("Thermal simulation is not currently running.");
+                }
+
+                return Ok(thermalSimulator.Configuration);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest($"{ex.Message}");
+            }
+        }
+
+        [HttpPut("configuration")]
+        public IActionResult SetCurrentConfiguration([FromBody]ThermalSimulationConfiguration configuration)
+        {
+            try
+            {
+                if (!thermalSimulator.IsRunning)
+                {
+                    return BadRequest("Thermal simulation is not currently running.");
+                }
+
+                thermalSimulator.Configuration = configuration;
+                return Ok(thermalSimulator.Configuration);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}");
             }
         }
     }

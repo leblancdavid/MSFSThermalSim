@@ -28,7 +28,21 @@ namespace ThermalSim.Domain.Thermals
         }
 
         public bool IsRunning { get; private set; }
-
+        public ThermalSimulationConfiguration Configuration
+        {
+            get
+            {
+                return thermalGenerator.Configuration;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value));
+                }
+                thermalGenerator.Configuration = value;
+            }
+        }
         public void Dispose()
         {
             Stop();
