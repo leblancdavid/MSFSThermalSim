@@ -9,6 +9,7 @@ namespace ThermalSim.Domain.Thermals
         ThermalProperties Properties { get; set; }
         ITurbulenceModel TurbulenceModel { get; set; }
         ThermalAltitudeChange? GetThermalAltitudeChange(AircraftPositionState position, AircraftStateChangeInfo? stateChange);
+        void ApplyWindDrift(double direction, double windSpeed);
         bool IsInThermal(AircraftPositionState position); 
         bool IsInThermal(double latitude, double longitude, double altitude);
         double GetDistanceToThermal(AircraftPositionState position);

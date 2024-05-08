@@ -1,4 +1,6 @@
-﻿using ThermalSim.Domain.Position;
+﻿using System;
+using ThermalSim.Domain.Extensions;
+using ThermalSim.Domain.Position;
 using ThermalSim.Domain.Thermals;
 
 namespace ThermalSim.Domain.Extensions
@@ -57,6 +59,21 @@ namespace ThermalSim.Domain.Extensions
                 dist = dist * 60.0 * 1.1515 * 5280;
                 return (dist);
             }
+        }
+
+        public static void CalcApplyWindDrift(this IThermalModel model, double windDirection, double windSpeed) 
+        {
+            //We want to subtract 180 because the wind direction is where it's coming from, not where it's blowing to
+            double adjustedDirection = windDirection - 180.0;
+            double distanceKm = windSpeed * Constants.DEFAULT_TIME_FACTOR * Constants.FEET_TO_KM;
+            double latitudeDistance = distanceKm * Math.Sin(adjustedDirection.ToRadians());
+            double longitudeDistance = distanceKm * Math.Cos(adjustedDirection.ToRadians());
+
+            double changeInLatitude = latitudeDistance / Constants.DEGREE_LATITUDE_KM;
+            double changeInLongitude = longitudeDistance / (Constants.DEGREE_LONGITUDE_KM * Math.Cos(model.Properties.Latitude.ToRadians()));
+
+            model.Properties.Longitude += changeInLongitude;
+            model.Properties.Latitude += changeInLatitude;
         }
 
     }
