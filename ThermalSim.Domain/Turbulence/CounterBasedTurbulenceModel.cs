@@ -1,4 +1,5 @@
 ﻿using ThermalSim.Domain.Position;
+using ThermalSim.Domain.Thermals;
 
 namespace ThermalSim.Domain.Turbulence
 {
@@ -37,7 +38,7 @@ namespace ThermalSim.Domain.Turbulence
             _smoothingKernel = _turbulenceKernel.GetTurbulenceKernel(duration);
         }
 
-        public TurbulenceEffect? GetTurbulenceEffect(AircraftPositionState position)
+        public TurbulenceEffect? GetTurbulenceEffect(AircraftPositionState position, IThermalModel? thermal = null)
         {
             //If we hit turbulence, this will be not null
             if(_turbulence != null)
