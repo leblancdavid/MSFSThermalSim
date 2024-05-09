@@ -35,7 +35,7 @@ namespace ThermalSim.Domain.Turbulence
             }
             else
             {
-                _sinkKernel = new CosineTurbulenceKernel(1.0, -0.5, -0.5);
+                _sinkKernel = new CosineTurbulenceKernel(1.25, Math.PI / -4.0, -0.5, -0.5);
             }
 
             if (transitionKernel != null)
@@ -44,7 +44,7 @@ namespace ThermalSim.Domain.Turbulence
             }
             else
             {
-                _transitionKernel = new CosineTurbulenceKernel(6.0, 1.0, 0.0);
+                _transitionKernel = new CosineTurbulenceKernel(3.25, Math.PI / -4.0, 1.0, 0.0);
             }
 
             if (coreKernel != null)
@@ -53,7 +53,7 @@ namespace ThermalSim.Domain.Turbulence
             }
             else
             {
-                _coreKernel = new CosineTurbulenceKernel(1.0, 0.5, 0.5);
+                _coreKernel = new CosineTurbulenceKernel(1.25, Math.PI / -4.0, 0.5, 0.5);
             }
         }
 
@@ -117,34 +117,48 @@ namespace ThermalSim.Domain.Turbulence
         private TurbulenceEffect GetBaseTurbulenceEffect(AircraftPositionState position, IThermalModel thermal)
         {
             //First we need to calculate the angle between the orientation of the aircraft relative to the center of the thermal
-            var planeX = Math.Sin(position.HeadingIndicator.ToRadians());
-            var planeY = Math.Cos(position.HeadingIndicator.ToRadians());
+            //var planeX = Math.Sin(position.HeadingIndicator.ToRadians());
+            //var planeY = Math.Cos(position.HeadingIndicator.ToRadians());
 
+            var headingRadian = position.HeadingIndicator.ToRadians();
             var thermalX = thermal.Properties.Longitude - position.Longitude;
             var thermalY = thermal.Properties.Latitude - position.Latitude;
 
-            //calculate the magnitude so we have a normal vector
-            var m = Math.Sqrt(thermalX * thermalX + thermalY * thermalY);
-            thermalX /= m;
-            thermalY /= m;
+            //rotate the vector by the heading
+            var rotatedX = Math.Cos(headingRadian) * thermalX - Math.Sin(headingRadian) * thermalY;
+            var rotatedY = Math.Sin(headingRadian) * thermalX + Math.Cos(headingRadian) * thermalY;
 
-            var dot = planeX * thermalX + planeY * thermalY;
-            var det = planeX * thermalY + planeY * thermalX;
+            var angleToThermalCore = Math.Atan2(rotatedY, rotatedX);
 
-            var angleToThermalCore = Math.Atan2(det, dot);
+            if(angleToThermalCore < 0)
+            {
+                angleToThermalCore = Math.Abs(angleToThermalCore - Math.PI * 0.5);
+            }
+            else
+            {
+                angleToThermalCore = Math.PI * 2.5 - angleToThermalCore;
+                if(angleToThermalCore > Math.PI * 2.0)
+                {
+                    angleToThermalCore -= Math.PI * 2.0;
+                }
+            }
+
             var angleInDegrees = angleToThermalCore.ToDegrees();
 
             var rollEffect = -1.0 * Math.Sin(angleToThermalCore);
-            var elevatorEffect = Math.Cos(angleToThermalCore);
-            var yawEffect = rollEffect * _random.NextDouble() * 0.5;
+            var elevatorEffect = -1.0 * Math.Cos(angleToThermalCore);
+            var yawEffect = rollEffect * _random.NextDouble();
 
-            Console.WriteLine($"Angle: {angleInDegrees} \tr: {rollEffect} \te: {elevatorEffect} \ty: {yawEffect}");
             var effect = new TurbulenceEffect()
             {
                 RotationAccelerationBodyX = elevatorEffect * _maxTurbulence * Properties.x_Scaler,
                 RotationAccelerationBodyY = yawEffect * _maxTurbulence * Properties.y_Scaler,
                 RotationAccelerationBodyZ = rollEffect * _maxTurbulence * Properties.z_Scaler,
             };
+
+            double distance = thermal.CalcDistance(position);
+
+            Console.WriteLine($"Angle: {angleInDegrees} \td: {distance} \tr: {effect.RotationAccelerationBodyZ} \te: {effect.RotationAccelerationBodyX} \ty: {effect.RotationAccelerationBodyY}");
 
             return effect;
         }

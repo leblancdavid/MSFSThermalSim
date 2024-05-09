@@ -19,9 +19,9 @@
             SinkTurbulencePercent = new ValueRangeDouble(1.0, 1.0);
             SinkTransitionRadiusPercent = new ValueRangeDouble(0.1, 0.1);
             LiftShapeFactor = new ValueRangeDouble(0.5, 0.5);
-            FramesBetweenTurbulence = new ValueRangeInt(240, 240);
-            TurbulenceDuration = new ValueRangeInt(120, 120);
-            TurbulenceStrengthPercent = new ValueRangeDouble(1.0, 1.0);
+            FramesBetweenTurbulence = new ValueRangeInt(180, 180);
+            TurbulenceDuration = new ValueRangeInt(180, 180);
+            TurbulenceStrengthPercent = new ValueRangeDouble(0.0, 0.0);
             AllowSpawningOnAircraft = true;
         }
     }
