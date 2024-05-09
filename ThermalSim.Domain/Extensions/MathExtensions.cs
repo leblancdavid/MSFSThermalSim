@@ -1,6 +1,4 @@
-﻿using System;
-using ThermalSim.Domain.Extensions;
-using ThermalSim.Domain.Position;
+﻿using ThermalSim.Domain.Position;
 using ThermalSim.Domain.Thermals;
 
 namespace ThermalSim.Domain.Extensions
