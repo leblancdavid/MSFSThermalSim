@@ -145,7 +145,7 @@ namespace ThermalSim.Domain.Turbulence
 
             var angleInDegrees = angleToThermalCore.ToDegrees();
 
-            var rollEffect = -1.0 * Math.Sin(angleToThermalCore);
+            var rollEffect = Math.Sin(angleToThermalCore);
             var elevatorEffect = -1.0 * Math.Cos(angleToThermalCore);
             var yawEffect = rollEffect * _random.NextDouble();
 

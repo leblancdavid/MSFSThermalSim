@@ -21,7 +21,7 @@
             LiftShapeFactor = new ValueRangeDouble(0.5, 0.5);
             FramesBetweenTurbulence = new ValueRangeInt(180, 180);
             TurbulenceDuration = new ValueRangeInt(180, 180);
-            TurbulenceStrengthPercent = new ValueRangeDouble(0.0, 0.0);
+            TurbulenceStrengthPercent = new ValueRangeDouble(3.0, 3.0);
             AllowSpawningOnAircraft = true;
         }
     }
