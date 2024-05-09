@@ -44,7 +44,7 @@ namespace ThermalSim.Domain.Turbulence
             }
             else
             {
-                _transitionKernel = new CosineTurbulenceKernel(3.25, Math.PI / -4.0, 1.0, 0.0);
+                _transitionKernel = new CosineTurbulenceKernel(3.25, Math.PI / -4.0, 2.0, 0.0);
             }
 
             if (coreKernel != null)

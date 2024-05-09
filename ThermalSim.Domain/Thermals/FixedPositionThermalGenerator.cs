@@ -12,7 +12,8 @@ namespace ThermalSim.Domain.Thermals
             
         }
 
-        public ThermalSimulationConfiguration Configuration { get; set; } = new TestingThermalSimulationConfiguration();// new ThermalSimulationConfiguration();
+        //public ThermalSimulationConfiguration Configuration { get; set; } = new TestingThermalSimulationConfiguration();
+        public ThermalSimulationConfiguration Configuration { get; set; } = new ThermalSimulationConfiguration();
 
         public IThermalModel GenerateThermalAroundAircraft(AircraftPositionState position)
         {
