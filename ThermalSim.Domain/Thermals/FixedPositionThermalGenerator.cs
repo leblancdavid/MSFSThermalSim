@@ -12,6 +12,7 @@ namespace ThermalSim.Domain.Thermals
             
         }
 
+        //public ThermalSimulationConfiguration Configuration { get; set; } = new TestingThermalSimulationConfiguration();
         public ThermalSimulationConfiguration Configuration { get; set; } = new ThermalSimulationConfiguration();
 
         public IThermalModel GenerateThermalAroundAircraft(AircraftPositionState position)
@@ -23,7 +24,7 @@ namespace ThermalSim.Domain.Thermals
             {
                 ObjectId = lastId,
                 Properties = thermalProp,
-                TurbulenceModel = new CounterBasedTurbulenceModel(Configuration.GenerateRandomTurbulenceProperties(random, thermalProp.CoreLiftRate))
+                TurbulenceModel = new DirectionalTurbulenceModel(Configuration.GenerateRandomTurbulenceProperties(random, thermalProp.CoreLiftRate))
             };
         }
 
@@ -36,7 +37,7 @@ namespace ThermalSim.Domain.Thermals
             {
                 ObjectId = lastId,
                 Properties = thermalProp,
-                TurbulenceModel = new CounterBasedTurbulenceModel(Configuration.GenerateRandomTurbulenceProperties(random, thermalProp.CoreLiftRate))
+                TurbulenceModel = new DirectionalTurbulenceModel(Configuration.GenerateRandomTurbulenceProperties(random, thermalProp.CoreLiftRate))
             };
 
             thermal.Properties.Longitude = position.Longitude;

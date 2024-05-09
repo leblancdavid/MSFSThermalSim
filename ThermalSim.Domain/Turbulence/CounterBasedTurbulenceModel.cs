@@ -1,4 +1,6 @@
-﻿using ThermalSim.Domain.Position;
+﻿using ThermalSim.Domain.Extensions;
+using ThermalSim.Domain.Position;
+using ThermalSim.Domain.Thermals;
 
 namespace ThermalSim.Domain.Turbulence
 {
@@ -37,7 +39,7 @@ namespace ThermalSim.Domain.Turbulence
             _smoothingKernel = _turbulenceKernel.GetTurbulenceKernel(duration);
         }
 
-        public TurbulenceEffect? GetTurbulenceEffect(AircraftPositionState position)
+        public TurbulenceEffect? GetTurbulenceEffect(AircraftPositionState position, IThermalModel thermal)
         {
             //If we hit turbulence, this will be not null
             if(_turbulence != null)
@@ -81,9 +83,10 @@ namespace ThermalSim.Domain.Turbulence
                 RotationAccelerationBodyZ = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * Properties.z_Scaler,
             };
 
+
             return _turbulence;
         }
-
+        
         private void ResetCount()
         {
             _resetCount = Properties.FramesBetweenTurbulence.GetRandomValue(_random);

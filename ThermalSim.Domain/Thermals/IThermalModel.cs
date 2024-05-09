@@ -12,6 +12,7 @@ namespace ThermalSim.Domain.Thermals
         void ApplyWindDrift(double direction, double windSpeed);
         bool IsInThermal(AircraftPositionState position); 
         bool IsInThermal(double latitude, double longitude, double altitude);
+        ThermalPositionState GetPositionInThermal(AircraftPositionState position);
         double GetDistanceToThermal(AircraftPositionState position);
         double GetDistanceToThermal(double latitude, double longitude);
     }

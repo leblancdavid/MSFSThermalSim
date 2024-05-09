@@ -148,7 +148,7 @@ namespace ThermalSim.Domain.Thermals
                     isNearAnotherObject = thermals.Any(x => 
                     x.CalcDistance(newThermalModel.Properties.Latitude,
                         newThermalModel.Properties.Longitude) < x.Properties.TotalRadius + newThermalModel.Properties.TotalRadius) ||
-                        newThermalModel.IsInThermal(position);
+                        (!Configuration.AllowSpawningOnAircraft && newThermalModel.IsInThermal(position));
                     itr++;
                 }
                 while (isNearAnotherObject && itr < maxTry);
@@ -190,7 +190,7 @@ namespace ThermalSim.Domain.Thermals
                     connection.Connection?.SetDataOnSimObject(SimDataEventTypes.ThermalVelocityUpdate,
                         1u, SIMCONNECT_DATA_SET_FLAG.DEFAULT, velocityChange);
 
-                    var turbulence = nearestThermal.TurbulenceModel.GetTurbulenceEffect(position);
+                    var turbulence = nearestThermal.TurbulenceModel.GetTurbulenceEffect(position, nearestThermal);
                     if (turbulence != null)
                     {
                         //Console.WriteLine($"Turbulence: ({turbulence.Value.RotationAccelerationBodyX}, {turbulence.Value.RotationAccelerationBodyY}, {turbulence.Value.RotationAccelerationBodyZ})");
