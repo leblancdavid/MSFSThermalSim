@@ -1,7 +1,7 @@
-<Project Version="2" Name="maximus-ingamepanels-custom" FolderName="Packages">
+<Project Version="1" Name="thermal-sim-panel" FolderName="Packages">
 	<OutputDirectory>.</OutputDirectory>
 	<TemporaryOutputDirectory>_Temp</TemporaryOutputDirectory>
 	<Packages>
-		<Package>PackageDefinitions\maximus-ingamepanels-custom.xml</Package>
+		<Package>PackageDefinitions\thermal-sim-panel.xml</Package>
 	</Packages>
 </Project>

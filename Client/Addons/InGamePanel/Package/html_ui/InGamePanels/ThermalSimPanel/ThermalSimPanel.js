@@ -1,6 +1,6 @@
 //CREDIT FOR THIS CODE: https://github.com/bymaximus/msfs2020-toolbar-window-template
 
-class IngamePanelCustomPanel extends TemplateElement {
+class InGameThermalSimPanel extends TemplateElement {
     constructor() {
         super(...arguments);
 
@@ -81,7 +81,7 @@ class IngamePanelCustomPanel extends TemplateElement {
         var self = this;
         this.ingameUi = this.querySelector('ingame-ui');
 
-        this.iframeElement = document.getElementById("CustomPanelIframe");
+        this.iframeElement = document.getElementById("ThermalSimPanelIframe");
 
         this.m_MainDisplay = document.querySelector("#MainDisplay");
         this.m_MainDisplay.classList.add("hidden");
@@ -118,35 +118,6 @@ class IngamePanelCustomPanel extends TemplateElement {
         if (this.started) {
             return;
         }
-
-        //var self = this;
-        //this.m_MainDisplay = document.querySelector("#MainDisplay");
-        //this.m_MainDisplay.classList.add("hidden");
-
-        //this.m_Footer = document.querySelector("#Footer");
-        //this.m_Footer.classList.add("hidden");
-
-        //this.iframeElement = document.getElementById("CustomPanelIframe");
-        //this.ingameUi = this.querySelector('ingame-ui');
-
-        /*if (this.ingameUi) {
-            this.ingameUi.addEventListener("panelActive", (e) => {
-                console.log('panelActive');
-                self.updateImage();
-            });
-            this.ingameUi.addEventListener("panelInactive", (e) => {
-                console.log('panelInactive');
-                self.iframeElement.src = '';
-            });
-            this.ingameUi.addEventListener("onResizeElement", () => {
-                //self.updateImage();
-            });
-            this.ingameUi.addEventListener("dblclick", () => {
-                if (self.m_Footer) {
-                    self.m_Footer.classList.remove("hidden");
-                }
-            });
-        }*/
         this.started = true;
     }
     disconnectedCallback() {
@@ -156,5 +127,5 @@ class IngamePanelCustomPanel extends TemplateElement {
 
     }
 }
-window.customElements.define("ingamepanel-custom", IngamePanelCustomPanel);
+window.customElements.define("ingamepanel-thermalsim", InGameThermalSimPanel);
 checkAutoload();
