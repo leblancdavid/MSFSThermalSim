@@ -1,3 +1,5 @@
+//CREDIT FOR THIS CODE: https://github.com/bymaximus/msfs2020-toolbar-window-template
+
 class IngamePanelCustomPanel extends TemplateElement {
     constructor() {
         super(...arguments);

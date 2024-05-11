@@ -1,16 +1,16 @@
-<AssetPackage Name="maximus-ingamepanels-custom" Version="2.0.0">
+<AssetPackage Name="thermal-sim-panel" Version="1.0.0">
 	<ItemSettings>
 		<ContentType>SPB</ContentType>
-		<Title>maximus-ingamepanels-custom</Title>
-		<Manufacturer>Maximus</Manufacturer>
-		<Creator>Maximus</Creator>
+		<Title>thermal-sim-panel</Title>
+		<Manufacturer>KingSasquatchDave</Manufacturer>
+		<Creator>KingSasquatchDave</Creator>
 	</ItemSettings>
 	<Flags>
 		<VisibleInStore>false</VisibleInStore>
 		<CanBeReferenced>false</CanBeReferenced>
 	</Flags>
 	<AssetGroups>
-		<AssetGroup Name="maximus-ingamepanels-custom">
+		<AssetGroup Name="thermal-sim-panel">
 			<Type>SPB</Type>
 			<Flags>
 				<FSXCompatibility>false</FSXCompatibility>
