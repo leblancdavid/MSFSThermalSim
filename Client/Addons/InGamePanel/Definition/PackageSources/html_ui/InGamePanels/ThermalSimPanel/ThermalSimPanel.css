@@ -20,7 +20,7 @@ ingame-ui#ThermalSimPanel #ThermalSimPanelWrap {
   align-items: stretch !important;
   flex: 1 1 auto !important;
 }
-ingame-ui#ThermalSimPanel #ThermalSimPanelWrap #ThermalSimPanelIframe {
+ingame-ui#ThermalSimPanel #ThermalSimPanelWrap #ThermalSimIframe {
   flex: 1 1 auto !important;
   border: 0;
 }
@@ -29,28 +29,4 @@ ingame-ui#ThermalSimPanel #MainDisplay.hidden {
 }
 ingame-ui#ThermalSimPanel #Footer.hidden {
   display: none;
-}
-ingame-ui#ThermalSimPanel .ingameUiContent {
-  /*border: 2px solid green !important;*/
-  display: flex !important;
-  flex-direction: column !important;
-  width: 100% !important;
-  height: 100% !important;
-  min-height: 0 !important;
-  min-width: 0 !important;
-  overflow:hidden !important;
-  align-items: stretch !important;
-  flex: 1 1 auto !important;
-}
-ingame-ui#ThermalSimPanel .ingameUiWrapper {
-  /*border: 2px solid yellow !important;*/
-  display: flex !important;
-  flex-direction: column !important;
-  width: 100% !important;
-  height: 100% !important;
-  min-height: 0 !important;
-  min-width: 0 !important;
-  overflow:hidden !important;
-  align-items: stretch !important;
-  flex: 1 1 auto !important;
 }
