@@ -17,7 +17,7 @@ builder.Services.AddSingleton<IThermalSimulator, ThermalSimulator>();
 builder.Services.AddSingleton<ITowingService, TowingService>();
 builder.Services.AddTransient<IThermalGenerator, FixedPositionThermalGenerator>();
 
-builder.Services.AddHostedService<ThermalSimulatorBackgroundService>();
+//builder.Services.AddHostedService<ThermalSimulatorBackgroundService>();
 
 var app = builder.Build();
 

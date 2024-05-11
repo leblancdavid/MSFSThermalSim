@@ -11,14 +11,35 @@ class ThermalSimPanelPanel extends TemplateElement {
 
         const textBuffer = document.getElementById("textBuffer");
         const lockBuffer = document.getElementById("lockBuffer");
-        lockBuffer.addEventListener("click", () => {
-            textBuffer.readOnly = !textBuffer.readOnly;
-            if (textBuffer.readOnly) {
-                lockBuffer.title = "Unlock Notepad";
-            } else {
-                lockBuffer.title = "Lock Notepad";
-            }
-        });
+
+        this.ingameUi = this.querySelector('ingame-ui');
+        this.iframeElement = document.getElementById("ThermalSimIframe");
+
+        if (this.ingameUi) {
+            this.ingameUi.addEventListener("panelActive", (e) => {
+                console.log('panelActive');
+                self.panelActive = true;
+                if (self.iframeElement) {
+                    self.iframeElement.src = 'https://localhost:7187/swagger/index.html';
+                }
+            });
+            this.ingameUi.addEventListener("panelInactive", (e) => {
+                console.log('panelInactive');
+                self.panelActive = false;
+                if (self.iframeElement) {
+                    self.iframeElement.src = '';
+                }
+            });
+            this.ingameUi.addEventListener("onResizeElement", () => {
+                //self.updateImage();
+            });
+            this.ingameUi.addEventListener("dblclick", () => {
+                if (self.m_Footer) {
+                    self.m_Footer.classList.remove("hidden");
+                }
+			});
+        }
+
     }
     initialize() {
     }
