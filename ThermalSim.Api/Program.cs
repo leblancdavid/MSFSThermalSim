@@ -19,6 +19,11 @@ builder.Services.AddTransient<IThermalGenerator, FixedPositionThermalGenerator>(
 
 //builder.Services.AddHostedService<ThermalSimulatorBackgroundService>();
 
+builder.Services.AddCors(p => p.AddPolicy("thermalsim", builder =>
+{
+    builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+}));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,6 +34,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("thermalsim");
 
 app.UseAuthorization();
 
