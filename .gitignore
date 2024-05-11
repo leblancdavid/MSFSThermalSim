@@ -397,3 +397,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 /Client/Addons/InGamePanel/Definition/_Temp
+/Client/Addons/InGamePanel/Definition/_Temp

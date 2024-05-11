@@ -1,11 +1,4 @@
 <Timestamps>
-	<Entry Path="Package\html_ui\InGamePanels\ThermalSimPanel\ThermalSimPanel.css" Timestamp="13359911870"/>
-	<Entry Path="Package\layout.json" Timestamp="13359910291"/>
-	<Entry Path="Package\InGamePanels\maximus-ingamepanels-custom.spb" Timestamp="13359910291"/>
-	<Entry Path="Package\manifest.json" Timestamp="13359910291"/>
 	<Entry Path="thermal-sim-panel.xml" Timestamp="13359913755"/>
-	<Entry Path="Package\html_ui\InGamePanels\ThermalSimPanel\ThermalSimPanel.html" Timestamp="13359911806"/>
-	<Entry Path="Package\html_ui\Textures\Menu\toolbar\ICON_TOOLBAR_THERMAL_SIM_PANEL.svg" Timestamp="13359911350"/>
-	<Entry Path="Package\html_ui\InGamePanels\ThermalSimPanel\ThermalSimPanel.js" Timestamp="13359911774"/>
 </Timestamps>
 
