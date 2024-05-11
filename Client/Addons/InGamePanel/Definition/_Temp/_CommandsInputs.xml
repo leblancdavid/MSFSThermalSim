@@ -1,0 +1,23 @@
+<CommandsInputs>
+	<File Path="C:\Users\lblan\OneDrive\Documents\Projects\MSFSThermalSim\Client\Addons\InGamePanel\Definition\PackageSources\Package\manifest.json" Failure="0">
+		<Package Name="thermal-sim-panel" Failure="0">
+			<AssetGroup Name="thermal-sim-panel"/>
+		</Package>
+	</File>
+	<File Path="C:\Users\lblan\OneDrive\Documents\Projects\MSFSThermalSim\Client\Addons\InGamePanel\Definition\PackageSources\Package\layout.json" Failure="0">
+		<Package Name="thermal-sim-panel" Failure="0">
+			<AssetGroup Name="thermal-sim-panel"/>
+		</Package>
+	</File>
+	<File Path="C:\Users\lblan\OneDrive\Documents\Projects\MSFSThermalSim\Client\Addons\InGamePanel\Definition\PackageSources\Package\InGamePanels\maximus-ingamepanels-custom.spb" Failure="0">
+		<Package Name="thermal-sim-panel" Failure="0">
+			<AssetGroup Name="thermal-sim-panel"/>
+		</Package>
+	</File>
+	<File Path="C:\Users\lblan\OneDrive\Documents\Projects\MSFSThermalSim\Client\Addons\InGamePanel\Definition\PackageSources\thermal-sim-panel.xml" Failure="0">
+		<Package Name="thermal-sim-panel" Failure="0">
+			<AssetGroup Name="thermal-sim-panel"/>
+		</Package>
+	</File>
+</CommandsInputs>
+

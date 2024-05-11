@@ -1,4 +1,4 @@
-<Project Version="1" Name="thermal-sim-panel" FolderName="Packages">
+<Project Version="2" Name="thermal-sim-panel" FolderName="Packages">
 	<OutputDirectory>.</OutputDirectory>
 	<TemporaryOutputDirectory>_Temp</TemporaryOutputDirectory>
 	<Packages>
