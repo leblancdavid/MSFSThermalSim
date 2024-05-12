@@ -1,7 +1,11 @@
 <Timestamps>
-	<Entry Path="Textures\Menu\toolbar\ICON_TOOLBAR_THERMAL_SIM_PANEL.svg" Timestamp="13359920876"/>
-	<Entry Path="InGamePanels\ThermalSimPanel\ThermalSimPanel.css" Timestamp="13359921542"/>
-	<Entry Path="InGamePanels\ThermalSimPanel\ThermalSimPanel.html" Timestamp="13359923605"/>
-	<Entry Path="InGamePanels\ThermalSimPanel\ThermalSimPanel.js" Timestamp="13359922489"/>
+	<Entry Path="ThermalSimPanel.js" Timestamp="13359991103"/>
+	<Entry Path="polyfills.js" Timestamp="13359995490"/>
+	<Entry Path="ThermalSimPanel.css" Timestamp="13359937204"/>
+	<Entry Path="ThermalSimPanel.html" Timestamp="13359995308"/>
+	<Entry Path="index.html" Timestamp="13359995490"/>
+	<Entry Path="main.js" Timestamp="13359995490"/>
+	<Entry Path="styles.css" Timestamp="13359995490"/>
+	<Entry Path="favicon.ico" Timestamp="13359927090"/>
 </Timestamps>
 
