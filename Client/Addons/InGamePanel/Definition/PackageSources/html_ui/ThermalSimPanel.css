@@ -6,10 +6,10 @@
   background: rgba(255, 255, 255, 0.2)
 }
 .sim-tab-btn {
-  width: 64px;
-  height: 64px;
-  border: solid 2px rgba(255, 255, 255, 0.8);
-  margin: 2px;
+  width: 128px;
+  height: 128px;
+  border: solid 4px rgba(255, 255, 255, 0.8);
+  margin: 4px;
   background-color: transparent;
   display: flex;
   flex-direction: column;
@@ -20,21 +20,24 @@
 
 .sim-tab-btn:hover {
   background-color: rgba(255, 255, 255, 0.5);
-  border: solid 2px rgba(127, 127, 255, 0.8);
+  border: solid 2px rgba(197, 197, 255, 0.8);
+  color: rgba(197, 197, 255, 0.8);
 }
 
 .sim-tab-btn:disabled {
   background-color: rgba(127, 127, 127, 0.5);
   border: solid 2px rgba(127, 127, 127, 0.8);
+  color: rgba(127, 127, 127, 0.8);
 }
 
 .sim-tab-btn.selected {
   border: solid 2px rgba(127, 127, 255, 0.8);
+  color: rgba(127, 127, 255, 0.8);
 }
 
 .sim-tab-btn img {
-  width: 36px;
-  height: 36px;
+  width: 64px;
+  height: 64px;
 }
 
 .content-row {
@@ -42,6 +45,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  flex: 1
 }
 
 .sim-tabs-container {
@@ -50,8 +54,12 @@
   justify-content: center;
   align-items: center;
 }
-.sim-tab-content {
 
+.sim-tab-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 
