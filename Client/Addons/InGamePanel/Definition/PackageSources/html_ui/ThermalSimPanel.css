@@ -16,25 +16,25 @@
   justify-content: center;
   align-items: center;
   color: rgba(255, 255, 255, 0.8);
+}
 
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.5);
-    border: solid 2px rgba(127, 127, 255, 0.8);
-  }
+.sim-tab-btn:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+  border: solid 2px rgba(127, 127, 255, 0.8);
+}
 
-  &:disabled {
-    background-color: rgba(127, 127, 127, 0.5);
-    border: solid 2px rgba(127, 127, 127, 0.8);
-  }
+.sim-tab-btn:disabled {
+  background-color: rgba(127, 127, 127, 0.5);
+  border: solid 2px rgba(127, 127, 127, 0.8);
+}
 
-  &.selected {
-    border: solid 2px rgba(127, 127, 255, 0.8);
-  }
+.sim-tab-btn.selected {
+  border: solid 2px rgba(127, 127, 255, 0.8);
+}
 
-  img {
-    width: 36px;
-    height: 36px;
-  }
+.sim-tab-btn img {
+  width: 36px;
+  height: 36px;
 }
 
 .content-row {
