@@ -73,6 +73,9 @@ namespace ThermalSim.Domain.Thermals
             {
                 stateTracker.UpdatePosition(e.Position);
 
+                if (!IsRunning)
+                    return;
+
                 if (DateTime.Now > nextSampleTime)
                 {
                     nextSampleTime = thermalGenerator.GetNextSampleTime();
@@ -209,8 +212,7 @@ namespace ThermalSim.Domain.Thermals
 
         public void Stop()
         {
-            connection.AircraftPositionUpdated -= OnAircraftPositionUpdate;
-            connection.Disconnect();
+            IsRunning = false;
         }
 
         public bool InsertThermal()

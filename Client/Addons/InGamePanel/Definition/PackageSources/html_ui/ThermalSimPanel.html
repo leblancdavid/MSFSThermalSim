@@ -28,10 +28,11 @@
             title="" class="flex-fill-view"
             content-fit="true">
 
-            <div id="ThermalSimPanelWrap" class="flex-fill-view" style="background-color: black;">
+            <div id="ThermalSimPanelWrap" class="flex-fill-view" style="background-color: gray;">
                 
                 <div class="sim-tabs">
-                    <button id="connectionTabBtn" class="sim-tab-btn selected">
+                    <button id="connectionTabBtn" class="sim-tab-btn"
+                        onclick="onConnectionTabClicked()">
                         <img src="./rss-solid.svg" alt="Connection"></i>
                     </button>
                     <button id="gaugeTabBtn" class="sim-tab-btn">
@@ -47,29 +48,44 @@
                 <div class="sim-tabs-container">
                     <div id="connectionTabContent" class="sim-tab-content">
                         <div class="content-row">
-                            <button id="openConnectionBtn" class="sim-tab-btn" disabled>
+                            <button id="openConnectionBtn" class="sim-tab-btn" 
+                                onclick="onOpenConnectionClicked()">
                                 <img src="./plug-solid.svg" alt="Open Connection"></i>
+                                CONN.
                             </button>
                             
-                            <button id="closeConnectionBtn" class="sim-tab-btn">
+                            <button id="closeConnectionBtn" class="sim-tab-btn"
+                                onclick="onCloseConnectionClicked()">
                                 <img src="./plug-circle-xmark-solid.svg" alt="Close Connection"></i>
+                                DISC.
                             </button>
                         </div>
-                        
+
+                        <div class="content-row" id="thermal-simulator-controls" style="display: none;">
+                            <button id="thermalsOnBtn" class="sim-tab-btn"
+                                onclick="onThermalSimOnClicked()">
+                                <img src="./cloud-arrow-up-solid.svg" alt="Turn thermals on"></i>
+                                ON
+                            </button>
+                            
+                            <button id="thermalsOffBtn" class="sim-tab-btn"
+                                onclick="onThermalSimOffClicked()">
+                                <img src="./cloud-arrow-down-solid.svg" alt="Turn thermals off"></i>
+                                OFF
+                            </button>
+                        </div>
                     </div>
                     
-                    <div id="gaugeTabContent" class="sim-tab-content">
-
+                    <div id="taxiTabContent" class="sim-tab-content" style="display: none;">
+                        taxi tab!!!
                     </div>
 
-                    
-                    <div id="taxiTabContent" class="sim-tab-content">
-
+                    <div id="gaugeTabContent" class="sim-tab-content" style="display: none;">
+                        gauge tab!!!
                     </div>
 
-                    
-                    <div id="settingsTabContent" class="sim-tab-content">
-
+                    <div id="settingsTabContent" class="sim-tab-content" style="display: none;">
+                        settings tab!!!
                     </div>
                 </div>
                 
@@ -89,6 +105,7 @@
     </ingamepanel-thermalsim>
 
     <script type="text/javascript" src="ThermalSimPanel.js"></script>
+    <script type="text/javascript" src="ThermalSimConnection.js"></script>
 </body>
 
 

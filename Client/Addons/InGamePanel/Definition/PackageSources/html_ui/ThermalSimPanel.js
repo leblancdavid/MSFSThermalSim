@@ -37,21 +37,7 @@ function Binding(b) {
 }
 
 
-function getConnectionStatus()
-{
-    fetch('https://localhost:7187/api/sim-connection/connected').then(function(response) {
-        return response.json();
-      }).then(function(isConnected) {
-        if(isConnected) {
-            document.getElementById('connectionStatus').innerHTML = 'CONNECTED';
-        } else {
-            document.getElementById('connectionStatus').innerHTML = 'DISCONNECTED';
-        }
-        console.log(isConnected);
-      }).catch(function(err) {
-        console.log('Fetch Error :-S', err);
-      });
-}
+
 
 var obj = {a:123}
 var myInputElement1 = document.getElementById("myText1")
