@@ -6,26 +6,27 @@ using ThermalSim.Domain.Thermals;
 
 namespace ThermalSim.Domain.Towing
 {
-    public class TowingService : ITowingService
+    public class TaxiingService : ITaxiingService
     {
         private readonly ISimConnection connection;
-        private readonly ILogger<TowingService> logger;
+        private readonly ILogger<TaxiingService> logger;
 
         private const double ROTATION_FACTOR = -0.05;
         private const double RUDDER_FACTOR = 0.25;
         private const double STOP_ROTATION_THRESHOLD = 0.05;
         private const double MAX_TOW_SPEED = 20.0;
         private const double MIN_TOW_SPEED = -20.0;
-        public TowingService(ISimConnection connection, ILogger<TowingService> logger)
+        private const double DEFAULT_TOW_SPEED = 5.0;
+        public TaxiingService(ISimConnection connection, ILogger<TaxiingService> logger)
         {
             this.connection = connection;
             this.logger = logger;
         }
 
-        public bool IsTowing { get; private set; }
+        public bool IsTaxiing { get; private set; }
 
-        private double _towSpeed = 5.0;
-        public double TowingSpeed 
+        private double _towSpeed = DEFAULT_TOW_SPEED;
+        public double TaxiingSpeed 
         { 
             get
             {
@@ -45,7 +46,7 @@ namespace ThermalSim.Domain.Towing
             }
         }
 
-        public bool StartTowing()
+        public bool StartTaxiing()
         {
             if (!connection.IsConnected)
             {
@@ -57,7 +58,7 @@ namespace ThermalSim.Domain.Towing
                 }
             }
 
-            IsTowing = true;
+            IsTaxiing = true;
 
             connection.AircraftPositionUpdated += OnAircraftPositionUpdate;
 
@@ -68,7 +69,7 @@ namespace ThermalSim.Domain.Towing
         {
             try
             {
-                if (!IsTowing || e.Position.IsOnGround == 0 || e.Position.GearHandlePosition == 0)
+                if (!IsTaxiing || e.Position.IsOnGround == 0 || e.Position.GearHandlePosition == 0)
                 {
                     return;
                 }
@@ -76,7 +77,7 @@ namespace ThermalSim.Domain.Towing
                 var rotation = ROTATION_FACTOR * e.Position.Bank;
                 var rudder = RUDDER_FACTOR * e.Position.RudderPosition;
 
-                var speed = TowingSpeed * (1.0 - e.Position.SpoilerHandlePosition / 100.0);
+                var speed = TaxiingSpeed * (1.0 - e.Position.SpoilerHandlePosition / 100.0);
 
                 //Stop towing if the the wing is being lifted
                 if(Math.Abs(rotation) > STOP_ROTATION_THRESHOLD)
@@ -84,7 +85,7 @@ namespace ThermalSim.Domain.Towing
                     speed = 0.0;
                 }
 
-                var update = new TowingSpeedUpdate()
+                var update = new TaxiingSpeedUpdate()
                 {
                     RotationVelocityBodyY = rudder,
                     RotationVelocityBodyZ = rotation,
@@ -100,9 +101,9 @@ namespace ThermalSim.Domain.Towing
             }
         }
 
-        public bool StopTowing()
+        public bool StopTaxiing()
         {
-            IsTowing = false;
+            IsTaxiing = false;
             connection.AircraftPositionUpdated -= OnAircraftPositionUpdate;
             return true;
         }

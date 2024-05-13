@@ -232,7 +232,7 @@ namespace ThermalSim.Domain.Connection
 
         private void RegisterTowingSpeedUpdateDefinition()
         {
-            RegisterDataDefinition<TowingSpeedUpdate>(SimDataEventTypes.TowingSpeedUpdate,
+            RegisterDataDefinition<TaxiingSpeedUpdate>(SimDataEventTypes.TowingSpeedUpdate,
                 ("VELOCITY BODY Z", "Feet per second", (SIMCONNECT_DATATYPE)4),
                 ("ROTATION VELOCITY BODY Y", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
                 ("ROTATION VELOCITY BODY Z", "Feet per second squared", (SIMCONNECT_DATATYPE)4)

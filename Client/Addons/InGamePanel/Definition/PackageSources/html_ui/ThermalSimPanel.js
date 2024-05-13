@@ -38,7 +38,7 @@ function Binding(b) {
 
 
 
-
+/*
 var obj = {a:123}
 var myInputElement1 = document.getElementById("myText1")
 var myInputElement2 = document.getElementById("myText2")
@@ -53,5 +53,5 @@ new Binding({
 .addBinding(myDOMElement, "innerHTML")
 
 obj.a = 456;
+*/
 
-//getConnectionStatus();

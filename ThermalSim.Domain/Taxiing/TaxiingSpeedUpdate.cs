@@ -5,7 +5,7 @@ using ThermalSim.Domain.Connection;
 namespace ThermalSim.Domain.Towing
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct TowingSpeedUpdate
+    public struct TaxiingSpeedUpdate
     {
         [SimConnectVariable(Name = "VELOCITY BODY X", Unit = "Feet per second", Type = SIMCONNECT_DATATYPE.FLOAT64)]
         public double VelocityBodyZ;

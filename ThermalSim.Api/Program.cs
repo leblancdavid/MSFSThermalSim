@@ -14,7 +14,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<ISimConnection, SimConnection>();
 builder.Services.AddSingleton<IThermalSimulator, ThermalSimulator>();
-builder.Services.AddSingleton<ITowingService, TowingService>();
+builder.Services.AddSingleton<ITaxiingService, TaxiingService>();
 builder.Services.AddTransient<IThermalGenerator, FixedPositionThermalGenerator>();
 
 //builder.Services.AddHostedService<ThermalSimulatorBackgroundService>();
