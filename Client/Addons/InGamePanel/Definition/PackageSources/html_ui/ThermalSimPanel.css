@@ -14,7 +14,7 @@ body {
   align-items: center;
   justify-content: space-between;
   height: 640px;
-  width: 432px;
+  width: 536px;
 }
 
 .sim-tab-btn {
@@ -22,7 +22,7 @@ body {
   height: 128px;
   box-shadow: inset 0 0 0 4px rgb(96, 96, 96);
   border-radius: 8px;
-  margin: 2px;
+  margin: 4px;
   background: linear-gradient(to bottom right, black, rgb(64,64,64));
   display: flex;
   flex-direction: column;
@@ -63,7 +63,7 @@ body {
   height: 32px;
   box-shadow: inset 0 0 0 2px rgb(96, 96, 96);
   border-radius: 4px;
-  margin: 2px;
+  margin: 4px;
   background: linear-gradient(to bottom right, black, rgb(64,64,64));
   display: flex;
   flex-direction: column;
@@ -96,7 +96,8 @@ body {
 
 .sim-input-container {
   height: 120px;
-  width: 284px;
+  width: 256px;
+  margin: 4px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -113,13 +114,14 @@ body {
 }
 .sim-input-container input {
   height: 72px;
-  width: 184px;
+  width: 170px;
+  min-width: 170px;
   background-color: rgb(96, 96, 96);
   color: rgb(0, 0, 0, 0.8);
   margin: 8px;
   font-family: digitalFont;
   font-weight: bold;
-  font-size: 80px;
+  font-size: 64px;
 }
 .input-display {
   display: flex;
@@ -153,7 +155,7 @@ body {
 .content-row {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
 }
