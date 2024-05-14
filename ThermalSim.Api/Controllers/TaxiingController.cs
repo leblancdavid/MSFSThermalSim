@@ -59,7 +59,7 @@ namespace ThermalSim.Api.Controllers
             try
             {
                 taxiingService.TaxiingSpeed = speed;
-                return Ok();
+                return Ok(taxiingService.TaxiingSpeed);
             }
             catch (Exception ex)
             {

@@ -1,6 +1,11 @@
-﻿body {
+﻿@font-face {
+  font-family: digitalFont;
+  src: url(digital-7.ttf);
+}
+
+body {
   margin: 0;
-  background: linear-gradient(to bottom right, black, rgb(64,64,64));
+  background: linear-gradient(to bottom right,rgb(32,32,32), rgb(64,64,64));
 }
 
 .sim-tab-btn {
@@ -36,24 +41,95 @@
 .sim-tab-btn.turned-on svg path {
   fill: rgb(255, 255, 240);
 }
-
-
-.sim-tabs {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;    
-  background: rgba(255, 255, 255, 0.2)
-}
-
-
 .sim-tab-btn:hover {
   border: solid 2px rgb(197, 197, 255);
-  color: rgb(197, 197, 255, 0.8);
+  color: rgb(197, 197, 255);
 }
 .sim-tab-btn:hover svg path{
   fill: rgb(197, 197, 255);
 }
+
+.sim-btn-small {
+  width: 48px;
+  height: 32px;
+  box-shadow: inset 0 0 0 2px rgb(96, 96, 96);
+  border-radius: 4px;
+  margin: 2px;
+  background: linear-gradient(to bottom right, black, rgb(64,64,64));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: rgb(96, 96, 96);
+  font-size: 16px;
+  font-family: system-ui;
+  font-weight: 500;
+}
+.sim-btn-small.turned-on {
+  box-shadow: inset 0 0 3px 3px rgb(255, 255, 240);
+  color: rgb(255, 255, 240);
+  background: linear-gradient(to bottom right, rgb(32,32,32), rgb(72,72,72));
+  font-weight: 600;
+}
+.sim-btn-small:hover {
+  border: solid 2px rgb(197, 197, 255);
+  color: rgb(197, 197, 255);
+}
+
+
+.sim-input-container {
+  height: 124px;
+  width: 284px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: rgb(96, 96, 96);
+  font-size: 16px;
+  font-family: system-ui;
+  font-weight: 500;
+  
+  background: linear-gradient(to bottom right, rgb(32,32,32), rgb(64,64,64));
+  box-shadow: 2px 2px 0 0 rgb(32, 32, 32);
+  border-radius: 8px;
+}
+.sim-input-container input {
+  height: 72px;
+  width: 184px;
+  background-color: rgb(96, 96, 96);
+  color: rgb(0, 0, 0, 0.8);
+  margin: 8px;
+  font-family: digitalFont;
+  font-weight: bold;
+  font-size: 80px;
+}
+.input-display {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.input-display-button-stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.sim-input-container.turned-on {
+  color: rgb(255, 255, 240);
+  background: linear-gradient(to bottom right, rgb(32,32,32), rgb(72,72,72));
+}
+.sim-input-container.turned-on input {
+  background-color: rgb(252, 200, 87);
+  box-shadow: inset 0 0 4px 2px rgb(255, 241, 199);
+}
+.sim-input-container.turned-on button {
+  box-shadow: inset 0 0 3px 3px rgb(255, 255, 240);
+  color: rgb(255, 255, 240);
+  background: linear-gradient(to bottom right, rgb(32,32,32), rgb(72,72,72));
+  font-weight: 600;
+}
+
 
 
 .content-row {
@@ -61,8 +137,12 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  flex: 1;
-  margin: 8px;
+}
+.content-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .sim-tabs-container {
@@ -80,16 +160,13 @@
   margin: 8px;
 }
 
-.sim-input-container {
-  color: rgba(255, 255, 255, 0.8);
+.sim-tabs {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;    
+  background: rgba(255, 255, 255, 0.2)
 }
-.sim-input-container input {
-  background-color: transparent;
-  color: rgba(255, 255, 255, 0.8);
-  border: solid 2px rgba(255, 255, 255, 0.8);
-  margin: 8px;
-}
-
 
 
 
