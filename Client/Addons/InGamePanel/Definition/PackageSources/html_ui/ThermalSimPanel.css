@@ -1,11 +1,17 @@
-﻿@font-face {
+﻿
+@font-face {
   font-family: digitalFont;
   src: url(digital-7.ttf);
 }
 
-body {
-  margin: 0;
-  background: linear-gradient(to bottom right,rgb(32,32,32), rgb(64,64,64));
+.thermal-sim-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 684px;
+  width: 540px;
+  background: linear-gradient(to bottom right, rgb(0,0,0), rgb(32,32,32));
 }
 
 .main-panel {
@@ -92,6 +98,9 @@ body {
 .sim-btn-small svg path {
   fill:rgb(96, 96, 96);
 }
+.sim-btn-small:hover svg path{
+  fill: rgb(197, 197, 255);
+}
 
 
 .sim-input-container {
@@ -117,7 +126,7 @@ body {
   width: 170px;
   min-width: 170px;
   background-color: rgb(96, 96, 96);
-  color: rgb(0, 0, 0, 0.8);
+  color: rgb(0, 0, 0, 0.6);
   margin: 8px;
   font-family: digitalFont;
   font-weight: bold;
@@ -165,74 +174,4 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-}
-
-.sim-tabs-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.sim-tab-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 8px;
-}
-
-.sim-tabs {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;    
-  background: rgba(255, 255, 255, 0.2)
-}
-
-
-
-
-
-
-
-
-
-/** This mixin makes a single line element fit exactly on the Roboto font for easier integration. */
-.flex-fill-view {
-  display: flex;
-  width: 100%;
-  height: 100%;
-}
-
-ingame-ui#ThermalSimPanel {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content: center;
-  height:100% !important;
-  width: 100% !important;
-  /*border: 2px solid blue !important;*/
-}
-ingame-ui#ThermalSimPanel #ThermalSimPanelWrap {
-  display: flex;
-  flex-direction: column;
-  width: 100% !important;
-  height: 100% !important;
-  /*border: 2px solid red !important;*/
-  min-height: 0;
-  min-width: 0;
-  overflow:hidden;
-  align-items: stretch !important;
-  flex: 1 1 auto !important;
-}
-ingame-ui#ThermalSimPanel #ThermalSimPanelWrap #ThermalSimIframe {
-  flex: 1 1 auto !important;
-  border: 0;
-}
-ingame-ui#ThermalSimPanel #MainDisplay.hidden {
-  display: none;
-}
-ingame-ui#ThermalSimPanel #Footer.hidden {
-  display: none;
 }

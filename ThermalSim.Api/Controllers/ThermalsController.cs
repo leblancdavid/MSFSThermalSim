@@ -72,11 +72,6 @@ namespace ThermalSim.Api.Controllers
         {
             try
             {
-                if(!thermalSimulator.IsRunning)
-                {
-                    return BadRequest("Thermal simulation is not currently running.");
-                }
-
                 return Ok(thermalSimulator.Configuration);
             }
             catch(Exception ex)
@@ -90,11 +85,6 @@ namespace ThermalSim.Api.Controllers
         {
             try
             {
-                if (!thermalSimulator.IsRunning)
-                {
-                    return BadRequest("Thermal simulation is not currently running.");
-                }
-
                 thermalSimulator.Configuration = configuration;
                 return Ok(thermalSimulator.Configuration);
             }

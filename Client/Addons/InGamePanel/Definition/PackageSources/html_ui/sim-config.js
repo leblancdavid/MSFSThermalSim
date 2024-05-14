@@ -5,7 +5,7 @@ class ValueRange {
     }
 }
 class SimConfig {
-    constructor(numberThermals = new ValueRange(5, 10),
+    constructor(numberOfThermals = new ValueRange(5, 10),
         samplingSpeedSeconds = new ValueRange(30, 60),
         durationMinutes = new ValueRange(5, 30),
         altitudeFromGround = new ValueRange(100, 500),
@@ -13,7 +13,7 @@ class SimConfig {
         relativeSpawnAltitude = new ValueRange(-1000, 0),
         radius = new ValueRange(1000, 2000),
         height = new ValueRange(3000, 10000),
-        coreLiftRate = new ValueRange(100, 500),
+        coreLiftRate = new ValueRange(10, 20),
         coreRadiusPercent = new ValueRange(0.8, 0.85),
         coreTurbulencePercent = new ValueRange(0.0, 2.0),
         sinkRatePercent = new ValueRange(-1.5, -0.5),
@@ -25,7 +25,7 @@ class SimConfig {
         turbulenceDuration = new ValueRange(60, 240),
         turbulenceStrengthPercent = new ValueRange(1.0, 1.5),
     ) {
-        this.numberThermals = numberThermals;
+        this.numberOfThermals = numberOfThermals;
         this.samplingSpeedSeconds = samplingSpeedSeconds;
         this.durationMinutes = durationMinutes;
         this.altitudeFromGround = altitudeFromGround;
@@ -48,3 +48,59 @@ class SimConfig {
 }
 
 var config = new SimConfig();
+
+function refreshConfiguration() {
+    fetch('https://localhost:7187/api/thermals/configuration').then(function(response) {
+        if(response.status == 200)
+            return response.json();
+        return null;
+      }).then(function(configValues) {
+        if(configValues != null) {
+            this.config = configValues;
+            refreshInputView();
+            console.log(configValues);
+        }
+      }).catch(function(err) {
+        console.log('Fetch Error :-S', err);
+      });
+}
+
+function refreshInputView() {
+    document.getElementById('configMinNumThermals').value = config.numberOfThermals.min;
+    document.getElementById('configMaxNumThermals').value = config.numberOfThermals.max;
+    document.getElementById('configMinRadius').value = config.radius.min;
+    document.getElementById('configMaxRadius').value = config.radius.max;
+    document.getElementById('configMinHeight').value = config.height.min;
+    document.getElementById('configMaxHeight').value = config.height.max;
+    document.getElementById('configMinCoreLiftRate').value = config.coreLiftRate.min;
+    document.getElementById('configMaxCoreLiftRate').value = config.coreLiftRate.max;
+    document.getElementById('configMinSinkRate').value = config.sinkRatePercent.min;
+    document.getElementById('configMaxSinkRate').value = config.sinkRatePercent.max;
+
+}
+
+function sendUpdatedConfig() {
+    fetch('https://localhost:7187/api/thermals/configuration', 
+        { 
+            method: 'PUT',  
+            headers: { 
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(this.config)
+        }).then(function(response) {
+            if(response.status == 200)
+                return response.json();
+            return null;
+        }).then(function(configValues) {
+            if(configValues != null) {
+                this.config = configValues;
+                refreshInputView();
+                console.log(configValues);
+            }
+          }).catch(function(err) {
+            updateThermalSimulationStatus(false);
+            console.log('Fetch Error :-S', err);
+        });
+}
+
+refreshConfiguration();
