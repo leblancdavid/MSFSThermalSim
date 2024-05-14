@@ -1,3 +1,46 @@
+var currentPanel = 0;
+
+function nextPanel() {
+    currentPanel++;
+    if(currentPanel > 1) {
+        currentPanel = 1;
+    }
+    showPanel(currentPanel);
+}
+
+function previousPanel() {
+    currentPanel--;
+    if(currentPanel < 0) {
+        currentPanel = 0;
+    }
+    showPanel(currentPanel);
+}
+
+function showPanel(currentPanel) {
+    if(currentPanel == 0) {
+        document.getElementById('mainPanel').style.display = "flex";
+        document.getElementById('configPanel').style.display = "none";
+    } else if(currentPanel == 1) {
+        document.getElementById('mainPanel').style.display = "none";
+        document.getElementById('configPanel').style.display = "flex";
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function Binding(b) {
   _this = this
   this.elementBindings = []
