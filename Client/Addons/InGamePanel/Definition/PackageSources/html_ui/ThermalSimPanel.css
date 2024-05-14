@@ -27,7 +27,7 @@
 
 .sim-tab-btn:disabled {
   background-color: rgba(127, 127, 127, 0.5);
-  border: solid 2px rgba(127, 127, 127, 0.8);
+  border: solid 2px rgba(255, 255, 255, 0.5);
   color: rgba(127, 127, 127, 0.8);
 }
 

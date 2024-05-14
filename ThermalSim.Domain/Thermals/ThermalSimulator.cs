@@ -52,6 +52,11 @@ namespace ThermalSim.Domain.Thermals
         {
             if(!connection.IsConnected)
             {
+                if(IsRunning)
+                {
+                    Stop();
+                }
+
                 var result = connection.Connect();
                 if (!result)
                     return result;
