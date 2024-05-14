@@ -21,7 +21,7 @@
 
 </head>
 
-<body style="margin: 0; background-color: rgba(0,0,0,0.5);" class="flex-fill-view">
+<body class="flex-fill-view">
     <ingamepanel-thermalsim class="flex-fill-view">
         <ingame-ui id="ThermalSimPanel" 
             panel-id="THERMAL_SIM_PANEL" 
@@ -30,6 +30,19 @@
 
             <div id="ThermalSimPanelWrap" class="flex-fill-view">
                 
+                <button id="connectionBtn" class="sim-tab-btn"
+                    onclick="onConnectionClicked()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M0 64C0 46.3 14.3 32 32 32c229.8 0 416 186.2 416 416c0 17.7-14.3 32-32 32s-32-14.3-32-32C384 253.6 226.4 96 32 96C14.3 96 0 81.7 0 64zM0 416a64 64 0 1 1 128 0A64 64 0 1 1 0 416zM32 160c159.1 0 288 128.9 288 288c0 17.7-14.3 32-32 32s-32-14.3-32-32c0-123.7-100.3-224-224-224c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/></svg>
+                    CONNECT
+                </button>
+                
+                <button id="thermalsBtn" class="sim-tab-btn"
+                    onclick="onThermalSimOnClicked()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V392c0 13.3 10.7 24 24 24s24-10.7 24-24V257.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"/></svg>
+                    ON
+                </button>
+
+<!--
+    
                 <div class="sim-tabs">
                     <button id="connectionTabBtn" class="sim-tab-btn"
                         onclick="onConnectionTabClicked()">
@@ -102,6 +115,7 @@
                 </div>
                 
 
+-->
 
 
 
