@@ -7,13 +7,13 @@ namespace ThermalSim.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TowingController : ControllerBase
+    public class TaxiingController : ControllerBase
     {
-        private readonly ITowingService towingService;
+        private readonly ITaxiingService taxiingService;
 
-        public TowingController(ITowingService towingService)
+        public TaxiingController(ITaxiingService taxiingService)
         {
-            this.towingService = towingService;
+            this.taxiingService = taxiingService;
         }
 
         [HttpPut]
@@ -21,7 +21,7 @@ namespace ThermalSim.Api.Controllers
         {
             try
             {
-                var result = towingService.StartTowing();
+                var result = taxiingService.StartTaxiing();
                 if (result)
                     return Ok();
 
@@ -36,7 +36,7 @@ namespace ThermalSim.Api.Controllers
         [HttpGet("running")]
         public bool IsConnected()
         {
-            return towingService.IsTowing;
+            return taxiingService.IsTaxiing;
         }
 
         [HttpDelete]
@@ -44,7 +44,7 @@ namespace ThermalSim.Api.Controllers
         {
             try
             {
-                towingService.StopTowing();
+                taxiingService.StopTaxiing();
                 return Ok();
             }
             catch (Exception ex)
@@ -54,17 +54,23 @@ namespace ThermalSim.Api.Controllers
         }
 
         [HttpPut("speed/{speed}")]
-        public IActionResult SetTowingSpeed(double speed)
+        public IActionResult SetTaxiingSpeed(double speed)
         {
             try
             {
-                towingService.TowingSpeed = speed;
+                taxiingService.TaxiingSpeed = speed;
                 return Ok();
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpGet("speed")]
+        public double GetTaxiingSpeed()
+        {
+            return taxiingService.TaxiingSpeed;
         }
     }
 }

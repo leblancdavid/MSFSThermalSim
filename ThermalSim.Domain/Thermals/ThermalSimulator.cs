@@ -50,19 +50,24 @@ namespace ThermalSim.Domain.Thermals
 
         public bool Start()
         {
-            if(connection.IsConnected)
+            if(!connection.IsConnected)
             {
+                if(IsRunning)
+                {
+                    Stop();
+                }
+
+                var result = connection.Connect();
+                if (!result)
+                    return result;
+            }
+
+            if (!IsRunning)
+            {
+                connection.AircraftPositionUpdated += OnAircraftPositionUpdate;
                 IsRunning = true;
             }
-            else
-            {
-                var result = connection.Connect();
-                if (result)
-                {
-                    connection.AircraftPositionUpdated += OnAircraftPositionUpdate;
-                    IsRunning = true;
-                }
-            }
+            
             
             return IsRunning;
         }
@@ -72,6 +77,9 @@ namespace ThermalSim.Domain.Thermals
             try
             {
                 stateTracker.UpdatePosition(e.Position);
+
+                if (!IsRunning)
+                    return;
 
                 if (DateTime.Now > nextSampleTime)
                 {
@@ -209,8 +217,8 @@ namespace ThermalSim.Domain.Thermals
 
         public void Stop()
         {
+            IsRunning = false;
             connection.AircraftPositionUpdated -= OnAircraftPositionUpdate;
-            connection.Disconnect();
         }
 
         public bool InsertThermal()

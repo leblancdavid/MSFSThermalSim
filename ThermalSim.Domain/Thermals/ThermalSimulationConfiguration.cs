@@ -11,7 +11,7 @@ namespace ThermalSim.Domain.Thermals
         public ValueRangeDouble AltitudeFromGround { get; set; } = new ValueRangeDouble(100.0, 500.0);
         public ValueRangeDouble SpawnDistance { get; set; } = new ValueRangeDouble(0.01, 0.03); //This is in gps degrees
         public ValueRangeDouble RelativeSpawnAltitude { get; set; } = new ValueRangeDouble(-1000.0, 0.0);
-        public ValueRangeDouble Radius { get; set; } = new ValueRangeDouble(1000.0, 3000.0);
+        public ValueRangeDouble Radius { get; set; } = new ValueRangeDouble(1000.0, 2000.0);
         public ValueRangeDouble Height { get; set; } = new ValueRangeDouble(3000.0, 10000.0);
         public ValueRangeDouble CoreLiftRate { get; set; } = new ValueRangeDouble(10.0, 20.0);
         public ValueRangeDouble CoreRadiusPercent { get; set; } = new ValueRangeDouble(0.80, 0.85);
@@ -23,7 +23,7 @@ namespace ThermalSim.Domain.Thermals
         public ValueRangeDouble WindSpeed { get; set; } = new ValueRangeDouble(0.0, 50.0);
         public ValueRangeDouble WindDirection { get; set; } = new ValueRangeDouble(0.0, 360.0);
         public double ReplaceDistance { get; set; } = 25000;
-        public ValueRangeInt FramesBetweenTurbulence { get; set; } = new ValueRangeInt(60, 240);
+        public ValueRangeInt FramesBetweenTurbulence { get; set; } = new ValueRangeInt(60, 120);
         public ValueRangeInt TurbulenceDuration { get; set; } = new ValueRangeInt(60, 240);
         public ValueRangeDouble TurbulenceStrengthPercent { get; set; } = new ValueRangeDouble(1.0, 1.5);
         public bool AllowSpawningOnAircraft { get; set; } = false;

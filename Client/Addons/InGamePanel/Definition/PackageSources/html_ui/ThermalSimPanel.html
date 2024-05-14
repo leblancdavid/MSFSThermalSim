@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html class="flex-fill-view">
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="/SCSS/common.css" />
+    <link rel="stylesheet" href="ThermalSimPanel.css" />
+
+    <script type="text/javascript" src="/JS/coherent.js"></script>
+    <script type="text/javascript" src="/JS/common.js"></script>
+    <script type="text/javascript" src="/JS/dataStorage.js"></script>
+    <script type="text/javascript" src="/JS/buttons.js"></script>
+    <script type="text/javascript" src="/JS/Services/ToolBarPanels.js"></script>
+    <script type="text/javascript" src="/Pages/VCockpit/Instruments/Shared/BaseInstrument.js"></script>
+
+    <link rel="import" href="/templates/NewPushButton/NewPushButton.html" />
+    <link rel="import" href="/templates/ToggleButton/toggleButton.html" />
+    <link rel="import" href="/templates/tabMenu/tabMenu.html" />
+    <link rel="import" href="/templates/ingameUi/ingameUi.html" />
+    <link rel="import" href="/templates/ingameUiHeader/ingameUiHeader.html" />
+    <link rel="import" href="/templates/NewListButton/NewListButton.html" />
+
+</head>
+
+<body style="margin: 0; background-color: rgba(0,0,0,0.5);" class="flex-fill-view">
+    <ingamepanel-thermalsim class="flex-fill-view">
+        <ingame-ui id="ThermalSimPanel" 
+            panel-id="THERMAL_SIM_PANEL" 
+            title="" class="flex-fill-view"
+            content-fit="true">
+
+            <div id="ThermalSimPanelWrap" class="flex-fill-view">
+                
+                <div class="sim-tabs">
+                    <button id="connectionTabBtn" class="sim-tab-btn"
+                        onclick="onConnectionTabClicked()">
+                        <img src="./rss-solid.svg" alt="Connection"></i>
+                    </button>
+                    <button id="taxiTabBtn" class="sim-tab-btn"
+                        onclick="onTaxiingTabClicked()">
+                        <img src="./taxi-solid.svg" alt="Taxiing"></i>
+                    </button>
+                    <button id="gaugeTabBtn" class="sim-tab-btn">
+                        <img src="./gauge-solid.svg" alt="Gauge"></i>
+                    </button>
+                    <button id="settingsTabBtn" class="sim-tab-btn">
+                        <img src="./gear-solid.svg" alt="Settings"></i>
+                    </button>
+                </div>
+                <div class="sim-tabs-container">
+                    <div id="connectionTabContent" class="sim-tab-content">
+                        <div class="content-row">
+                            <button id="openConnectionBtn" class="sim-tab-btn" 
+                                onclick="onOpenConnectionClicked()">
+                                <img src="./plug-solid.svg" alt="Open Connection"></i>
+                                CONN.
+                            </button>
+                            
+                            <button id="closeConnectionBtn" class="sim-tab-btn"
+                                onclick="onCloseConnectionClicked()">
+                                <img src="./plug-circle-xmark-solid.svg" alt="Close Connection"></i>
+                                DISC.
+                            </button>
+                        </div>
+
+                        <div class="content-row" id="thermal-simulator-controls" style="display: none;">
+                            <button id="thermalsOnBtn" class="sim-tab-btn"
+                                onclick="onThermalSimOnClicked()">
+                                <img src="./cloud-arrow-up-solid.svg" alt="Turn thermals on"></i>
+                                ON
+                            </button>
+                            
+                            <button id="thermalsOffBtn" class="sim-tab-btn"
+                                onclick="onThermalSimOffClicked()">
+                                <img src="./cloud-arrow-down-solid.svg" alt="Turn thermals off"></i>
+                                OFF
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="taxiTabContent" class="sim-tab-content" style="display: none;">
+                        <button id="taxiingBtn" class="sim-tab-btn turned-off"
+                            onclick="onTaxiingClicked()">
+                            <img src="./taxi-off-solid.svg" alt="Taxiing"></i>
+                            TAXI
+                        </button>
+                        <div class="content-row sim-input-container">
+                            TAXIING SPEED (FT/S):
+                            <input id="taxiingSpeedInput" type="number" 
+                                value="10.0" 
+                                min="-20" 
+                                max="20"/>
+                        </div>
+                    </div>
+
+                    <div id="gaugeTabContent" class="sim-tab-content" style="display: none;">
+                        gauge tab!!!
+                    </div>
+
+                    <div id="settingsTabContent" class="sim-tab-content" style="display: none;">
+                        settings tab!!!
+                    </div>
+                </div>
+                
+
+
+
+
+                <!--
+                <input type=text id="myText1">
+                <input type=text id="myText2">
+                <span type=text id="myDomElement"></span>
+                <div id="app"></div>
+                -->
+                
+            </div>
+
+        </ingame-ui>
+    </ingamepanel-thermalsim>
+
+    <script type="text/javascript" src="ThermalSimPanel.js"></script>
+    <script type="text/javascript" src="ThermalSimConnection.js"></script>
+    <script type="text/javascript" src="ThermalSimTaxiing.js"></script>
+</body>
+
+
+</html>

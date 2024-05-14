@@ -14,10 +14,15 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<ISimConnection, SimConnection>();
 builder.Services.AddSingleton<IThermalSimulator, ThermalSimulator>();
-builder.Services.AddSingleton<ITowingService, TowingService>();
+builder.Services.AddSingleton<ITaxiingService, TaxiingService>();
 builder.Services.AddTransient<IThermalGenerator, FixedPositionThermalGenerator>();
 
-builder.Services.AddHostedService<ThermalSimulatorBackgroundService>();
+//builder.Services.AddHostedService<ThermalSimulatorBackgroundService>();
+
+builder.Services.AddCors(p => p.AddPolicy("thermalsim", builder =>
+{
+    builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+}));
 
 var app = builder.Build();
 
@@ -29,6 +34,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("thermalsim");
 
 app.UseAuthorization();
 
