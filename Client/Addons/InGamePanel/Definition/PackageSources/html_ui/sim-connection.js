@@ -183,6 +183,24 @@ function setThermalIndicator(eventData) {
     document.getElementById('nearestThermalIndicator').style.rotate = (eventData.RelativeNearestThermal - 90.0) + 'deg';
     document.getElementById('windIndicator').style.rotate = (eventData.WindHeading - eventData.AircraftHeading + 90.0) + 'deg';
     document.getElementById('thermalCompass').style.rotate = -1.0 * eventData.AircraftHeading + 'deg';
+
+    if(eventData.CurrentLift > 0.0) {
+        let liftValue = eventData.CurrentLift / 30.0;
+        if(liftValue > 1.0) {
+            liftValue = 1.0;
+        }
+
+        document.getElementById('positiveLiftBar').style.height = liftValue * 50.0 + '%';
+        document.getElementById('negativeLiftBar').style.height = '0%';
+    } else {
+        let liftValue = eventData.CurrentLift / -30.0;
+        if(liftValue > 1.0) {
+            liftValue = 1.0;
+        }
+
+        document.getElementById('negativeLiftBar').style.height = liftValue * 50.0 + '%';
+        document.getElementById('positiveLiftBar').style.height = '0%';
+    }
 }
 
 getConnectionStatus();
