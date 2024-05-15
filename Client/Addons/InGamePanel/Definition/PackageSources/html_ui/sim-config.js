@@ -66,16 +66,16 @@ function refreshConfiguration() {
 }
 
 function refreshInputView() {
-    document.getElementById('configMinNumThermals').value = config.numberOfThermals.min;
-    document.getElementById('configMaxNumThermals').value = config.numberOfThermals.max;
-    document.getElementById('configMinRadius').value = config.radius.min;
-    document.getElementById('configMaxRadius').value = config.radius.max;
-    document.getElementById('configMinHeight').value = config.height.min;
-    document.getElementById('configMaxHeight').value = config.height.max;
-    document.getElementById('configMinCoreLiftRate').value = config.coreLiftRate.min;
-    document.getElementById('configMaxCoreLiftRate').value = config.coreLiftRate.max;
-    document.getElementById('configMinSinkRate').value = config.sinkRatePercent.min;
-    document.getElementById('configMaxSinkRate').value = config.sinkRatePercent.max;
+    document.getElementById('configMinNumThermals').innerHTML = config.numberOfThermals.min;
+    document.getElementById('configMaxNumThermals').innerHTML = config.numberOfThermals.max;
+    document.getElementById('configMinRadius').innerHTML = config.radius.min;
+    document.getElementById('configMaxRadius').innerHTML = config.radius.max;
+    document.getElementById('configMinHeight').innerHTML = config.height.min;
+    document.getElementById('configMaxHeight').innerHTML = config.height.max;
+    document.getElementById('configMinCoreLiftRate').innerHTML = config.coreLiftRate.min;
+    document.getElementById('configMaxCoreLiftRate').innerHTML = config.coreLiftRate.max;
+    document.getElementById('configMinSinkRate').innerHTML = config.sinkRatePercent.min;
+    document.getElementById('configMaxSinkRate').innerHTML = config.sinkRatePercent.max;
 
 }
 

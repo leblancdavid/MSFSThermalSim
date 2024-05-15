@@ -31,7 +31,7 @@ function getTaxiingSpeed()
         return response.json();
       }).then(function(speed) {
         this.taxiSpeed = speed
-        document.getElementById('taxiingSpeedInput').value = speed;
+        document.getElementById('taxiingSpeedInput').innerHTML = speed;
         console.log(speed);
       }).catch(function(err) {
         console.log('Fetch Error :-S', err);
@@ -53,7 +53,7 @@ function setTaxiingSpeed(speed) {
             return response.json();
         }).then(function(speed) {
             this.taxiSpeed = speed
-            document.getElementById('taxiingSpeedInput').value = speed;
+            document.getElementById('taxiingSpeedInput').innerHTML = speed;
             console.log('Taxiing speed updated successfully!');
         }).catch(function(err) {
             console.log('Fetch Error :-S', err);

@@ -11,7 +11,7 @@
   justify-content: space-between;
   height: 684px;
   width: 540px;
-  background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.9), rgb(32, 32, 32, 0.9));
+  background: linear-gradient(to bottom right, rgb(32, 32, 32), rgb(48, 48, 48));
   border-radius: 8px;
   padding: 8px;
 }
@@ -31,7 +31,7 @@
   box-shadow: inset 0 0 0 4px rgb(96, 96, 96);
   border-radius: 8px;
   margin: 4px;
-  background: linear-gradient(to bottom right, black, rgb(64,64,64));
+  background: linear-gradient(to bottom right, black, rgb(32,32,32));
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -72,7 +72,7 @@
   box-shadow: inset 0 0 0 2px rgb(96, 96, 96);
   border-radius: 4px;
   margin: 4px;
-  background: linear-gradient(to bottom right, black, rgb(64,64,64));
+  background: linear-gradient(to bottom right, black, rgb(32,32,32));
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -119,28 +119,25 @@
   font-weight: 500;
   
   border: solid 2px rgb(96,96,96);
-  background: linear-gradient(to bottom right, rgb(32,32,32), rgb(64,64,64));
+  background: linear-gradient(to bottom right, black, rgb(32,32,32));
   box-shadow: 2px 2px 0 0 rgb(32, 32, 32);
   border-radius: 8px;
 }
-.sim-input-container input {
+.sim-input-container .led-display {
   height: 72px;
+  min-height: 72px;
   width: 160px;
   min-width: 160px;
-  min-height: 72px;
   background-color: rgb(96, 96, 96);
   color: rgb(0, 0, 0, 0.6);
   margin: 8px;
   font-family: digitalFont;
   font-weight: bold;
-  font-size: 3em;
+  font-size: 72px;
   padding: 0px 0px 0px 8px;
-}
-.input-display {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
   align-items: center;
+  border-radius: 4px;
 }
 .input-display-button-stack {
   display: flex;
@@ -152,7 +149,7 @@
   color: rgb(255, 255, 240);
   background: linear-gradient(to bottom right, rgb(32,32,32), rgb(72,72,72));
 }
-.sim-input-container.turned-on input {
+.sim-input-container.turned-on .led-display {
   background-color: rgb(252, 200, 87);
   box-shadow: inset 0 0 4px 2px rgb(255, 241, 199);
 }
@@ -171,6 +168,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  margin: 2px;
 }
 .content-column {
   display: flex;
@@ -178,4 +176,10 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+}
+
+.scrolling-content {
+  flex: 1;
+  overflow: auto; 
+  justify-content: start;
 }
