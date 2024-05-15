@@ -8,6 +8,7 @@ namespace ThermalSim.Domain.Position
         public double AltitudeChange { get; set; }
         public double AverageVerticalVelocity { get; set; }
         public double AverageVelocity { get; set; }
+        public double BaseLiftValue { get; set; }
         private ThermalPositionState _thermalState;
         private readonly ILogger logger;
 

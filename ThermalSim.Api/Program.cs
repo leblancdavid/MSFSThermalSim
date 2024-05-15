@@ -1,5 +1,6 @@
 using ThermalSim.Api.Services;
 using ThermalSim.Domain.Connection;
+using ThermalSim.Domain.Notifications;
 using ThermalSim.Domain.Thermals;
 using ThermalSim.Domain.Towing;
 
@@ -16,7 +17,11 @@ builder.Services.AddSingleton<ISimConnection, SimConnection>();
 builder.Services.AddSingleton<IThermalSimulator, ThermalSimulator>();
 builder.Services.AddSingleton<ITaxiingService, TaxiingService>();
 builder.Services.AddTransient<IThermalGenerator, FixedPositionThermalGenerator>();
-builder.Services.AddSingleton<IWebSocketService, WebSocketService>();
+
+var webSocketService = new WebSocketService();
+
+builder.Services.AddSingleton<IWebSocketService>(webSocketService);
+builder.Services.AddSingleton<IEventNotifier>(webSocketService);
 
 //builder.Services.AddHostedService<ThermalSimulatorBackgroundService>();
 

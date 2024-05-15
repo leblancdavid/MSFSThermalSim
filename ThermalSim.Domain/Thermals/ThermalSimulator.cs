@@ -182,15 +182,34 @@ namespace ThermalSim.Domain.Thermals
             {
                 thermals.ForEach(x => x.ApplyWindDrift(position.WindDirection, position.WindVelocity));
 
-                IThermalModel? nearestThermal = thermals.FirstOrDefault(x => x.IsInThermal(position));
+                double minDistance = double.MaxValue;
+                IThermalModel? nearestThermal = null;
+                foreach (var t in thermals)
+                {
+                    double d = t.CalcDistance(position);
+                    if(d < minDistance)
+                    {
+                        minDistance = d;
+                        nearestThermal = t;
+                    }
+                }
 
-                //DebugTrace(position, minDistance, nearestThermal != null);
+                var thermalEvent = new AircraftThermalPositionEvent();
+                thermalEvent.NearestThermalDistance = minDistance;
+                thermalEvent.RelativeNearestThermal = nearestThermal == null ? 0.0 : nearestThermal.GetRelativeDirection(position);
+                thermalEvent.WindHeading = position.WindDirection;
+                thermalEvent.WindSpeed = position.WindVelocity;
+                thermalEvent.AircraftHeading = position.HeadingIndicator;
 
                 //If we are not in a thermal, don't do anything
-                if (nearestThermal == null)
+                if (nearestThermal == null || !nearestThermal.IsInThermal(position))
                 {
                     if(stateTracker.AircraftStateChangeInfo != null)
                         stateTracker.AircraftStateChangeInfo.ThermalState = ThermalPositionState.NotInThermal;
+
+                    thermalEvent.ThermalState = ThermalPositionState.NotInThermal;
+                    
+                    eventNotifier.NotifyAsync(thermalEvent);
 
                     return;
                 }
@@ -199,6 +218,8 @@ namespace ThermalSim.Domain.Thermals
 
                 if(velocityChange != null)
                 {
+                    thermalEvent.CurrentLift = stateTracker.AircraftStateChangeInfo == null ? 0.0 : stateTracker.AircraftStateChangeInfo.BaseLiftValue;
+
                     connection.Connection?.SetDataOnSimObject(SimDataEventTypes.ThermalVelocityUpdate,
                         1u, SIMCONNECT_DATA_SET_FLAG.DEFAULT, velocityChange);
 
@@ -211,6 +232,7 @@ namespace ThermalSim.Domain.Thermals
                     }
                 }
 
+                eventNotifier.NotifyAsync(thermalEvent);
                 
             }
             catch(Exception ex)

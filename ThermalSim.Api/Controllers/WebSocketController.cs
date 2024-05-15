@@ -4,6 +4,8 @@ using ThermalSim.Api.Services;
 
 namespace ThermalSim.Api.Controllers
 {
+    [Route("/api/ws")]
+    [ApiController]
     public class WebSocketController : ControllerBase
     {
         private readonly IWebSocketService webSocketService;
@@ -13,7 +15,7 @@ namespace ThermalSim.Api.Controllers
             this.webSocketService = webSocketService;
         }
 
-        [Route("/ws")]
+        [HttpGet]
         public async Task Get()
         {
             if (HttpContext.WebSockets.IsWebSocketRequest)
