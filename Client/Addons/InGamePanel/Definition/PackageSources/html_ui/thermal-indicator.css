@@ -1,0 +1,64 @@
+.thermal-indicator {
+    width: 500px;
+    height: 400px;
+    margin: 4px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: rgb(96, 96, 96);
+    font-size: 16px;
+    font-family: system-ui;
+    font-weight: 500;
+    
+    border: solid 2px rgb(96,96,96);
+    background: linear-gradient(to bottom right, black, rgb(32,32,32));
+    box-shadow: 2px 2px 0 0 rgb(32, 32, 32);
+    border-radius: 8px;
+}
+
+.thermal-compass-container {
+    width: 400px;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}    
+
+.thermal-compass-img {
+    width: 350px;
+    height: 350px;
+    background: white;
+    border-radius: 100%;
+    z-index: 2;
+}
+
+.airplane-icon {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    z-index: 4;
+}
+.heading-line {
+    position: absolute;
+    width: 4px;
+    height: 200px;
+    top: 250px;
+    background-color: white;
+    border-radius: 4px;
+    z-index: 3;
+}
+
+.nearest-thermal-indicator {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    z-index: 1;
+}
+.nearest-thermal-indicator svg {
+    width: 35px;
+    height: 35px;
+}

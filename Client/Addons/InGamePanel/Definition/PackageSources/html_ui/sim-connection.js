@@ -164,7 +164,7 @@ function intializeThermalDataWebSocket() {
         console.log(event);
       });
     this.thermalEventsWs.addEventListener("message", (data) => {
-        //console.log(data);
+        console.log(data);
         //return false;
     });
     this.thermalEventsWs.addEventListener("close", (data) => {
