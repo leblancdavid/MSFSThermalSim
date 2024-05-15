@@ -11,8 +11,11 @@
   justify-content: space-between;
   height: 684px;
   width: 540px;
+  max-height: 684px;
+  max-width: 540px;
   background: linear-gradient(to bottom right, rgb(32, 32, 32), rgb(48, 48, 48));
   border-radius: 8px;
+  border: solid 4px rgb(96,96,96);
   padding: 8px;
 }
 
@@ -23,6 +26,8 @@
   justify-content: space-between;
   height: 640px;
   width: 536px;
+  max-height: 640px;
+  max-width: 536px;
 }
 
 .sim-tab-btn {
