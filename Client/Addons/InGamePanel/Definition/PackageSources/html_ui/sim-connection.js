@@ -1,20 +1,23 @@
-function onConnectionTabClicked() {
-    getConnectionStatus();
-    getThermalSimulationStatus();
-    
-    document.getElementById('connectionTabBtn').classList.add("selected");
-    document.getElementById('gaugeTabBtn').classList.remove("selected");
-    document.getElementById('taxiTabBtn').classList.remove("selected");
-    document.getElementById('settingsTabBtn').classList.remove("selected");
-
-    document.getElementById('connectionTabContent').style.display = "flex";
-    document.getElementById('gaugeTabContent').style.display = "none";
-    document.getElementById('taxiTabContent').style.display = "none";
-    document.getElementById('settingsTabContent').style.display = "none";
-
+function onConnectionClicked() {
+    if(!document.getElementById('connectionBtn').classList.contains("turned-on")) {
+        openConnection();
+    } else {
+        closeConnection();
+    }
 }
 
-function onOpenConnectionClicked() {
+function onThermalSimOnClicked() {
+    //if we are not connected we want to ignore the button
+    if(document.getElementById('connectionBtn').classList.contains("turned-on")) {
+        if(document.getElementById('thermalsBtn').classList.contains("turned-on")) {
+            stopThermalSim();
+        } else {
+            startThermalSim();
+        }
+    }
+}
+
+function openConnection() {
     fetch('https://localhost:7187/api/sim-connection', 
         { 
             method: 'PUT',  
@@ -36,7 +39,7 @@ function onOpenConnectionClicked() {
         });
 }
 
-function onCloseConnectionClicked() {
+function closeConnection() {
     fetch('https://localhost:7187/api/sim-connection', 
         { 
             method: 'DELETE',  
@@ -58,7 +61,7 @@ function onCloseConnectionClicked() {
         });
 }
 
-function onThermalSimOnClicked() {
+function startThermalSim() {
     fetch('https://localhost:7187/api/thermals', 
         { 
             method: 'PUT',  
@@ -80,7 +83,7 @@ function onThermalSimOnClicked() {
         });
 }
 
-function onThermalSimOffClicked() {
+function stopThermalSim() {
     fetch('https://localhost:7187/api/thermals', 
         { 
             method: 'DELETE',  
@@ -130,24 +133,21 @@ function getThermalSimulationStatus()
 
 function updateConnectionStatus(status) {
     if(status) {
-        document.getElementById('openConnectionBtn').disabled = true;
-        document.getElementById('closeConnectionBtn').disabled = false;
-        document.getElementById('thermal-simulator-controls').style.display = "flex";
+        document.getElementById('connectionBtn').classList.add('turned-on');
+        document.getElementById('thermalsBtn').disabled = false;
     } else {
-        document.getElementById('openConnectionBtn').disabled = false;
-        document.getElementById('closeConnectionBtn').disabled = true;
-        document.getElementById('thermal-simulator-controls').style.display = "none";
+        document.getElementById('connectionBtn').classList.remove('turned-on');
+        document.getElementById('thermalsBtn').disabled = true;
     }
 }
 
 function updateThermalSimulationStatus(status) {
     if(status) {
-        document.getElementById('thermalsOnBtn').disabled = true;
-        document.getElementById('thermalsOffBtn').disabled = false;
+        document.getElementById('thermalsBtn').classList.add('turned-on');
     } else {
-        document.getElementById('thermalsOnBtn').disabled = false;
-        document.getElementById('thermalsOffBtn').disabled = true;
+        document.getElementById('thermalsBtn').classList.remove('turned-on');
     }
 }
 
-onConnectionTabClicked();
+getConnectionStatus();
+getThermalSimulationStatus();

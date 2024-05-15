@@ -1,18 +1,11 @@
 <Timestamps>
-	<Entry Path="gear-solid.svg" Timestamp="13360097315"/>
-	<Entry Path="ThermalSimPanel.js" Timestamp="13360098595"/>
-	<Entry Path="cloud-arrow-up-solid.svg" Timestamp="13360090813"/>
-	<Entry Path="icons\toolbar\paper-plane-regular.svg" Timestamp="13360097148"/>
-	<Entry Path="ThermalSimPanel.css" Timestamp="13360099616"/>
-	<Entry Path="rss-solid.svg" Timestamp="13360097424"/>
-	<Entry Path="ThermalSimPanel.html" Timestamp="13360101056"/>
-	<Entry Path="gauge-solid.svg" Timestamp="13360097311"/>
-	<Entry Path="plug-solid.svg" Timestamp="13360097408"/>
-	<Entry Path="taxi-solid.svg" Timestamp="13360097434"/>
-	<Entry Path="ThermalSimConnection.js" Timestamp="13360093535"/>
-	<Entry Path="cloud-arrow-down-solid.svg" Timestamp="13360090822"/>
-	<Entry Path="ThermalSimTaxiing.js" Timestamp="13360100113"/>
-	<Entry Path="plug-circle-xmark-solid.svg" Timestamp="13360097324"/>
-	<Entry Path="taxi-off-solid.svg" Timestamp="13360097016"/>
+	<Entry Path="sim-panel.js" Timestamp="13360173274"/>
+	<Entry Path="sim-config.js" Timestamp="13360203951"/>
+	<Entry Path="icons\toolbar\paper-plane-regular.svg" Timestamp="13360187420"/>
+	<Entry Path="ThermalSimPanel.css" Timestamp="13360204536"/>
+	<Entry Path="ThermalSimPanel.html" Timestamp="13360204291"/>
+	<Entry Path="sim-taxiing.js" Timestamp="13360202892"/>
+	<Entry Path="digital-7.ttf" Timestamp="13360167674"/>
+	<Entry Path="sim-connection.js" Timestamp="13360165182"/>
 </Timestamps>
 
