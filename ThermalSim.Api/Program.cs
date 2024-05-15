@@ -16,6 +16,7 @@ builder.Services.AddSingleton<ISimConnection, SimConnection>();
 builder.Services.AddSingleton<IThermalSimulator, ThermalSimulator>();
 builder.Services.AddSingleton<ITaxiingService, TaxiingService>();
 builder.Services.AddTransient<IThermalGenerator, FixedPositionThermalGenerator>();
+builder.Services.AddSingleton<IWebSocketService, WebSocketService>();
 
 //builder.Services.AddHostedService<ThermalSimulatorBackgroundService>();
 
@@ -32,6 +33,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseWebSockets(new WebSocketOptions
+{
+    KeepAliveInterval = TimeSpan.FromMinutes(2)
+});
 
 app.UseHttpsRedirection();
 

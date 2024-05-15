@@ -2,6 +2,7 @@
 using Microsoft.FlightSimulator.SimConnect;
 using ThermalSim.Domain.Connection;
 using ThermalSim.Domain.Extensions;
+using ThermalSim.Domain.Notifications;
 using ThermalSim.Domain.Position;
 
 namespace ThermalSim.Domain.Thermals
@@ -10,6 +11,7 @@ namespace ThermalSim.Domain.Thermals
     {
         private readonly ISimConnection connection;
         private readonly IThermalGenerator thermalGenerator;
+        private readonly IEventNotifier eventNotifier;
         private readonly ILogger<ThermalSimulator> logger;
         private AircraftStateTracker stateTracker;
 
@@ -19,10 +21,12 @@ namespace ThermalSim.Domain.Thermals
 
         public ThermalSimulator(ISimConnection connection,
             IThermalGenerator thermalGenerator,
+            IEventNotifier eventNotifier,
             ILogger<ThermalSimulator> logger)
         {
             this.connection = connection;
             this.thermalGenerator = thermalGenerator;
+            this.eventNotifier = eventNotifier;
             this.logger = logger;
             this.stateTracker = new AircraftStateTracker(logger);
         }
