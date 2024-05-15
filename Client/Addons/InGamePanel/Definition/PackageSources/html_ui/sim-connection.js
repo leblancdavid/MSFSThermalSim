@@ -190,7 +190,7 @@ function setThermalIndicator(eventData) {
             liftValue = 1.0;
         }
 
-        document.getElementById('positiveLiftBar').style.height = liftValue * 50.0 + '%';
+        document.getElementById('positiveLiftBar').style.height = liftValue * 100.0 + '%';
         document.getElementById('negativeLiftBar').style.height = '0%';
     } else {
         let liftValue = eventData.CurrentLift / -30.0;
@@ -198,8 +198,18 @@ function setThermalIndicator(eventData) {
             liftValue = 1.0;
         }
 
-        document.getElementById('negativeLiftBar').style.height = liftValue * 50.0 + '%';
+        document.getElementById('negativeLiftBar').style.height = liftValue * 100.0 + '%';
         document.getElementById('positiveLiftBar').style.height = '0%';
+    }
+
+    if(eventData.ThermalState == 0) {
+        document.getElementById('thermalStatusIndicator').style.fill = 'rgb(96,96,96)'
+    } else if(eventData.ThermalState == 1) {
+        document.getElementById('thermalStatusIndicator').style.fill = 'rgb(255,100,100)'
+    } else if(eventData.ThermalState == 2) {
+        document.getElementById('thermalStatusIndicator').style.fill = 'yellow'
+    } else if(eventData.ThermalState == 3) {
+        document.getElementById('thermalStatusIndicator').style.fill = 'rgb(100,255,100)'
     }
 }
 

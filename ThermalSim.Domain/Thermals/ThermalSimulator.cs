@@ -219,6 +219,7 @@ namespace ThermalSim.Domain.Thermals
 
                 if(velocityChange != null)
                 {
+                    thermalEvent.ThermalState = stateTracker.AircraftStateChangeInfo == null ? ThermalPositionState.NotInThermal : stateTracker.AircraftStateChangeInfo.ThermalState;
                     thermalEvent.CurrentLift = stateTracker.AircraftStateChangeInfo == null ? 0.0 : stateTracker.AircraftStateChangeInfo.BaseLiftValue;
 
                     connection.Connection?.SetDataOnSimObject(SimDataEventTypes.ThermalVelocityUpdate,
