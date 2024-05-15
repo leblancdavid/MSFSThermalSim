@@ -1,6 +1,6 @@
 .thermal-indicator {
     width: 500px;
-    height: 400px;
+    height: 420px;
     margin: 4px;
     display: flex;
     flex-direction: row;
@@ -19,7 +19,7 @@
 
 .thermal-compass-container {
     width: 400px;
-    height: 400px;
+    height: 420px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -44,21 +44,35 @@
     width: 4px;
     height: 200px;
     top: 250px;
-    background-color: white;
+    background-color: yellow;
     border-radius: 4px;
     z-index: 3;
 }
 
 .nearest-thermal-indicator {
     position: absolute;
-    width: 400px;
-    height: 400px;
+    width: 418px;
+    height: 418px;
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
     z-index: 1;
 }
 .nearest-thermal-indicator svg {
+    width: 35px;
+    height: 35px;
+}
+
+.wind-indicator {
+    position: absolute;
+    width: 418px;
+    height: 418px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    z-index: 1;
+}
+.wind-indicator svg {
     width: 35px;
     height: 35px;
 }

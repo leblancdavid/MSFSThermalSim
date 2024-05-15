@@ -164,8 +164,7 @@ function intializeThermalDataWebSocket() {
         console.log(event);
       });
     this.thermalEventsWs.addEventListener("message", (data) => {
-        console.log(data);
-        //return false;
+        setThermalIndicator(JSON.parse(data.data));
     });
     this.thermalEventsWs.addEventListener("close", (data) => {
         console.log(data);
@@ -178,6 +177,12 @@ function intializeThermalDataWebSocket() {
         console.log(data);
     });
 
+}
+
+function setThermalIndicator(eventData) {
+    document.getElementById('nearestThermalIndicator').style.rotate = (eventData.RelativeNearestThermal - 90.0) + 'deg';
+    document.getElementById('windIndicator').style.rotate = (eventData.WindHeading - eventData.AircraftHeading + 90.0) + 'deg';
+    document.getElementById('thermalCompass').style.rotate = -1.0 * eventData.AircraftHeading + 'deg';
 }
 
 getConnectionStatus();
