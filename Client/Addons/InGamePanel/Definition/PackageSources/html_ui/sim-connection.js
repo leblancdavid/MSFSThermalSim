@@ -1,3 +1,5 @@
+let thermalEventsWs = null;
+
 function onConnectionClicked() {
     if(!document.getElementById('connectionBtn').classList.contains("turned-on")) {
         openConnection();
@@ -40,6 +42,11 @@ function openConnection() {
 }
 
 function closeConnection() {
+    if(this.thermalEventsWs != null) {
+        this.thermalEventsWs.close();
+        this.thermalEventsWs = null;
+    }
+
     fetch('https://localhost:7187/api/sim-connection', 
         { 
             method: 'DELETE',  
@@ -62,6 +69,7 @@ function closeConnection() {
 }
 
 function startThermalSim() {
+    
     fetch('https://localhost:7187/api/thermals', 
         { 
             method: 'PUT',  
@@ -144,9 +152,32 @@ function updateConnectionStatus(status) {
 function updateThermalSimulationStatus(status) {
     if(status) {
         document.getElementById('thermalsBtn').classList.add('turned-on');
+        intializeThermalDataWebSocket();
     } else {
         document.getElementById('thermalsBtn').classList.remove('turned-on');
     }
+}
+
+function intializeThermalDataWebSocket() {
+    this.thermalEventsWs = new WebSocket('wss://localhost:7187/ws');
+    this.thermalEventsWs.addEventListener("open", (event) => {
+        console.log(event);
+      });
+    this.thermalEventsWs.addEventListener("message", (data) => {
+        //console.log(data);
+        //return false;
+    });
+    this.thermalEventsWs.addEventListener("close", (data) => {
+        console.log(data);
+        //attempt to re-establish connection
+        this.thermalEventsWs.close();
+        this.thermalEventsWs = null;
+        intializeThermalDataWebSocket();
+    });
+    this.thermalEventsWs.addEventListener("error", (data) => {
+        console.log(data);
+    });
+
 }
 
 getConnectionStatus();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.FlightSimulator.SimConnect;
+using System.Net.WebSockets;
 using ThermalSim.Domain.Connection;
 using ThermalSim.Domain.Extensions;
 using ThermalSim.Domain.Notifications;
@@ -11,7 +12,7 @@ namespace ThermalSim.Domain.Thermals
     {
         private readonly ISimConnection connection;
         private readonly IThermalGenerator thermalGenerator;
-        private readonly IEventNotifier eventNotifier;
+        private readonly IEventNotifier<WebSocket> eventNotifier;
         private readonly ILogger<ThermalSimulator> logger;
         private AircraftStateTracker stateTracker;
 
@@ -21,7 +22,7 @@ namespace ThermalSim.Domain.Thermals
 
         public ThermalSimulator(ISimConnection connection,
             IThermalGenerator thermalGenerator,
-            IEventNotifier eventNotifier,
+            IEventNotifier<WebSocket> eventNotifier,
             ILogger<ThermalSimulator> logger)
         {
             this.connection = connection;
@@ -176,7 +177,7 @@ namespace ThermalSim.Domain.Thermals
             while (thermals.Count < thermalGenerator.Configuration.NumberOfThermals.Min);
         }
         
-        private void ApplyThermalEffect(AircraftPositionState position)
+        private async Task ApplyThermalEffect(AircraftPositionState position)
         {
             try
             {
@@ -209,7 +210,7 @@ namespace ThermalSim.Domain.Thermals
 
                     thermalEvent.ThermalState = ThermalPositionState.NotInThermal;
                     
-                    eventNotifier.NotifyAsync(thermalEvent);
+                    await eventNotifier.NotifyAsync(thermalEvent);
 
                     return;
                 }
@@ -232,7 +233,7 @@ namespace ThermalSim.Domain.Thermals
                     }
                 }
 
-                eventNotifier.NotifyAsync(thermalEvent);
+                await eventNotifier.NotifyAsync(thermalEvent);
                 
             }
             catch(Exception ex)

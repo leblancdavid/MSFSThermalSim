@@ -1,26 +1,35 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.WebSockets;
 using ThermalSim.Api.Services;
+using ThermalSim.Domain.Notifications;
 
 namespace ThermalSim.Api.Controllers
 {
-    [Route("/api/ws")]
+    [Route("[controller]")]
     [ApiController]
     public class WebSocketController : ControllerBase
     {
-        private readonly IWebSocketService webSocketService;
+        private readonly IEventNotifier<WebSocket> webSocketService;
+        private readonly ILogger<WebSocketController> logger;
 
-        public WebSocketController(IWebSocketService webSocketService)
+        public WebSocketController(IEventNotifier<WebSocket> webSocketService, ILogger<WebSocketController> logger)
         {
             this.webSocketService = webSocketService;
+            this.logger = logger;
         }
 
-        [HttpGet]
+        [HttpGet("/ws")]
         public async Task Get()
         {
             if (HttpContext.WebSockets.IsWebSocketRequest)
             {
-                webSocketService.AddWebSocket(await HttpContext.WebSockets.AcceptWebSocketAsync());
+                var socket = await HttpContext.WebSockets.AcceptWebSocketAsync();
+
+                var socketFinishedTcs = new TaskCompletionSource<object>();
+                await webSocketService.Accept(socket);
+
+                await socketFinishedTcs.Task;
             }
             else
             {
