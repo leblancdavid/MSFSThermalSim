@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="Windows-1252"?>
-<SimBase.Document Type="InGamePanels" version="2">
+<SimBase.Document Type="InGamePanels" version="1,0">
   <Filename>InGamePanel_ThermalSimPanel.spb</Filename>
   <InGamePanels.InGamePanelDefinition id="THERMAL_SIM_PANEL" 
     Name="ThermalSim" 
