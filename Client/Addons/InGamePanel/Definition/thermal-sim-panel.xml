@@ -1,5 +1,5 @@
 <Project Version="2" Name="thermal-sim-panel" FolderName="Packages">
-	<OutputDirectory>.</OutputDirectory>
+	<OutputDirectory>../Output</OutputDirectory>
 	<TemporaryOutputDirectory>_Temp</TemporaryOutputDirectory>
 	<Packages>
 		<Package>PackageDefinitions\thermal-sim-panel.xml</Package>
