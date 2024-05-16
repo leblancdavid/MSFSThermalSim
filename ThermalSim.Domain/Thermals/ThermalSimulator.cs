@@ -188,7 +188,9 @@ namespace ThermalSim.Domain.Thermals
                 foreach (var t in thermals)
                 {
                     double d = t.CalcDistance(position);
-                    if(d < minDistance)
+                    if(d < minDistance && 
+                        position.Altitude >= t.Properties.Altitude &&
+                        position.Altitude <= t.Properties.TopAltitude)
                     {
                         minDistance = d;
                         nearestThermal = t;
@@ -196,7 +198,7 @@ namespace ThermalSim.Domain.Thermals
                 }
 
                 var thermalEvent = new AircraftThermalPositionEvent();
-                thermalEvent.NearestThermalDistance = minDistance;
+                thermalEvent.NearestThermalDistance = nearestThermal == null ? 0.0 : minDistance;
                 thermalEvent.RelativeNearestThermal = nearestThermal == null ? 0.0 : nearestThermal.GetRelativeDirection(position);
                 thermalEvent.WindHeading = position.WindDirection;
                 thermalEvent.WindSpeed = position.WindVelocity;
@@ -217,11 +219,11 @@ namespace ThermalSim.Domain.Thermals
 
                 var velocityChange = nearestThermal.GetThermalAltitudeChange(position, stateTracker.AircraftStateChangeInfo);
 
-                if(velocityChange != null)
-                {
-                    thermalEvent.ThermalState = stateTracker.AircraftStateChangeInfo == null ? ThermalPositionState.NotInThermal : stateTracker.AircraftStateChangeInfo.ThermalState;
-                    thermalEvent.CurrentLift = stateTracker.AircraftStateChangeInfo == null ? 0.0 : stateTracker.AircraftStateChangeInfo.BaseLiftValue;
+                thermalEvent.ThermalState = stateTracker.AircraftStateChangeInfo == null ? ThermalPositionState.NotInThermal : stateTracker.AircraftStateChangeInfo.ThermalState;
+                thermalEvent.CurrentLift = stateTracker.AircraftStateChangeInfo == null ? 0.0 : stateTracker.AircraftStateChangeInfo.BaseLiftValue;
 
+                if (velocityChange != null)
+                {
                     connection.Connection?.SetDataOnSimObject(SimDataEventTypes.ThermalVelocityUpdate,
                         1u, SIMCONNECT_DATA_SET_FLAG.DEFAULT, velocityChange);
 
