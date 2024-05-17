@@ -1,0 +1,9 @@
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Name="ThermalSim.Installer" Manufacturer="TODO Manufacturer" Version="1.0.0.0" UpgradeCode="e1f0eedd-1af8-470f-878a-b1bb438f97c8">
+    <MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" />
+
+    <Feature Id="Main">
+      <ComponentGroupRef Id="ExampleComponents" />
+    </Feature>
+  </Package>
+</Wix>
