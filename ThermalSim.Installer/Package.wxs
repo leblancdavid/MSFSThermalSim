@@ -13,52 +13,31 @@
 		<!-- Allow upgrades and prevent downgrades -->
 		<MajorUpgrade DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit." />
 
-		<!-- Define the directory structure -->
-		<Directory Id="TARGETDIR" Name="SourceDir">
-			<Directory Id="ProgramFiles64Folder">
+		<Files Include="..\ThermalSim.Api\bin\Release\net8.0-windows\**">
+		</Files>
 
-				<!-- Create a folder inside program files -->
-				<Directory Id="ROOTDIRECTORY" Name="$(var.Manufacturer)">
+		<!-- Create a single component which is the App.WindowsService.exe file -->
+		<Component Id="ServiceExecutable" Bitness="always64" Guid="3986169F-00FF-4244-9293-AFBBB3BCE9EA">
 
-					<!-- Create a folder within the parent folder given the name -->
-					<Directory Id="INSTALLFOLDER" Name="$(Name)" />
-				</Directory>
-			</Directory>
-		</Directory>
+			<!-- Remove all files from the INSTALLFOLDER on uninstall -->
+			<RemoveFile Id="ALLFILES" Name="*.*" On="both" />
 
-		<!-- The files inside this DirectoryRef are linked to
-             the App.WindowsService directory via INSTALLFOLDER -->
-		<DirectoryRef Id="INSTALLFOLDER">
+			<!-- Tell WiX to install the Service -->
+			<ServiceInstall Id="ServiceInstaller"
+                            Type="ownProcess"
+                            Name="ThermalSim"
+                            DisplayName="$(Name)"
+                            Description="ThermalSim service that connects to MSFS2020"
+                            Start="auto"
+                            ErrorControl="normal" />
 
-			<!-- Create a single component which is the App.WindowsService.exe file -->
-			<Component Id="ServiceExecutable" Bitness="always64" Guid="3986169F-00FF-4244-9293-AFBBB3BCE9EA">
-
-				<!-- Remove all files from the INSTALLFOLDER on uninstall -->
-				<RemoveFile Id="ALLFILES" Name="*.*" On="both" />
-
-				<!-- Tell WiX to install the Service -->
-				<ServiceInstall Id="ServiceInstaller"
-                                Type="ownProcess"
-                                Name="ThermalSim"
-                                DisplayName="$(Name)"
-                                Description="ThermalSim service that connects to MSFS2020"
-                                Start="auto"
-                                ErrorControl="normal" />
-
-				<!-- Tell WiX to start the Service -->
-				<ServiceControl Id="StartService"
-                                Start="install"
-                                Stop="both"
-                                Remove="uninstall"
-                                Name="App.WindowsService"
-                                Wait="true" />
-			</Component>
-		</DirectoryRef>
-
-		<!-- Tell WiX to install the files -->
-		<Feature Id="Service" Title="ThermalSim Setup" Level="1">
-			<ComponentRef Id="ServiceExecutable" />
-		</Feature>
-
+			<!-- Tell WiX to start the Service -->
+			<ServiceControl Id="StartService"
+                            Start="install"
+                            Stop="both"
+                            Remove="uninstall"
+                            Name="ThermalSim"
+                            Wait="true" />
+		</Component>
 	</Package>
 </Wix>
