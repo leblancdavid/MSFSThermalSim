@@ -180,9 +180,9 @@ function intializeThermalDataWebSocket() {
 }
 
 function setThermalIndicator(eventData) {
-    document.getElementById('nearestThermalIndicator').style.rotate = (eventData.RelativeNearestThermal - 90.0) + 'deg';
-    document.getElementById('windIndicator').style.rotate = (eventData.WindHeading - eventData.AircraftHeading + 90.0) + 'deg';
-    document.getElementById('thermalCompass').style.rotate = -1.0 * eventData.AircraftHeading + 'deg';
+    document.getElementById('nearestThermalIndicator').style.transform = 'rotate(' + (eventData.RelativeNearestThermal - 90.0) + 'deg)';
+    document.getElementById('windIndicator').style.transform = 'rotate(' + (eventData.WindHeading - eventData.AircraftHeading + 90.0) + 'deg)';
+    document.getElementById('thermalCompass').style.transform = 'rotate(' + -1.0 * eventData.AircraftHeading + 'deg)';
 
     if(eventData.CurrentLift > 0.0) {
         let liftValue = eventData.CurrentLift / 30.0;
