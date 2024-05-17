@@ -39,6 +39,11 @@ namespace ThermalSim.Domain.Thermals
             lift.ApplySpoilerModifier(position);
             lift.ApplyWeightModifier(position);
 
+            if (stateChange != null)
+            {
+                stateChange.BaseLiftValue = lift;
+            }
+
             var verticalSpeedIndicator = (position.VerticalSpeed * (1.0 - SmoothingFactor) + verticalSpeed * SmoothingFactor);
             var change = new ThermalAltitudeChange()
             {

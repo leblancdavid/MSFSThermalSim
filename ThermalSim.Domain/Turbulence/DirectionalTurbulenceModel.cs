@@ -116,35 +116,8 @@ namespace ThermalSim.Domain.Turbulence
 
         private TurbulenceEffect GetBaseTurbulenceEffect(AircraftPositionState position, IThermalModel thermal)
         {
-            //First we need to calculate the angle between the orientation of the aircraft relative to the center of the thermal
-            //var planeX = Math.Sin(position.HeadingIndicator.ToRadians());
-            //var planeY = Math.Cos(position.HeadingIndicator.ToRadians());
-
-            var headingRadian = position.HeadingIndicator.ToRadians();
-            var thermalX = thermal.Properties.Longitude - position.Longitude;
-            var thermalY = thermal.Properties.Latitude - position.Latitude;
-
-            //rotate the vector by the heading
-            var rotatedX = Math.Cos(headingRadian) * thermalX - Math.Sin(headingRadian) * thermalY;
-            var rotatedY = Math.Sin(headingRadian) * thermalX + Math.Cos(headingRadian) * thermalY;
-
-            var angleToThermalCore = Math.Atan2(rotatedY, rotatedX);
-
-            if(angleToThermalCore < 0)
-            {
-                angleToThermalCore = Math.Abs(angleToThermalCore - Math.PI * 0.5);
-            }
-            else
-            {
-                angleToThermalCore = Math.PI * 2.5 - angleToThermalCore;
-                if(angleToThermalCore > Math.PI * 2.0)
-                {
-                    angleToThermalCore -= Math.PI * 2.0;
-                }
-            }
-
-            var angleInDegrees = angleToThermalCore.ToDegrees();
-
+            //Get the relative orientation of the center of the thermal
+            var angleToThermalCore = thermal.GetRelativeDirection(position).ToRadians();
             var rollEffect = Math.Sin(angleToThermalCore);
             var elevatorEffect = -1.0 * Math.Cos(angleToThermalCore);
             var yawEffect = rollEffect * _random.NextDouble();
@@ -158,7 +131,7 @@ namespace ThermalSim.Domain.Turbulence
 
             double distance = thermal.CalcDistance(position);
 
-            Console.WriteLine($"Angle: {angleInDegrees} \td: {distance} \tr: {effect.RotationAccelerationBodyZ} \te: {effect.RotationAccelerationBodyX} \ty: {effect.RotationAccelerationBodyY}");
+            //Console.WriteLine($"Angle: {angleInDegrees} \td: {distance} \tr: {effect.RotationAccelerationBodyZ} \te: {effect.RotationAccelerationBodyX} \ty: {effect.RotationAccelerationBodyY}");
 
             return effect;
         }

@@ -75,5 +75,34 @@ namespace ThermalSim.Domain.Extensions
             model.Properties.Latitude += changeInLatitude;
         }
 
+        public static double GetRelativeDirection(this IThermalModel thermal, AircraftPositionState position)
+        {
+            var headingRadian = position.HeadingIndicator.ToRadians();
+            var thermalX = thermal.Properties.Longitude - position.Longitude;
+            var thermalY = thermal.Properties.Latitude - position.Latitude;
+
+            //rotate the vector by the heading
+            var rotatedX = Math.Cos(headingRadian) * thermalX - Math.Sin(headingRadian) * thermalY;
+            var rotatedY = Math.Sin(headingRadian) * thermalX + Math.Cos(headingRadian) * thermalY;
+
+            var angleToThermalCore = Math.Atan2(rotatedY, rotatedX);
+
+            if (angleToThermalCore < 0)
+            {
+                angleToThermalCore = Math.Abs(angleToThermalCore - Math.PI * 0.5);
+            }
+            else
+            {
+                angleToThermalCore = Math.PI * 2.5 - angleToThermalCore;
+                if (angleToThermalCore > Math.PI * 2.0)
+                {
+                    angleToThermalCore -= Math.PI * 2.0;
+                }
+            }
+
+            return angleToThermalCore.ToDegrees();
+
+        }
+
     }
 }

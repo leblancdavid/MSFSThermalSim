@@ -1,5 +1,7 @@
+using System.Net.WebSockets;
 using ThermalSim.Api.Services;
 using ThermalSim.Domain.Connection;
+using ThermalSim.Domain.Notifications;
 using ThermalSim.Domain.Thermals;
 using ThermalSim.Domain.Towing;
 
@@ -17,6 +19,8 @@ builder.Services.AddSingleton<IThermalSimulator, ThermalSimulator>();
 builder.Services.AddSingleton<ITaxiingService, TaxiingService>();
 builder.Services.AddTransient<IThermalGenerator, FixedPositionThermalGenerator>();
 
+builder.Services.AddSingleton<IEventNotifier<WebSocket>, WebSocketService>();
+
 //builder.Services.AddHostedService<ThermalSimulatorBackgroundService>();
 
 builder.Services.AddCors(p => p.AddPolicy("thermalsim", builder =>
@@ -32,6 +36,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseWebSockets(new WebSocketOptions
+{
+    KeepAliveInterval = TimeSpan.FromMinutes(2),
+});
 
 app.UseHttpsRedirection();
 

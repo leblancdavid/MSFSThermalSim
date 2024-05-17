@@ -1,8 +1,0 @@
-<CommandsInputs>
-	<File Path="C:\Users\lblan\OneDrive\Documents\Projects\MSFSThermalSim\Client\Addons\InGamePanel\Definition\PackageSources\InGamePanels\thermal-sim-panel.xml" Failure="0">
-		<Package Name="thermal-sim-panel" Failure="0">
-			<AssetGroup Name="thermal-sim-panel"/>
-		</Package>
-	</File>
-</CommandsInputs>
-
