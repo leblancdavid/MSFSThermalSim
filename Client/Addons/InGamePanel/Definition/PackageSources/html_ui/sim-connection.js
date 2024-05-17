@@ -192,6 +192,7 @@ function setThermalIndicator(eventData) {
 
         document.getElementById('positiveLiftBar').style.height = liftValue * 100.0 + '%';
         document.getElementById('negativeLiftBar').style.height = '0%';
+
     } else {
         let liftValue = eventData.CurrentLift / -30.0;
         if(liftValue > 1.0) {
@@ -202,14 +203,32 @@ function setThermalIndicator(eventData) {
         document.getElementById('positiveLiftBar').style.height = '0%';
     }
 
+    var liftDisplay = document.getElementById('liftAmountDisplay');
+    liftDisplay.innerHTML = Math.round(eventData.CurrentLift * 10) / 10;
+
     if(eventData.ThermalState == 0) {
-        document.getElementById('thermalStatusIndicator').style.fill = 'rgb(96,96,96)'
+        document.getElementById('thermalStatusIndicator').style.fill = 'rgb(96,96,96)';
+        liftDisplay.innerHTML = '-';
+        liftDisplay.classList.remove('turned-on');
+
     } else if(eventData.ThermalState == 1) {
-        document.getElementById('thermalStatusIndicator').style.fill = 'rgb(255,100,100)'
+        document.getElementById('thermalStatusIndicator').style.fill = 'rgb(255,100,100)';
+        liftDisplay.classList.add('turned-on');
     } else if(eventData.ThermalState == 2) {
-        document.getElementById('thermalStatusIndicator').style.fill = 'yellow'
+        document.getElementById('thermalStatusIndicator').style.fill = 'yellow';
+        liftDisplay.classList.add('turned-on');
     } else if(eventData.ThermalState == 3) {
-        document.getElementById('thermalStatusIndicator').style.fill = 'rgb(100,255,100)'
+        document.getElementById('thermalStatusIndicator').style.fill = 'rgb(100,255,100)';
+        liftDisplay.classList.add('turned-on');
+    }
+
+    var windSpeedDisplay = document.getElementById('windSpeedDisplay');
+    if(windSpeedDisplay.classList.contains('turned-on')) {
+        windSpeedDisplay.innerHTML = Math.round(eventData.WindSpeed);
+    }
+    var distanceToThermalDisplay = document.getElementById('distanceToThermalDisplay');
+    if(distanceToThermalDisplay.classList.contains('turned-on')) {
+        distanceToThermalDisplay.innerHTML = Math.round(eventData.NearestThermalDistance / 10) * 10;
     }
 }
 
