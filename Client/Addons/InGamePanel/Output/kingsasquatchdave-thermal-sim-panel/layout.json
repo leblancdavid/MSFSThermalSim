@@ -1,0 +1,74 @@
+{
+  "content": [
+    {
+      "path": "html_ui/compass.png",
+      "size": 23083378,
+      "date": 133603513052570477
+    },
+    {
+      "path": "html_ui/digital-7.ttf",
+      "size": 34360,
+      "date": 133603497150865490
+    },
+    {
+      "path": "html_ui/icons/toolbar/paper-plane-regular.svg",
+      "size": 560,
+      "date": 133603497150900523
+    },
+    {
+      "path": "html_ui/sim-config.js",
+      "size": 4467,
+      "date": 133603497150930605
+    },
+    {
+      "path": "html_ui/sim-connection.js",
+      "size": 7574,
+      "date": 133603513052590476
+    },
+    {
+      "path": "html_ui/sim-panel.js",
+      "size": 2181,
+      "date": 133603497150980558
+    },
+    {
+      "path": "html_ui/sim-taxiing.js",
+      "size": 3775,
+      "date": 133603497151015678
+    },
+	{
+      "path": "html_ui/sim-thermal-indicator.js",
+      "size": 3775,
+      "date": 133603497151015678
+    },
+    {
+      "path": "html_ui/thermal-indicator.css",
+      "size": 3211,
+      "date": 133603513052590476
+    },
+    {
+      "path": "html_ui/sim-buttons.css",
+      "size": 3211,
+      "date": 133603513052590476
+    },
+    {
+      "path": "html_ui/sim-input-display.css",
+      "size": 3211,
+      "date": 133603513052590476
+    },
+    {
+      "path": "html_ui/ThermalSimPanel.css",
+      "size": 4231,
+      "date": 133603513052077044
+    },
+    {
+      "path": "html_ui/ThermalSimPanel.html",
+      "size": 25955,
+      "date": 133603513052087031
+    },
+    {
+      "path": "InGamePanels/thermal-sim-panel.spb",
+      "size": 651,
+      "date": 133603516087057701
+    }
+  ]
+}

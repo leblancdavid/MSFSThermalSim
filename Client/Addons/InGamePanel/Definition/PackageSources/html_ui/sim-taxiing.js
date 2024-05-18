@@ -3,7 +3,7 @@ var taxiSpeed = 5.0;
 
 function getTaxiingStatus()
 {
-    fetch('https://localhost:7187/api/taxiing/running').then(function(response) {
+    fetch('http://localhost:17188/api/taxiing/running').then(function(response) {
         return response.json();
       }).then(function(taxi) {
         updateTaxiingStatus(taxi);
@@ -27,7 +27,7 @@ function updateTaxiingStatus(taxi) {
 
 function getTaxiingSpeed()
 {
-    fetch('https://localhost:7187/api/taxiing/speed').then(function(response) {
+    fetch('http://localhost:17188/api/taxiing/speed').then(function(response) {
         return response.json();
       }).then(function(speed) {
         this.taxiSpeed = speed
@@ -43,7 +43,7 @@ function onUpdateTaxiingSpeed() {
 }
 function setTaxiingSpeed(speed) {
     this.taxiSpeed = speed;
-    fetch('https://localhost:7187/api/taxiing/speed/' + this.taxiSpeed, 
+    fetch('http://localhost:17188/api/taxiing/speed/' + this.taxiSpeed, 
         { 
             method: 'PUT',  
             headers: { 
@@ -69,7 +69,7 @@ function onTaxiingClicked() {
     }
 
     if(!document.getElementById('taxiingBtn').classList.contains("turned-on")) {
-        fetch('https://localhost:7187/api/taxiing', 
+        fetch('http://localhost:17188/api/taxiing', 
         { 
             method: 'PUT',  
             headers: { 
@@ -89,7 +89,7 @@ function onTaxiingClicked() {
             console.log('Fetch Error :-S', err);
         });
     } else {
-        fetch('https://localhost:7187/api/taxiing', 
+        fetch('http://localhost:17188/api/taxiing', 
         { 
             method: 'DELETE',  
             headers: { 
