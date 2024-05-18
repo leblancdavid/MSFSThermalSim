@@ -37,7 +37,7 @@
 			<ServiceControl Id="ThermalSim_Start"
 				Name="ThermalSim.Api.exe"
 				Start="install"
-				Wait="no" />
+				Wait="no"/>
 
 			<ServiceControl Id="ThermalSim_Stop"
 				Name="ThermalSim.Api.exe"

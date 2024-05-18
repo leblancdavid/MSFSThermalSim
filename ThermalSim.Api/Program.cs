@@ -14,7 +14,7 @@ var options = new WebApplicationOptions
 
 var builder = WebApplication.CreateBuilder(options);
 
-builder.Host.UseWindowsService();
+builder.Host.UseWindowsService(); 
 
 // Add services to the container.
 
@@ -59,4 +59,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+app.Run("http://localhost:17188");
