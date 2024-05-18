@@ -14,30 +14,37 @@
 		<MajorUpgrade DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit." />
 
 		<Files Include="..\ThermalSim.Api\bin\Release\net8.0-windows\**">
+			<Exclude Files="..\ThermalSim.Api\bin\Release\net8.0-windows\ThermalSim.Api.exe" />
 		</Files>
 
 		<!-- Create a single component which is the App.WindowsService.exe file -->
-		<Component Id="ServiceExecutable" Bitness="always64" Guid="3986169F-00FF-4244-9293-AFBBB3BCE9EA">
+		<Component Id="ThermalSim.Api.exe" Bitness="always64" Guid="3986169F-00FF-4244-9293-AFBBB3BCE9EA">
+			
+			<File Id="ThermalSim.Api.exe" Source="..\ThermalSim.Api\bin\Release\net8.0-windows\ThermalSim.Api.exe"></File>
+			
+			<ServiceInstall Id="ThermalSim.Api.exe"
+							Type="ownProcess"
+							Name="ThermalSim.Api.exe"
+							DisplayName="$(Name)"
+							Description="ThermalSim service that connects to MSFS2020"
+							Start="auto"
+							Account="[SERVICEACCOUNT]"
+							Interactive="yes"
+							Vital="yes"
+							ErrorControl="critical">
+			</ServiceInstall>
 
-			<!-- Remove all files from the INSTALLFOLDER on uninstall -->
-			<RemoveFile Id="ALLFILES" Name="*.*" On="both" />
+			<ServiceControl Id="ThermalSim_Start"
+				Name="ThermalSim.Api.exe"
+				Start="install"
+				Wait="no" />
 
-			<!-- Tell WiX to install the Service -->
-			<ServiceInstall Id="ServiceInstaller"
-                            Type="ownProcess"
-                            Name="ThermalSim"
-                            DisplayName="$(Name)"
-                            Description="ThermalSim service that connects to MSFS2020"
-                            Start="auto"
-                            ErrorControl="normal" />
-
-			<!-- Tell WiX to start the Service -->
-			<ServiceControl Id="StartService"
-                            Start="install"
-                            Stop="both"
-                            Remove="uninstall"
-                            Name="ThermalSim"
-                            Wait="true" />
+			<ServiceControl Id="ThermalSim_Stop"
+				Name="ThermalSim.Api.exe"
+				Stop="uninstall"
+				Remove="uninstall"
+				Wait="yes" />
+			
 		</Component>
 	</Package>
 </Wix>
