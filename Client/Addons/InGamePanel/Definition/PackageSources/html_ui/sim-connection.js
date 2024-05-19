@@ -20,7 +20,7 @@ function onThermalSimOnClicked() {
 }
 
 function openConnection() {
-    fetch('https://localhost:7187/api/sim-connection', 
+    fetch('http://localhost:17188/api/sim-connection', 
         { 
             method: 'PUT',  
             headers: { 
@@ -47,7 +47,7 @@ function closeConnection() {
         this.thermalEventsWs = null;
     }
 
-    fetch('https://localhost:7187/api/sim-connection', 
+    fetch('http://localhost:17188/api/sim-connection', 
         { 
             method: 'DELETE',  
             headers: { 
@@ -70,7 +70,7 @@ function closeConnection() {
 
 function startThermalSim() {
     
-    fetch('https://localhost:7187/api/thermals', 
+    fetch('http://localhost:17188/api/thermals', 
         { 
             method: 'PUT',  
             headers: { 
@@ -92,7 +92,7 @@ function startThermalSim() {
 }
 
 function stopThermalSim() {
-    fetch('https://localhost:7187/api/thermals', 
+    fetch('http://localhost:17188/api/thermals', 
         { 
             method: 'DELETE',  
             headers: { 
@@ -115,7 +115,7 @@ function stopThermalSim() {
 
 function getConnectionStatus()
 {
-    fetch('https://localhost:7187/api/sim-connection/connected').then(function(response) {
+    fetch('http://localhost:17188/api/sim-connection/connected').then(function(response) {
         return response.json();
       }).then(function(isConnected) {
         updateConnectionStatus(isConnected);
@@ -128,7 +128,7 @@ function getConnectionStatus()
 
 function getThermalSimulationStatus()
 {
-    fetch('https://localhost:7187/api/thermals/running').then(function(response) {
+    fetch('http://localhost:17188/api/thermals/running').then(function(response) {
         return response.json();
       }).then(function(isConnected) {
         updateThermalSimulationStatus(isConnected);
@@ -159,7 +159,7 @@ function updateThermalSimulationStatus(status) {
 }
 
 function intializeThermalDataWebSocket() {
-    this.thermalEventsWs = new WebSocket('wss://localhost:7187/ws');
+    this.thermalEventsWs = new WebSocket('ws://localhost:17188/ws');
     this.thermalEventsWs.addEventListener("open", (event) => {
         console.log(event);
       });

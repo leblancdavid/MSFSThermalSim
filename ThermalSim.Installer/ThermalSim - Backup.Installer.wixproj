@@ -1,0 +1,5 @@
+﻿<Project Sdk="WixToolset.Sdk/5.0.0">
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="&quot;C:\Users\lblan\.dotnet\tools\wix.exe\bin\heat.exe&quot; dir &quot;$(SolutionDir)ThermalSim.Api\bin\Release\net8.0-windows\&quot; -out &quot;$(ProjectDir)ThermalSimApFiles.wxs&quot;" />
+  </Target>
+</Project>

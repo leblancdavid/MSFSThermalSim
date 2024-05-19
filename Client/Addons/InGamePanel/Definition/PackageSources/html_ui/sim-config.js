@@ -50,7 +50,7 @@ class SimConfig {
 var config = new SimConfig();
 
 function refreshConfiguration() {
-    fetch('https://localhost:7187/api/thermals/configuration').then(function(response) {
+    fetch('http://localhost:17188/api/thermals/configuration').then(function(response) {
         if(response.status == 200)
             return response.json();
         return null;
@@ -80,7 +80,7 @@ function refreshInputView() {
 }
 
 function sendUpdatedConfig() {
-    fetch('https://localhost:7187/api/thermals/configuration', 
+    fetch('http://localhost:17188/api/thermals/configuration', 
         { 
             method: 'PUT',  
             headers: { 

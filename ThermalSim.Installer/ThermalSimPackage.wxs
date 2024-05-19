@@ -1,0 +1,55 @@
+﻿<?define Name = "ThermalSim" ?>
+<?define Manufacturer = "KingSasquatchDave" ?>
+<?define Version = "1.0.0.0" ?>
+<?define UpgradeCode = "9ED3FF33-8718-444E-B44B-69A2344B7E98" ?>
+
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+	<Package Name="$(Name)"
+             Manufacturer="$(Manufacturer)"
+             Version="$(Version)"
+             UpgradeCode="$(var.UpgradeCode)"
+             Compressed="true">
+
+		<!-- Allow upgrades and prevent downgrades -->
+		<MajorUpgrade DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit." />
+
+		<StandardDirectory Id="ProgramFiles6432Folder">
+			<Directory
+			  Id="INSTALLFOLDER"
+			  Name="ThermalSim"/>
+		</StandardDirectory>
+		
+		<Files Include="..\ThermalSim.Api\bin\Release\net8.0-windows\**">
+			<Exclude Files="..\ThermalSim.Api\bin\Release\net8.0-windows\ThermalSim.Api.exe" />
+		</Files>
+
+		<Component Id="ThermalSim.Api.exe" Bitness="always64" Guid="3986169F-00FF-4244-9293-AFBBB3BCE9EA" Directory="INSTALLFOLDER">
+			
+			<File Id="ThermalSim.Api.exe" Source="..\ThermalSim.Api\bin\Release\net8.0-windows\ThermalSim.Api.exe"></File>
+			
+			<ServiceInstall Id="ThermalSim.Api.exe"
+							Type="ownProcess"
+							Name="ThermalSim.Api.exe"
+							DisplayName="$(Name)"
+							Description="ThermalSim service that connects to MSFS2020"
+							Start="auto"
+							Account="[SERVICEACCOUNT]"
+							Interactive="yes"
+							Vital="yes"
+							ErrorControl="critical">
+			</ServiceInstall>
+
+			<ServiceControl Id="ThermalSim_Start"
+				Name="ThermalSim.Api.exe"
+				Start="install"
+				Wait="no"/>
+
+			<ServiceControl Id="ThermalSim_Stop"
+				Name="ThermalSim.Api.exe"
+				Stop="uninstall"
+				Remove="uninstall"
+				Wait="yes" />
+			
+		</Component>
+	</Package>
+</Wix>

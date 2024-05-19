@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Hosting.WindowsServices;
 using System.Net.WebSockets;
 using ThermalSim.Api.Services;
 using ThermalSim.Domain.Connection;
@@ -5,7 +6,15 @@ using ThermalSim.Domain.Notifications;
 using ThermalSim.Domain.Thermals;
 using ThermalSim.Domain.Towing;
 
-var builder = WebApplication.CreateBuilder(args);
+var options = new WebApplicationOptions
+{
+    Args = args,
+    ContentRootPath = WindowsServiceHelpers.IsWindowsService() ? AppContext.BaseDirectory : default
+};
+
+var builder = WebApplication.CreateBuilder(options);
+
+builder.Host.UseWindowsService(); 
 
 // Add services to the container.
 
@@ -50,4 +59,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+app.Run("http://localhost:17188");
