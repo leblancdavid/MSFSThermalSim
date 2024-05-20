@@ -81,6 +81,7 @@ namespace ThermalSim.Domain.Connection
                 //Connection.OnRecvGetInputEvent += Connection_OnRecvGetInputEvent;
                 //Connection.EnumerateInputEvents(SimDataRequests.ENUM_INPUTS);
 
+                RegisterThermalSimEnableDefinition();
                 RegisterAircraftPositionDefinition();
                 RegisterThermalAltitudeChangeDefinition();
                 RegisterTurbulenceEffectDefinition();
@@ -210,6 +211,13 @@ namespace ThermalSim.Domain.Connection
                 SIMCONNECT_PERIOD.SIM_FRAME,
                 SIMCONNECT_DATA_REQUEST_FLAG.DEFAULT,
                 0, 0, 0);
+        }
+
+        private void RegisterThermalSimEnableDefinition()
+        {
+            RegisterDataDefinition<ThermalAltitudeChange>(SimDataEventTypes.ThermalSimEnableFlag,
+                ("FOLDING WING RIGHT PERCENT", "Percent", (SIMCONNECT_DATATYPE)4)
+            );
         }
 
         private void RegisterThermalAltitudeChangeDefinition()
