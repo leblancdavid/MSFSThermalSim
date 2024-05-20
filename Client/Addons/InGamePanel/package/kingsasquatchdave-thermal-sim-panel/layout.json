@@ -3,7 +3,7 @@
     {
       "path": "html_ui/compass.png",
       "size": 23083378,
-      "date": 133603513052570477
+      "date": 133604489915489806
     },
     {
       "path": "html_ui/digital-7.ttf",
@@ -11,19 +11,29 @@
       "date": 133603497150865490
     },
     {
-      "path": "html_ui/icons/toolbar/paper-plane-regular.svg",
-      "size": 560,
-      "date": 133603497150900523
+      "path": "html_ui/icons/toolbar/ThermalSimIcon.png",
+      "size": 992879,
+      "date": 133606909546889176
+    },
+    {
+      "path": "html_ui/sim-buttons.css",
+      "size": 2097,
+      "date": 133604489915499813
     },
     {
       "path": "html_ui/sim-config.js",
       "size": 4467,
-      "date": 133603497150930605
+      "date": 133606073554694657
     },
     {
       "path": "html_ui/sim-connection.js",
-      "size": 7574,
-      "date": 133603513052590476
+      "size": 8491,
+      "date": 133606073554694657
+    },
+    {
+      "path": "html_ui/sim-input-display.css",
+      "size": 2788,
+      "date": 133604489915509799
     },
     {
       "path": "html_ui/sim-panel.js",
@@ -33,42 +43,32 @@
     {
       "path": "html_ui/sim-taxiing.js",
       "size": 3775,
-      "date": 133603497151015678
+      "date": 133606073554694657
     },
-	{
+    {
       "path": "html_ui/sim-thermal-indicator.js",
-      "size": 3775,
-      "date": 133603497151015678
+      "size": 1276,
+      "date": 133604489915519833
     },
     {
       "path": "html_ui/thermal-indicator.css",
-      "size": 3211,
-      "date": 133603513052590476
-    },
-    {
-      "path": "html_ui/sim-buttons.css",
-      "size": 3211,
-      "date": 133603513052590476
-    },
-    {
-      "path": "html_ui/sim-input-display.css",
-      "size": 3211,
-      "date": 133603513052590476
+      "size": 3442,
+      "date": 133604489915519833
     },
     {
       "path": "html_ui/ThermalSimPanel.css",
-      "size": 4231,
-      "date": 133603513052077044
+      "size": 811,
+      "date": 133604489915099829
     },
     {
       "path": "html_ui/ThermalSimPanel.html",
-      "size": 25955,
-      "date": 133603513052087031
+      "size": 28104,
+      "date": 133604489915099829
     },
     {
       "path": "InGamePanels/thermal-sim-panel.spb",
-      "size": 651,
-      "date": 133603516087057701
+      "size": 646,
+      "date": 133606929791231244
     }
   ]
 }

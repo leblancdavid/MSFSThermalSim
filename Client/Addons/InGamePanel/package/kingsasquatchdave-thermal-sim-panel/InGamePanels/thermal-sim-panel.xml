@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<SimBase.Document Type="InGamePanels" version="1,0">
+  <Filename>InGamePanel_ThermalSimPanel.spb</Filename>
+  <InGamePanels.InGamePanelDefinition id="THERMAL_SIM_PANEL" 
+    Name="ThermalSim" 
+    url="html_ui/ThermalSimPanel.html" 
+    resizeDirections="Both" minWidth="33" minHeight="35" 
+    defaultWidth="36" defaultHeight="36" defaultTop="33" defaultRight="2" 
+    icon="ThermalSimIcon" buttonVisible="true">
+  </InGamePanels.InGamePanelDefinition>
+</SimBase.Document>
