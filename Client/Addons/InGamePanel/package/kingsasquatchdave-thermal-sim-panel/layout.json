@@ -11,9 +11,9 @@
       "date": 133603497150865490
     },
     {
-      "path": "html_ui/icons/toolbar/ThermalSimIcon.png",
-      "size": 992879,
-      "date": 133606909546889176
+      "path": "html_ui/icons/toolbar/THERMAL_SIM_PANEL_ICON.svg",
+      "size": 9368,
+      "date": 133606960079163202
     },
     {
       "path": "html_ui/sim-buttons.css",
@@ -67,8 +67,8 @@
     },
     {
       "path": "InGamePanels/thermal-sim-panel.spb",
-      "size": 646,
-      "date": 133606929791231244
+      "size": 654,
+      "date": 133606963856113489
     }
   ]
 }
