@@ -10,6 +10,7 @@
     public enum SimDataEventTypes
     {
         AircraftPosition,
+        ThermalSimEnableFlag,
         ThermalVelocityUpdate,
         TurbulenceEffect,
         TowingSpeedUpdate

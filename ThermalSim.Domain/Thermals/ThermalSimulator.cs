@@ -71,6 +71,11 @@ namespace ThermalSim.Domain.Thermals
             {
                 connection.AircraftPositionUpdated += OnAircraftPositionUpdate;
                 IsRunning = true;
+
+                connection.Connection?.SetDataOnSimObject(
+                    SimDataEventTypes.ThermalSimEnableFlag,
+                    1u, SIMCONNECT_DATA_SET_FLAG.DEFAULT, 
+                    new ThermalSimEnabled() { ThermalSimIsEnabled = 1.0 });
             }
             
             
@@ -92,7 +97,7 @@ namespace ThermalSim.Domain.Thermals
                     UpdateThermalModels(e.Position);
                 }
 
-                ApplyThermalEffect(e.Position);
+                _ = ApplyThermalEffect(e.Position);
 
             }
             catch (Exception ex)
@@ -249,6 +254,11 @@ namespace ThermalSim.Domain.Thermals
         {
             IsRunning = false;
             connection.AircraftPositionUpdated -= OnAircraftPositionUpdate;
+
+            connection.Connection?.SetDataOnSimObject(
+                    SimDataEventTypes.ThermalSimEnableFlag,
+                    1u, SIMCONNECT_DATA_SET_FLAG.DEFAULT,
+                    new ThermalSimEnabled() { ThermalSimIsEnabled = 0.0 });
         }
 
         public bool InsertThermal()
