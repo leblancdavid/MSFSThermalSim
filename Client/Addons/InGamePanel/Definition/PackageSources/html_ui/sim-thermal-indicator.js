@@ -17,7 +17,7 @@ function onToggleWindBtn() {
 
 function onToggleThermalBtn() {
     var toggleBtn = document.getElementById('thermalToggleBtn');
-    var ledDisplay = document.getElementById('distanceToThermalDisplay');
+    var ledDisplay = document.getElementById('windSpeedDisplay');
 
     if(toggleBtn.classList.contains('turned-on')) {
         toggleBtn.classList.remove('turned-on');

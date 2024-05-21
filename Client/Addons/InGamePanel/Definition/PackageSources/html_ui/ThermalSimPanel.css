@@ -1,4 +1,26 @@
-﻿
+﻿.aspect-ratio-outter-1-1 {
+  height: 0;
+  overflow: hidden;
+  padding-top: 100%;
+  position: relative;
+}
+
+.aspect-ratio-outter-3-2 {
+  height: 0;
+  overflow: hidden;
+  padding-top: 150%;
+  position: relative;
+}
+
+.aspect-ratio-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+
 
 .thermal-sim-panel {
   display: flex;
@@ -8,11 +30,10 @@
   background: linear-gradient(to bottom right, rgb(32, 32, 32), rgb(48, 48, 48));
   border-radius: 8px;
   border: solid 4px rgb(96,96,96);
-  padding: 8px;
-  width: 532px;
 }
 
 .main-panel {
+  height: 95%;
   display: flex;
   flex-direction: column;
   align-items: center;
