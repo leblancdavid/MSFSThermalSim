@@ -9,14 +9,13 @@
     justify-content: center;
     align-items: center;
     color: rgb(96, 96, 96);
-    font-size: 16px;
+    font-size: 12px;
     font-family: system-ui;
     font-weight: 500;
   }
   .sim-tab-btn svg {
-    width: 48px;
-    height: 48px;
-    margin: 8px;
+    width: 50%;
+    height: 50%;
   }
   .sim-tab-btn svg path {
     fill:rgb(96, 96, 96);
