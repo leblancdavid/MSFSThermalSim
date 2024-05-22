@@ -31,7 +31,7 @@
             title=""
             content-fit="true">
 
-            <div class="thermal-sim-panel aspect-ratio-outter-1-1">
+            <div class="thermal-sim-panel aspect-ratio-outter-4-3">
                 <div class="aspect-ratio-inner" style="padding: 8px; box-sizing: border-box;">
                     <div id="mainPanel" class="main-panel">
                         <div class="content-row" style="flex: 1;">
@@ -79,7 +79,7 @@
                                         <div class="thermal-panel-buttons">
                                             <button id="windToggleBtn" class="sim-btn-small small-font"     
                                                 onclick="onToggleWindBtn()"
-                                                style="position: inherit; bottom: 4px; left: 0px;">
+                                                style="position: inherit; bottom: 4px; left: 0px; margin: 4px;">
                                                 WIND
                                             </button>
                                             <div class="sim-input-container-small"
@@ -92,7 +92,7 @@
                                             <button class="sim-btn-small small-font"
                                                 id="thermalToggleBtn" 
                                                 onclick="onToggleThermalBtn()"
-                                                style="position: inherit; bottom: 4px; right: 0px;">
+                                                style="position: inherit; bottom: 4px; right: 0px; margin: 4px;">
                                                 THRM
                                             </button>
                                             <div class="sim-input-container-small"
@@ -129,9 +129,13 @@
         
                         <div class="content-row" style="flex: 1;">
                             <button id="taxiingBtn" class="sim-tab-btn"
-                                    onclick="onTaxiingClicked()">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M192 0c-17.7 0-32 14.3-32 32V64c0 .1 0 .1 0 .2c-38.6 2.2-72.3 27.3-85.2 64.1L39.6 228.8C16.4 238.4 0 261.3 0 288V432v48c0 17.7 14.3 32 32 32H64c17.7 0 32-14.3 32-32V432H416v48c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V432 288c0-26.7-16.4-49.6-39.6-59.2L437.2 128.3c-12.9-36.8-46.6-62-85.2-64.1c0-.1 0-.1 0-.2V32c0-17.7-14.3-32-32-32H192zM165.4 128H346.6c13.6 0 25.7 8.6 30.2 21.4L402.9 224H109.1l26.1-74.6c4.5-12.8 16.6-21.4 30.2-21.4zM96 288a32 32 0 1 1 0 64 32 32 0 1 1 0-64zm288 32a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></svg>
-                                TAXI
+                                    onclick="onTaxiingClicked()" style="height: 100%; width: 20%;">
+                                    <div class="aspect-ratio-outter-1-1" style="height: 100%; width: 100%;">
+                                        <div class="aspect-ratio-inner content-column">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M192 0c-17.7 0-32 14.3-32 32V64c0 .1 0 .1 0 .2c-38.6 2.2-72.3 27.3-85.2 64.1L39.6 228.8C16.4 238.4 0 261.3 0 288V432v48c0 17.7 14.3 32 32 32H64c17.7 0 32-14.3 32-32V432H416v48c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V432 288c0-26.7-16.4-49.6-39.6-59.2L437.2 128.3c-12.9-36.8-46.6-62-85.2-64.1c0-.1 0-.1 0-.2V32c0-17.7-14.3-32-32-32H192zM165.4 128H346.6c13.6 0 25.7 8.6 30.2 21.4L402.9 224H109.1l26.1-74.6c4.5-12.8 16.6-21.4 30.2-21.4zM96 288a32 32 0 1 1 0 64 32 32 0 1 1 0-64zm288 32a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></svg>
+                                            TAXI
+                                        </div>
+                                    </div>
                             </button>
                             <div id="taxiingInputContainer" class="sim-input-container">
                                 <label>
@@ -139,7 +143,7 @@
                                 </label>
                                 <div class="content-row">
                                     <div id="taxiingSpeedInput" class="led-display"></div>
-                                    <div class="content-column">
+                                    <div class="content-column" style="width: auto;">
                                         <button class="sim-btn-small" onclick="setTaxiingSpeed(taxiSpeed + 1)">
                                             +
                                         </button>
@@ -374,7 +378,7 @@
                         
                     </div>
     
-                    <div class="content-row" style="justify-content: space-between; height: 5%;">
+                    <div class="content-row" style="justify-content: space-between; height: 5%; margin: 6px 0;">
                         <button class="sim-btn-small" onclick="previousPanel()">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
                         </button>

@@ -12,6 +12,13 @@
   position: relative;
 }
 
+.aspect-ratio-outter-4-3 {
+  height: 0;
+  overflow: hidden;
+  padding-top: 133%;
+  position: relative;
+}
+
 .aspect-ratio-inner {
   position: absolute;
   top: 0;
