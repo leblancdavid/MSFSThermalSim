@@ -1,15 +1,15 @@
 <Timestamps>
 	<Entry Path="sim-panel.js" Timestamp="13360349715"/>
-	<Entry Path="sim-buttons.css" Timestamp="13360448991"/>
+	<Entry Path="sim-buttons.css" Timestamp="13360848303"/>
 	<Entry Path="sim-config.js" Timestamp="13360607355"/>
-	<Entry Path="thermal-indicator.css" Timestamp="13360448991"/>
+	<Entry Path="thermal-indicator.css" Timestamp="13360844914"/>
 	<Entry Path="compass.png" Timestamp="13360448991"/>
-	<Entry Path="ThermalSimPanel.css" Timestamp="13360448991"/>
-	<Entry Path="ThermalSimPanel.html" Timestamp="13360448991"/>
-	<Entry Path="sim-input-display.css" Timestamp="13360448991"/>
+	<Entry Path="ThermalSimPanel.css" Timestamp="13360850950"/>
+	<Entry Path="ThermalSimPanel.html" Timestamp="13360848816"/>
+	<Entry Path="sim-input-display.css" Timestamp="13360847693"/>
 	<Entry Path="sim-taxiing.js" Timestamp="13360607355"/>
-	<Entry Path="icons\toolbar\THERMAL_SIM_PANEL_ICON.svg" Timestamp="13360696007"/>
-	<Entry Path="sim-thermal-indicator.js" Timestamp="13360448991"/>
+	<Entry Path="icons\toolbar\THERMAL_SIM_PANEL_ICON.svg" Timestamp="13360782868"/>
+	<Entry Path="sim-thermal-indicator.js" Timestamp="13360845093"/>
 	<Entry Path="digital-7.ttf" Timestamp="13360349715"/>
 	<Entry Path="sim-connection.js" Timestamp="13360607355"/>
 </Timestamps>
