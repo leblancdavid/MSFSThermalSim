@@ -5,9 +5,9 @@
 }
 
 .sim-input-container {
-    height: 100%;
     width: 50%;
     margin: 4px;
+    padding: 8px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -21,6 +21,7 @@
     background: linear-gradient(to bottom right, black, rgb(32,32,32));
     box-shadow: 2px 2px 0 0 rgb(32, 32, 32);
     border-radius: 8px;
+
   }
   .sim-input-container .led-display {
     height: 90%;
@@ -36,11 +37,8 @@
     align-items: center;
     border-radius: 4px;
   }
-  .input-display-button-stack {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  .sim-input-container .content-column {
+    width: auto;
   }
   .sim-input-container.turned-on {
     color: rgb(255, 255, 240);

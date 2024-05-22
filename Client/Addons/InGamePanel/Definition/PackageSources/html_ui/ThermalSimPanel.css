@@ -66,5 +66,4 @@
 .scrolling-content {
   flex: 1;
   overflow: auto; 
-  justify-content: start;
 }
