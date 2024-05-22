@@ -13,13 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThermalSim.Domain", "Therma
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThermalSim.Helpers", "ThermalSim.Helpers\ThermalSim.Helpers.csproj", "{FBB57791-3EE0-47D7-B76D-8D165255D7B9}"
 EndProject
-Project("{B7DD6F7E-DEF8-4E67-B5B7-07EF123DB6F0}") = "ThermalSim.Installer", "ThermalSim.Installer\ThermalSim.Installer.wixproj", "{7B3DE215-F6E6-4E9B-9909-64977269EA49}"
-	ProjectSection(ProjectDependencies) = postProject
-		{17B80DBF-5D1B-4ADC-BD33-DB81878C0E96} = {17B80DBF-5D1B-4ADC-BD33-DB81878C0E96}
-		{CFBB7C5C-AFF5-4EBB-A4EC-92A910B9FCAD} = {CFBB7C5C-AFF5-4EBB-A4EC-92A910B9FCAD}
-		{FBB57791-3EE0-47D7-B76D-8D165255D7B9} = {FBB57791-3EE0-47D7-B76D-8D165255D7B9}
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -96,22 +89,6 @@ Global
 		{FBB57791-3EE0-47D7-B76D-8D165255D7B9}.Release|x64.Build.0 = Release|Any CPU
 		{FBB57791-3EE0-47D7-B76D-8D165255D7B9}.Release|x86.ActiveCfg = Release|Any CPU
 		{FBB57791-3EE0-47D7-B76D-8D165255D7B9}.Release|x86.Build.0 = Release|Any CPU
-		{7B3DE215-F6E6-4E9B-9909-64977269EA49}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{7B3DE215-F6E6-4E9B-9909-64977269EA49}.Debug|Any CPU.Build.0 = Debug|x64
-		{7B3DE215-F6E6-4E9B-9909-64977269EA49}.Debug|ARM64.ActiveCfg = Debug|ARM64
-		{7B3DE215-F6E6-4E9B-9909-64977269EA49}.Debug|ARM64.Build.0 = Debug|ARM64
-		{7B3DE215-F6E6-4E9B-9909-64977269EA49}.Debug|x64.ActiveCfg = Debug|x64
-		{7B3DE215-F6E6-4E9B-9909-64977269EA49}.Debug|x64.Build.0 = Debug|x64
-		{7B3DE215-F6E6-4E9B-9909-64977269EA49}.Debug|x86.ActiveCfg = Debug|x86
-		{7B3DE215-F6E6-4E9B-9909-64977269EA49}.Debug|x86.Build.0 = Debug|x86
-		{7B3DE215-F6E6-4E9B-9909-64977269EA49}.Release|Any CPU.ActiveCfg = Release|x64
-		{7B3DE215-F6E6-4E9B-9909-64977269EA49}.Release|Any CPU.Build.0 = Release|x64
-		{7B3DE215-F6E6-4E9B-9909-64977269EA49}.Release|ARM64.ActiveCfg = Release|ARM64
-		{7B3DE215-F6E6-4E9B-9909-64977269EA49}.Release|ARM64.Build.0 = Release|ARM64
-		{7B3DE215-F6E6-4E9B-9909-64977269EA49}.Release|x64.ActiveCfg = Release|x64
-		{7B3DE215-F6E6-4E9B-9909-64977269EA49}.Release|x64.Build.0 = Release|x64
-		{7B3DE215-F6E6-4E9B-9909-64977269EA49}.Release|x86.ActiveCfg = Release|x86
-		{7B3DE215-F6E6-4E9B-9909-64977269EA49}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
