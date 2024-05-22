@@ -65,8 +65,8 @@ namespace ThermalSim.Domain.Extensions
             //or do we?
             double adjustedDirection = windDirection - 180.0;
             double distanceKm = windSpeed * Constants.DEFAULT_TIME_FACTOR * Constants.FEET_TO_KM;
-            double latitudeDistance = distanceKm * Math.Sin(adjustedDirection.ToRadians());
-            double longitudeDistance = distanceKm * Math.Cos(adjustedDirection.ToRadians());
+            double latitudeDistance = distanceKm * Math.Cos(adjustedDirection.ToRadians());
+            double longitudeDistance = distanceKm * Math.Sin(adjustedDirection.ToRadians());
 
             double changeInLatitude = latitudeDistance / Constants.DEGREE_LATITUDE_KM;
             double changeInLongitude = longitudeDistance / (Constants.DEGREE_LONGITUDE_KM * Math.Cos(model.Properties.Latitude.ToRadians()));
