@@ -20,6 +20,7 @@ namespace ThermalSim.Domain.Turbulence
         private readonly ITurbulenceKernel _coreKernel;
 
         public TurbulenceProperties Properties { get; set; }
+        public double SmoothingFactor { get; set; } = 0.1;
 
         public DirectionalTurbulenceModel(TurbulenceProperties properties, 
             ITurbulenceKernel? sinkKernel = null,
@@ -87,9 +88,9 @@ namespace ThermalSim.Domain.Turbulence
 
             var output = new TurbulenceEffect()
             {
-                RotationVelocityBodyX = position.RotationVelocityBodyX + _turbulence.Value.RotationVelocityBodyX * _kernel[_counter],
-                RotationVelocityBodyY = position.RotationVelocityBodyY + _turbulence.Value.RotationVelocityBodyY * _kernel[_counter],
-                RotationVelocityBodyZ = position.RotationVelocityBodyZ + _turbulence.Value.RotationVelocityBodyZ * _kernel[_counter],
+                RotationVelocityBodyX = position.RotationVelocityBodyX * (1.0 - SmoothingFactor) + _turbulence.Value.RotationVelocityBodyX * _kernel[_counter] * SmoothingFactor,
+                RotationVelocityBodyY = position.RotationVelocityBodyY * (1.0 - SmoothingFactor) + _turbulence.Value.RotationVelocityBodyY * _kernel[_counter] * SmoothingFactor,
+                RotationVelocityBodyZ = position.RotationVelocityBodyZ * (1.0 - SmoothingFactor) + _turbulence.Value.RotationVelocityBodyZ * _kernel[_counter] * SmoothingFactor,
             };
 
             return output;
