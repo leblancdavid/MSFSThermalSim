@@ -7,7 +7,6 @@ namespace ThermalSim.Domain.Turbulence
     public class DirectionalTurbulenceModel : ITurbulenceModel
     {
         private int _counter;
-        private int _resetCount;
         private int _duration;
         private double _maxTurbulence;
 
@@ -15,7 +14,7 @@ namespace ThermalSim.Domain.Turbulence
 
         private Random _random = new Random();
         
-        private TurbulenceEffect? _turbulence = null;
+        private TurbulenceEffect? _turbulence;
         private readonly ITurbulenceKernel _sinkKernel;
         private readonly ITurbulenceKernel _transitionKernel;
         private readonly ITurbulenceKernel _coreKernel;
@@ -75,43 +74,25 @@ namespace ThermalSim.Domain.Turbulence
 
         public TurbulenceEffect? GetTurbulenceEffect(AircraftPositionState position, IThermalModel thermal)
         {
-            //If we hit turbulence, this will be not null
-            if(_turbulence != null)
+            _counter++;
+            //If we've hit the number of frames of turbulence, then we reset it
+            if(_turbulence == null || _counter >= _duration)
             {
-                _counter++;
-                //If we've hit the number of frames of turbulence, then we reset it
-                if(_counter >= _duration)
-                {
-                    _turbulence = null;
-                    return _turbulence;
-                }
+                ResetCount();
 
-                var output = new TurbulenceEffect()
-                {
-                    RotationAccelerationBodyX = _turbulence.Value.RotationAccelerationBodyX * _kernel[_counter],
-                    RotationAccelerationBodyY = _turbulence.Value.RotationAccelerationBodyY * _kernel[_counter],
-                    RotationAccelerationBodyZ = _turbulence.Value.RotationAccelerationBodyZ * _kernel[_counter],
-                };
+                UpdateTurbulenceKernel(_duration, thermal.GetPositionInThermal(position));
 
-                return output;
+                _turbulence = GetBaseTurbulenceEffect(position, thermal);
             }
 
-            //This counter makes it so that turbulence is spread apart somewhat randomly
-            if(_counter < _resetCount)
+            var output = new TurbulenceEffect()
             {
-                _counter++;
-                return null;
-            }
+                RotationVelocityBodyX = position.RotationVelocityBodyX + _turbulence.Value.RotationVelocityBodyX * _kernel[_counter],
+                RotationVelocityBodyY = position.RotationVelocityBodyY + _turbulence.Value.RotationVelocityBodyY * _kernel[_counter],
+                RotationVelocityBodyZ = position.RotationVelocityBodyZ + _turbulence.Value.RotationVelocityBodyZ * _kernel[_counter],
+            };
 
-            //If we get here, we basically start a new turbulence
-            ResetCount();
-
-            
-            UpdateTurbulenceKernel(_duration, thermal.GetPositionInThermal(position));
-
-            //For now let's make it simple
-            _turbulence = GetBaseTurbulenceEffect(position, thermal);
-            return _turbulence;
+            return output;
         }
 
         private TurbulenceEffect GetBaseTurbulenceEffect(AircraftPositionState position, IThermalModel thermal)
@@ -124,14 +105,10 @@ namespace ThermalSim.Domain.Turbulence
 
             var effect = new TurbulenceEffect()
             {
-                RotationAccelerationBodyX = elevatorEffect * _maxTurbulence * Properties.x_Scaler,
-                RotationAccelerationBodyY = yawEffect * _maxTurbulence * Properties.y_Scaler,
-                RotationAccelerationBodyZ = rollEffect * _maxTurbulence * Properties.z_Scaler,
+                RotationVelocityBodyX = elevatorEffect * _maxTurbulence * Properties.x_Scaler,
+                RotationVelocityBodyY = yawEffect * _maxTurbulence * Properties.y_Scaler,
+                RotationVelocityBodyZ = rollEffect * _maxTurbulence * Properties.z_Scaler,
             };
-
-            double distance = thermal.CalcDistance(position);
-
-            //Console.WriteLine($"Angle: {angleInDegrees} \td: {distance} \tr: {effect.RotationAccelerationBodyZ} \te: {effect.RotationAccelerationBodyX} \ty: {effect.RotationAccelerationBodyY}");
 
             return effect;
         }
@@ -139,7 +116,6 @@ namespace ThermalSim.Domain.Turbulence
 
         private void ResetCount()
         {
-            _resetCount = Properties.FramesBetweenTurbulence.GetRandomValue(_random);
             _duration = Properties.TurbulenceDuration.GetRandomValue(_random);
             _maxTurbulence = Properties.TurbulenceStrength.GetRandomValue(_random);
             _counter = 0;
