@@ -88,9 +88,9 @@ namespace ThermalSim.Domain.Turbulence
 
             var output = new TurbulenceEffect()
             {
-                RotationVelocityBodyX = position.RotationVelocityBodyX * (1.0 - SmoothingFactor) + _turbulence.Value.RotationVelocityBodyX * _kernel[_counter] * SmoothingFactor,
-                RotationVelocityBodyY = position.RotationVelocityBodyY * (1.0 - SmoothingFactor) + _turbulence.Value.RotationVelocityBodyY * _kernel[_counter] * SmoothingFactor,
-                RotationVelocityBodyZ = position.RotationVelocityBodyZ * (1.0 - SmoothingFactor) + _turbulence.Value.RotationVelocityBodyZ * _kernel[_counter] * SmoothingFactor,
+                RotationAccelerationBodyX = position.RotationAccelerationBodyX * (1.0 - SmoothingFactor) + _turbulence.Value.RotationAccelerationBodyX * _kernel[_counter] * SmoothingFactor,
+                RotationAccelerationBodyY = position.RotationAccelerationBodyY * (1.0 - SmoothingFactor) + _turbulence.Value.RotationAccelerationBodyY * _kernel[_counter] * SmoothingFactor,
+                RotationAccelerationBodyZ = position.RotationAccelerationBodyZ * (1.0 - SmoothingFactor) + _turbulence.Value.RotationAccelerationBodyZ * _kernel[_counter] * SmoothingFactor,
             };
 
             return output;
@@ -106,9 +106,9 @@ namespace ThermalSim.Domain.Turbulence
 
             var effect = new TurbulenceEffect()
             {
-                RotationVelocityBodyX = elevatorEffect * _maxTurbulence * Properties.x_Scaler,
-                RotationVelocityBodyY = yawEffect * _maxTurbulence * Properties.y_Scaler,
-                RotationVelocityBodyZ = rollEffect * _maxTurbulence * Properties.z_Scaler,
+                RotationAccelerationBodyX = elevatorEffect * _maxTurbulence * Properties.x_Scaler,
+                RotationAccelerationBodyY = yawEffect * _maxTurbulence * Properties.y_Scaler,
+                RotationAccelerationBodyZ = rollEffect * _maxTurbulence * Properties.z_Scaler,
             };
 
             return effect;

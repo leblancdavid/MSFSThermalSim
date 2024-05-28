@@ -55,9 +55,9 @@ namespace ThermalSim.Domain.Turbulence
 
                 var output = new TurbulenceEffect()
                 {
-                    RotationVelocityBodyX = _turbulence.Value.RotationVelocityBodyX * _smoothingKernel[_counter],
-                    RotationVelocityBodyY = _turbulence.Value.RotationVelocityBodyY * _smoothingKernel[_counter],
-                    RotationVelocityBodyZ = _turbulence.Value.RotationVelocityBodyZ * _smoothingKernel[_counter],
+                    RotationAccelerationBodyX = _turbulence.Value.RotationAccelerationBodyX * _smoothingKernel[_counter],
+                    RotationAccelerationBodyY = _turbulence.Value.RotationAccelerationBodyY * _smoothingKernel[_counter],
+                    RotationAccelerationBodyZ = _turbulence.Value.RotationAccelerationBodyZ * _smoothingKernel[_counter],
                 };
 
                 return output;
@@ -78,9 +78,9 @@ namespace ThermalSim.Domain.Turbulence
             //For now let's make it simple
             _turbulence = new TurbulenceEffect()
             {
-                RotationVelocityBodyX = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * Properties.x_Scaler,
-                RotationVelocityBodyY = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * Properties.y_Scaler,
-                RotationVelocityBodyZ = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * Properties.z_Scaler,
+                RotationAccelerationBodyX = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * Properties.x_Scaler,
+                RotationAccelerationBodyY = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * Properties.y_Scaler,
+                RotationAccelerationBodyZ = (2.0 * _random.NextDouble() - 1.0) * _maxTurbulence * Properties.z_Scaler,
             };
 
 
