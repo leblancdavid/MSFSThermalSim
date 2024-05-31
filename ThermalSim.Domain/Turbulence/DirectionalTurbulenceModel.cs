@@ -20,7 +20,7 @@ namespace ThermalSim.Domain.Turbulence
         private readonly ITurbulenceKernel _coreKernel;
 
         public TurbulenceProperties Properties { get; set; }
-        public double SmoothingFactor { get; set; } = 0.1;
+        public double SmoothingFactor { get; set; } = 0.5;
 
         public DirectionalTurbulenceModel(TurbulenceProperties properties, 
             ITurbulenceKernel? sinkKernel = null,
@@ -102,7 +102,7 @@ namespace ThermalSim.Domain.Turbulence
             var angleToThermalCore = thermal.GetRelativeDirection(position).ToRadians();
             var rollEffect = Math.Sin(angleToThermalCore);
             var elevatorEffect = -1.0 * Math.Cos(angleToThermalCore);
-            var yawEffect = rollEffect * _random.NextDouble();
+            var yawEffect = -1.0 * rollEffect * _random.NextDouble();
 
             var effect = new TurbulenceEffect()
             {

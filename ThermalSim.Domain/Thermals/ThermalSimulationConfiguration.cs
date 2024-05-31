@@ -11,7 +11,7 @@ namespace ThermalSim.Domain.Thermals
         public ValueRangeDouble AltitudeFromGround { get; set; } = new ValueRangeDouble(100.0, 500.0);
         public ValueRangeDouble SpawnDistance { get; set; } = new ValueRangeDouble(0.01, 0.03); //This is in gps degrees
         public ValueRangeDouble RelativeSpawnAltitude { get; set; } = new ValueRangeDouble(-1000.0, 0.0);
-        public ValueRangeDouble Radius { get; set; } = new ValueRangeDouble(2000.0, 4000.0);
+        public ValueRangeDouble Radius { get; set; } = new ValueRangeDouble(1000.0, 2000.0);
         public ValueRangeDouble Height { get; set; } = new ValueRangeDouble(3000.0, 10000.0);
         public ValueRangeDouble CoreLiftRate { get; set; } = new ValueRangeDouble(10.0, 20.0);
         public ValueRangeDouble CoreRadiusPercent { get; set; } = new ValueRangeDouble(0.80, 0.85);
