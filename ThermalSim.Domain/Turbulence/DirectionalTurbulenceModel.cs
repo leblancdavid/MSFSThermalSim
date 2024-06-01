@@ -101,14 +101,23 @@ namespace ThermalSim.Domain.Turbulence
             //Get the relative orientation of the center of the thermal
             var angleToThermalCore = thermal.GetRelativeDirection(position).ToRadians();
             var rollEffect = Math.Sin(angleToThermalCore);
-            var elevatorEffect = -1.0 * Math.Cos(angleToThermalCore);
+            var pitchEffect = -1.0 * Math.Cos(angleToThermalCore);
             var yawEffect = -1.0 * rollEffect * _random.NextDouble();
+
+            var pitchMod = _maxTurbulence * Properties.BasePitchScaler;
+            pitchMod += pitchMod * Properties.PitchTurbulenceModifier;
+
+            var yawMod = _maxTurbulence * Properties.BaseYawScaler;
+            yawMod += yawMod * Properties.YawTurbulenceModifier;
+
+            var rollMod = _maxTurbulence * Properties.BaseRollScaler;
+            rollMod += rollMod * Properties.RollTurbulenceModifier;
 
             var effect = new TurbulenceEffect()
             {
-                RotationAccelerationBodyX = elevatorEffect * _maxTurbulence * Properties.x_Scaler,
-                RotationAccelerationBodyY = yawEffect * _maxTurbulence * Properties.y_Scaler,
-                RotationAccelerationBodyZ = rollEffect * _maxTurbulence * Properties.z_Scaler,
+                RotationAccelerationBodyX = pitchEffect * pitchMod,
+                RotationAccelerationBodyY = yawEffect * yawMod,
+                RotationAccelerationBodyZ = rollEffect * rollMod,
             };
 
             return effect;
