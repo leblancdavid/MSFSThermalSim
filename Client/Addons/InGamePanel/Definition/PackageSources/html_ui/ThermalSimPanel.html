@@ -331,12 +331,13 @@
                                         <div id="configMinSinkRate"  class="led-display"></div>
                                         <div class="content-column">
                                             <button class="sim-btn-small" onclick="
-                                            config.sinkRatePercent.min += 0.1; 
+                                            config.sinkRatePercent.min = Math.round((config.sinkRatePercent.min + 0.1) * 10) / 10; 
                                             document.getElementById('configMinSinkRate').innerHTML = config.sinkRatePercent.min;">
                                                 +
                                             </button>
-                                            <button class="sim-btn-small" onclick="config.sinkRatePercent.min -= 0.1; 
-                                            document.getElementById('configMinSinkRate').innerHTML = config.sinkRatePercent.min;">
+                                            <button class="sim-btn-small" onclick="
+                                                config.sinkRatePercent.min  = Math.round((config.sinkRatePercent.min - 0.1) * 10) / 10 
+                                                document.getElementById('configMinSinkRate').innerHTML = config.sinkRatePercent.min;">
                                                 -
                                             </button>
                                         </div>
@@ -350,12 +351,13 @@
                                         <div id="configMaxSinkRate" class="led-display"></div>
                                         <div class="content-column">
                                             <button class="sim-btn-small" onclick="
-                                            config.sinkRatePercent.max += 1; 
+                                            config.sinkRatePercent.max = Math.round((config.sinkRatePercent.max + 0.1) * 10) / 10;
                                             document.getElementById('configMaxSinkRate').innerHTML = config.sinkRatePercent.max;">
                                                 +
                                             </button>
-                                            <button class="sim-btn-small" onclick="config.sinkRatePercent.max -= 1; 
-                                            document.getElementById('configMaxSinkRate').innerHTML = config.sinkRatePercent.max;">
+                                            <button class="sim-btn-small" onclick="
+                                                config.sinkRatePercent.max = Math.round((config.sinkRatePercent.max - 0.1) * 10) / 10;
+                                                document.getElementById('configMaxSinkRate').innerHTML = config.sinkRatePercent.max;">
                                                 -
                                             </button>
                                         </div>
