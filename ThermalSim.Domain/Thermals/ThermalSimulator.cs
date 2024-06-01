@@ -259,6 +259,8 @@ namespace ThermalSim.Domain.Thermals
                     SimDataEventTypes.ThermalSimEnableFlag,
                     1u, SIMCONNECT_DATA_SET_FLAG.DEFAULT,
                     new ThermalSimEnabled() { ThermalSimIsEnabled = 0.0 });
+
+            thermals.Clear();
         }
 
         public bool InsertThermal()

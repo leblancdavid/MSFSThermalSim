@@ -234,7 +234,7 @@ namespace ThermalSim.Domain.Connection
             RegisterDataDefinition<TurbulenceEffect>(SimDataEventTypes.TurbulenceEffect,
                 ("ROTATION ACCELERATION BODY X", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
                 ("ROTATION ACCELERATION BODY Y", "Feet per second squared", (SIMCONNECT_DATATYPE)4),
-                ("ROTATION ACCELERATION BODY Z", "Feet per second squared", (SIMCONNECT_DATATYPE)4)
+                ("ROTATION ACCELERATION BODY Z", "Feet per second", (SIMCONNECT_DATATYPE)4)
             );
         }
 

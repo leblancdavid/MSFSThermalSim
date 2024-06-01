@@ -24,9 +24,12 @@ namespace ThermalSim.Domain.Thermals
         public ValueRangeDouble WindDirection { get; set; } = new ValueRangeDouble(0.0, 360.0);
         public double ReplaceDistance { get; set; } = 25000;
         public ValueRangeInt FramesBetweenTurbulence { get; set; } = new ValueRangeInt(60, 120);
-        public ValueRangeInt TurbulenceDuration { get; set; } = new ValueRangeInt(60, 240);
+        public ValueRangeInt TurbulenceDuration { get; set; } = new ValueRangeInt(120, 360);
         public ValueRangeDouble TurbulenceStrengthPercent { get; set; } = new ValueRangeDouble(1.0, 1.5);
         public bool AllowSpawningOnAircraft { get; set; } = false;
+        public double PitchTurbulenceModifier { get; set; } = 0.0;
+        public double YawTurbulenceModifier { get; set; } = 0.0;
+        public double RollTurbulenceModifier { get; set; } = 0.0;
 
         public ThermalProperties GenerateRandomThermalProperties(Random random, AircraftPositionState position)
         {
@@ -66,7 +69,10 @@ namespace ThermalSim.Domain.Thermals
             {
                 FramesBetweenTurbulence = FramesBetweenTurbulence,
                 TurbulenceDuration = TurbulenceDuration,
-                TurbulenceStrength = new ValueRangeDouble(strength / 10.0, strength)
+                TurbulenceStrength = new ValueRangeDouble(strength / 10.0, strength),
+                PitchTurbulenceModifier = PitchTurbulenceModifier,
+                YawTurbulenceModifier = YawTurbulenceModifier,
+                RollTurbulenceModifier = RollTurbulenceModifier
             };
         }
 
