@@ -78,6 +78,8 @@ function refreshInputView() {
     document.getElementById('configMaxSinkRate').innerHTML = config.sinkRatePercent.max;
     document.getElementById('configMinDuration').innerHTML = config.durationMinutes.min;
     document.getElementById('configMaxDuration').innerHTML = config.durationMinutes.max;
+    document.getElementById('configMinSpawnDistance').innerHTML = config.spawnDistance.min;
+    document.getElementById('configMaxSpawnDistance').innerHTML = config.spawnDistance.max;
 
 }
 

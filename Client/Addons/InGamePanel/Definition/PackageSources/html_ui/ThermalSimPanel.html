@@ -408,6 +408,49 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="content-row">
+                                <div class="sim-input-container turned-on">
+                                    <label>
+                                        MIN SPAWN DISTANCE (GPS DEG)
+                                    </label>
+                                    <div class="content-row">
+                                        <div id="configMinSpawnDistance"  class="led-display"></div>
+                                        <div class="content-column">
+                                            <button class="sim-btn-small" onclick="
+                                            config.spawnDistance.min = Math.round((config.spawnDistance.min + 0.001) * 1000) / 1000;
+                                            document.getElementById('configMinSpawnDistance').innerHTML = config.spawnDistance.min;">
+                                                +
+                                            </button>
+                                            <button class="sim-btn-small" onclick="
+                                                config.spawnDistance.min = Math.round((config.spawnDistance.min - 0.001) * 1000) / 1000;
+                                                document.getElementById('configMinSpawnDistance').innerHTML = config.spawnDistance.min;">
+                                                -
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="sim-input-container turned-on">
+                                    <label>
+                                        MAX SPAWN DISTANCE (GPS DEG)
+                                    </label>
+                                    <div class="content-row">
+                                        <div id="configMaxSpawnDistance" class="led-display"></div>
+                                        <div class="content-column">
+                                            <button class="sim-btn-small" onclick="
+                                            config.spawnDistance.max = Math.round((config.spawnDistance.max + 0.001) * 1000) / 1000;
+                                            document.getElementById('configMaxSpawnDistance').innerHTML = config.spawnDistance.max;">
+                                                +
+                                            </button>
+                                            <button class="sim-btn-small" onclick="
+                                                config.spawnDistance.max = Math.round((config.spawnDistance.max - 0.001) * 1000) / 1000;
+                                                document.getElementById('configMaxSpawnDistance').innerHTML = config.spawnDistance.max;">
+                                                -
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         
                         </div>
                     </div>
