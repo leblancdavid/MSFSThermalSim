@@ -49,6 +49,12 @@
   width: 100%;
 }
 
+.main-panel h1 {
+  color: rgb(196, 196, 196);
+  font-family: system-ui;
+  font-weight: 500;
+}
+
 .content-row {
   display: flex;
   flex-direction: row;

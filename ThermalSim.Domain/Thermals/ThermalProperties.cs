@@ -18,8 +18,6 @@
         public double SinkTurbulencePercent { get; set; }
         public double CoreRadiusPercent { get; set; }
         public double SinkTransitionRadiusPercent { get; set; }
-        public double WindSpeed { get; set; }
-        public double WindDirection { get; set; }
         public double LiftShapeFactor { get; set; } = 1.0;
     }
 }

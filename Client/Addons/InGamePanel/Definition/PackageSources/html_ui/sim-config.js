@@ -76,6 +76,8 @@ function refreshInputView() {
     document.getElementById('configMaxCoreLiftRate').innerHTML = config.coreLiftRate.max;
     document.getElementById('configMinSinkRate').innerHTML = config.sinkRatePercent.min;
     document.getElementById('configMaxSinkRate').innerHTML = config.sinkRatePercent.max;
+    document.getElementById('configMinDuration').innerHTML = config.durationMinutes.min;
+    document.getElementById('configMaxDuration').innerHTML = config.durationMinutes.max;
 
 }
 
