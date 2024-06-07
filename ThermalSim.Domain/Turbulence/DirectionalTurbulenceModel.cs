@@ -104,13 +104,13 @@ namespace ThermalSim.Domain.Turbulence
             var pitchEffect = -1.0 * Math.Cos(angleToThermalCore);
             var yawEffect = -1.0 * rollEffect * _random.NextDouble();
 
-            var pitchMod = _maxTurbulence * Properties.BasePitchScaler;
+            var pitchMod = _maxTurbulence;
             pitchMod += pitchMod * Properties.PitchTurbulenceModifier;
 
-            var yawMod = _maxTurbulence * Properties.BaseYawScaler;
+            var yawMod = _maxTurbulence;
             yawMod += yawMod * Properties.YawTurbulenceModifier;
 
-            var rollMod = _maxTurbulence * Properties.BaseRollScaler;
+            var rollMod = _maxTurbulence;
             rollMod += rollMod * Properties.RollTurbulenceModifier;
 
             var effect = new TurbulenceEffect()
