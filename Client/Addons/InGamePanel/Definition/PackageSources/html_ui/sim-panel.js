@@ -2,8 +2,8 @@ var currentPanel = 0;
 
 function nextPanel() {
     currentPanel++;
-    if(currentPanel > 1) {
-        currentPanel = 1;
+    if(currentPanel > 2) {
+        currentPanel = 0;
     }
     showPanel(currentPanel);
 }
@@ -11,7 +11,7 @@ function nextPanel() {
 function previousPanel() {
     currentPanel--;
     if(currentPanel < 0) {
-        currentPanel = 0;
+        currentPanel = 2;
     }
     showPanel(currentPanel);
 }
@@ -20,10 +20,17 @@ function showPanel(currentPanel) {
     if(currentPanel == 0) {
         document.getElementById('mainPanel').style.display = "flex";
         document.getElementById('configPanel').style.display = "none";
+        document.getElementById('turbulencePanel').style.display = "none";
     } else if(currentPanel == 1) {
         document.getElementById('mainPanel').style.display = "none";
         document.getElementById('configPanel').style.display = "flex";
+        document.getElementById('turbulencePanel').style.display = "none";
+    } else if(currentPanel == 2) {
+        document.getElementById('mainPanel').style.display = "none";
+        document.getElementById('configPanel').style.display = "none";
+        document.getElementById('turbulencePanel').style.display = "flex";
     }
+
 }
 
 

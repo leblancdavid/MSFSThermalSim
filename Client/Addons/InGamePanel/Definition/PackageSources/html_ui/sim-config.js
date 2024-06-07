@@ -24,6 +24,9 @@ class SimConfig {
         framesBetweenTurbulence = new ValueRange(60, 120),
         turbulenceDuration = new ValueRange(60, 240),
         turbulenceStrengthPercent = new ValueRange(1.0, 1.5),
+        pitchTurbulenceModifier = 0.0,
+        yawTurbulenceModifier = 0.0,
+        rollTurbulenceModifier = 0.0
     ) {
         this.numberOfThermals = numberOfThermals;
         this.samplingSpeedSeconds = samplingSpeedSeconds;
@@ -44,6 +47,9 @@ class SimConfig {
         this.framesBetweenTurbulence = framesBetweenTurbulence;
         this.turbulenceDuration = turbulenceDuration;
         this.turbulenceStrengthPercent = turbulenceStrengthPercent;
+        this.pitchTurbulenceModifier = pitchTurbulenceModifier;
+        this.yawTurbulenceModifier = yawTurbulenceModifier;
+        this.rollTurbulenceModifier = rollTurbulenceModifier;
     }
 }
 
@@ -80,6 +86,13 @@ function refreshInputView() {
     document.getElementById('configMaxDuration').innerHTML = config.durationMinutes.max;
     document.getElementById('configMinSpawnDistance').innerHTML = config.spawnDistance.min;
     document.getElementById('configMaxSpawnDistance').innerHTML = config.spawnDistance.max;
+    document.getElementById('configMinTurbulenceStrength').innerHTML = config.turbulenceStrengthPercent.min;
+    document.getElementById('configMaxTurbulenceStrength').innerHTML = config.turbulenceStrengthPercent.max;
+    document.getElementById('configMinTurbulenceDuration').innerHTML = config.turbulenceDuration.min;
+    document.getElementById('configMaxTurbulenceDuration').innerHTML = config.turbulenceDuration.max;
+    document.getElementById('configPitchModifier').innerHTML = config.pitchTurbulenceModifier;
+    document.getElementById('configYawModifier').innerHTML = config.yawTurbulenceModifier;
+    document.getElementById('configRollModifier').innerHTML = config.rollTurbulenceModifier;
 
 }
 
